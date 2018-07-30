@@ -569,6 +569,7 @@ void draw(std::string name_input_file_data = "out.root", std::string name_input_
   leg->Draw();
   
   
+  cc_summary->SaveAs ("complete.root");
 
   
   
