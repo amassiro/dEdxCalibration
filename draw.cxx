@@ -39,6 +39,21 @@ void draw(std::string name_input_file_data = "out.root", std::string name_input_
   gStyle->SetOptStat(0);
   
   
+  //---- muon
+  const Int_t kMaxLepGood = 10;
+  Float_t LepGood_pt[kMaxLepGood];
+  Int_t   LepGood_pdgId[kMaxLepGood];
+  Int_t nLepGood;
+  
+  
+  inputTree_data->SetBranchAddress("LepGood_pt",  LepGood_pt);
+  inputTree_mc  ->SetBranchAddress("LepGood_pt",  LepGood_pt);
+  inputTree_data->SetBranchAddress("LepGood_pdgId",  LepGood_pdgId);
+  inputTree_mc  ->SetBranchAddress("LepGood_pdgId",  LepGood_pdgId);
+  inputTree_data->SetBranchAddress("nLepGood",    &nLepGood);
+  inputTree_mc  ->SetBranchAddress("nLepGood",    &nLepGood);
+  
+  
   //   IsoTrack_dedxByLayer0
   const Int_t kMaxTracks = 1000;
  
@@ -47,28 +62,31 @@ void draw(std::string name_input_file_data = "out.root", std::string name_input_
   Int_t IsoTrack_highPurity[kMaxTracks];
   Int_t nIsoTrack;
 
-  inputTree_data->Branch("IsoTrack_dedxByLayer0",  &IsoTrack_dedxByLayer0, "IsoTrack_dedxByLayer0[nIsoTrack]/F");
-  inputTree_mc  ->Branch("IsoTrack_dedxByLayer0",  &IsoTrack_dedxByLayer0, "IsoTrack_dedxByLayer0[nIsoTrack]/F");
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer0",  IsoTrack_dedxByLayer0);
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer0",  IsoTrack_dedxByLayer0);
   
-  inputTree_data->Branch("IsoTrack_pt",  &IsoTrack_pt  , "IsoTrack_pt[nIsoTrack]/F");
-  inputTree_mc  ->Branch("IsoTrack_pt",  &IsoTrack_pt  , "IsoTrack_pt[nIsoTrack]/F");
+  inputTree_data->SetBranchAddress("IsoTrack_pt",  IsoTrack_pt);
+  inputTree_mc  ->SetBranchAddress("IsoTrack_pt",  IsoTrack_pt);
   
-  inputTree_data->Branch("IsoTrack_highPurity",  &IsoTrack_highPurity, "IsoTrack_highPurity[nIsoTrack]/I");
-  inputTree_mc  ->Branch("IsoTrack_highPurity",  &IsoTrack_highPurity, "IsoTrack_highPurity[nIsoTrack]/I");
+  inputTree_data->SetBranchAddress("IsoTrack_highPurity",  IsoTrack_highPurity);
+  inputTree_mc  ->SetBranchAddress("IsoTrack_highPurity",  IsoTrack_highPurity);
   
-  inputTree_data->Branch("nIsoTrack",  &nIsoTrack, "nIsoTrack/I");
-  inputTree_mc  ->Branch("nIsoTrack",  &nIsoTrack, "nIsoTrack/I");
+  inputTree_data->SetBranchAddress("nIsoTrack",  &nIsoTrack);
+  inputTree_mc  ->SetBranchAddress("nIsoTrack",  &nIsoTrack);
   
   TH1F* h_data = new TH1F ("h_data", "data", 100, 0, 20);
   TH1F* h_ntracks_data = new TH1F ("h_ntracks_data", "data", 100, 0, 50000);
-
+  TH1F* h_LepGood_pt_data = new TH1F ("h_LepGood_pt_data", "data", 100, 0, 100);
+  
   setupHisto(h_data, 1);
   setupHisto(h_ntracks_data, 1);
+  setupHisto(h_LepGood_pt_data, 1);
   
   //   for (int iEntry=0; iEntry<inputTree_data->GetEntries(); iEntry++) {
   for (int iEntry=0; iEntry<5000; iEntry++) {
     if (!(iEntry%50000)) std::cout << "   " << iEntry << " ; nIsoTrack = "  << nIsoTrack << std::endl;
     inputTree_data->GetEntry(iEntry);
+    
     float max_pt = 0;
     int best_track = -1;
     h_ntracks_data->Fill(nIsoTrack);
@@ -82,14 +100,34 @@ void draw(std::string name_input_file_data = "out.root", std::string name_input_
       h_data->Fill(IsoTrack_dedxByLayer0[best_track]);
       std::cout << " best dE/dx = " << IsoTrack_dedxByLayer0[best_track] << " [ best_track = " << best_track << " , pt = " << max_pt << "]" << std::endl;
     }
+    
+    
+    //---- muon
+    max_pt = 0;
+    for (int iMuon = 0; iMuon < std::min(kMaxLepGood, nLepGood); iMuon++) {
+      if (LepGood_pt[iMuon] > max_pt && LepGood_pdgId[iMuon] == 13) {
+        max_pt = LepGood_pt[iMuon];
+      }
+    }
+    if (max_pt != 0) h_LepGood_pt_data->Fill(max_pt);
   }
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   TH1F* h_mc = new TH1F ("h_mc", "mc", 100, 0, 20);
   TH1F* h_ntracks_mc = new TH1F ("h_ntracks_mc", "mc", 100, 0, 50000);
+  TH1F* h_LepGood_pt_mc = new TH1F ("h_LepGood_pt_mc", "mc", 100, 0, 100);
   
   setupHisto(h_mc, 3);
   setupHisto(h_ntracks_mc, 3);
+  setupHisto(h_LepGood_pt_mc, 3);
   
   //   for (int iEntry=0; iEntry<inputTree_mc->GetEntries(); iEntry++) {
   for (int iEntry=0; iEntry<5000; iEntry++) {
@@ -105,6 +143,19 @@ void draw(std::string name_input_file_data = "out.root", std::string name_input_
       }
     }
     if (best_track != -1) h_mc->Fill(IsoTrack_dedxByLayer0[best_track]);
+ 
+    //---- muon
+    max_pt = 0;
+//     std::cout << " nLepGood = " << nLepGood << std::endl;    
+    for (int iMuon = 0; iMuon < std::min(kMaxLepGood, nLepGood); iMuon++) {
+//       std::cout << "    >> LepGood_pdgId[" << iMuon << "] = " << LepGood_pdgId[iMuon];
+//       std::cout << "    >> LepGood_pt[" << iMuon << "] = " << LepGood_pt[iMuon] << std::endl;
+      if (LepGood_pt[iMuon] > max_pt && LepGood_pdgId[iMuon] == 13) {
+        max_pt = LepGood_pt[iMuon];
+      }
+    }
+    if (max_pt != 0) h_LepGood_pt_mc->Fill(max_pt);
+    
   }  
   
   h_data->Scale(1./h_data->Integral());
@@ -112,6 +163,9 @@ void draw(std::string name_input_file_data = "out.root", std::string name_input_
   
   h_ntracks_data->Scale(1./h_ntracks_data->Integral());
   h_ntracks_mc  ->Scale(1./h_ntracks_mc  ->Integral());
+ 
+  h_LepGood_pt_data->Scale(1./h_LepGood_pt_data->Integral());
+  h_LepGood_pt_mc  ->Scale(1./h_LepGood_pt_mc  ->Integral());
   
   TLegend* leg = new TLegend(0.20,0.70,0.50,0.90);
   leg->AddEntry(h_data,"data","pl");
@@ -138,6 +192,17 @@ void draw(std::string name_input_file_data = "out.root", std::string name_input_
   h_ntracks_mc->Draw("PL");
   
   h_ntracks_data->GetYaxis()->SetTitle("# tracks");
+  
+  leg->Draw();
+
+
+  
+  TCanvas* cc_MuonPt = new TCanvas ("cc_MuonPt","",800,600);
+  
+  h_LepGood_pt_data->Draw("APL");
+  h_LepGood_pt_mc->Draw("PL");
+  
+  h_LepGood_pt_data->GetYaxis()->SetTitle("#mu p_{T}");
   
   leg->Draw();
   
