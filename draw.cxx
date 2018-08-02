@@ -434,7 +434,7 @@ void draw(std::string name_input_file_data = "out.root", std::string name_input_
   h_dedxByLayer0_data->Draw("PL");
   h_dedxByLayer0_mc->Draw("PL same");
   
-  h_dedxByLayer0_data->GetXaxis()->SetTitle("dE/dx (GeV/cm)");
+  h_dedxByLayer0_data->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
   
   leg->Draw();
   
@@ -487,91 +487,107 @@ void draw(std::string name_input_file_data = "out.root", std::string name_input_
   cc_summary->cd(1);
   h_dedxByLayer0_data->Draw("PL");
   h_dedxByLayer0_mc->Draw("PL same");
-  h_dedxByLayer0_data->GetXaxis()->SetTitle("dE/dx (GeV/cm)");
+  h_dedxByLayer0_data->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
   leg->Draw();
   
   cc_summary->cd(2);
   h_dedxByLayer1_data->Draw("PL");
   h_dedxByLayer1_mc->Draw("PL same");
-  h_dedxByLayer1_data->GetXaxis()->SetTitle("dE/dx (GeV/cm)");
+  h_dedxByLayer1_data->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
   leg->Draw();
   
   cc_summary->cd(3);
   h_dedxByLayer2_data->Draw("PL");
   h_dedxByLayer2_mc->Draw("PL same");
-  h_dedxByLayer2_data->GetXaxis()->SetTitle("dE/dx (GeV/cm)");
+  h_dedxByLayer2_data->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
   leg->Draw();
   
   cc_summary->cd(4);
   h_dedxByLayer3_data->Draw("PL");
   h_dedxByLayer3_mc->Draw("PL same");
-  h_dedxByLayer3_data->GetXaxis()->SetTitle("dE/dx (GeV/cm)");
+  h_dedxByLayer3_data->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
   leg->Draw();
   
   cc_summary->cd(5);
   h_dedxByLayer4_data->Draw("PL");
   h_dedxByLayer4_mc->Draw("PL same");
-  h_dedxByLayer4_data->GetXaxis()->SetTitle("dE/dx (GeV/cm)");
+  h_dedxByLayer4_data->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
   leg->Draw();
   
   cc_summary->cd(6);
   h_dedxByLayer5_data->Draw("PL");
   h_dedxByLayer5_mc->Draw("PL same");
-  h_dedxByLayer5_data->GetXaxis()->SetTitle("dE/dx (GeV/cm)");
+  h_dedxByLayer5_data->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
   leg->Draw();
   
   cc_summary->cd(7);
   h_dedxByLayer6_data->Draw("PL");
   h_dedxByLayer6_mc->Draw("PL same");
-  h_dedxByLayer6_data->GetXaxis()->SetTitle("dE/dx (GeV/cm)");
+  h_dedxByLayer6_data->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
   leg->Draw();
   
   cc_summary->cd(8);
   h_dedxByLayer7_data->Draw("PL");
   h_dedxByLayer7_mc->Draw("PL same");
-  h_dedxByLayer7_data->GetXaxis()->SetTitle("dE/dx (GeV/cm)");
+  h_dedxByLayer7_data->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
   leg->Draw();
   
   cc_summary->cd(9);
   h_dedxByLayer8_data->Draw("PL");
   h_dedxByLayer8_mc->Draw("PL same");
-  h_dedxByLayer8_data->GetXaxis()->SetTitle("dE/dx (GeV/cm)");
+  h_dedxByLayer8_data->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
   leg->Draw();
   
   cc_summary->cd(10);
   h_dedxByLayer9_data->Draw("PL");
   h_dedxByLayer9_mc->Draw("PL same");
-  h_dedxByLayer9_data->GetXaxis()->SetTitle("dE/dx (GeV/cm)");
+  h_dedxByLayer9_data->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
   leg->Draw();
   
   cc_summary->cd(11);
   h_dedxByLayer10_data->Draw("PL");
   h_dedxByLayer10_mc->Draw("PL same");
-  h_dedxByLayer10_data->GetXaxis()->SetTitle("dE/dx (GeV/cm)");
+  h_dedxByLayer10_data->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
   leg->Draw();
   
   cc_summary->cd(12);
   h_dedxByLayer11_data->Draw("PL");
   h_dedxByLayer11_mc->Draw("PL same");
-  h_dedxByLayer11_data->GetXaxis()->SetTitle("dE/dx (GeV/cm)");
+  h_dedxByLayer11_data->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
   leg->Draw();
   
   cc_summary->cd(13);
   h_dedxByLayer12_data->Draw("PL");
   h_dedxByLayer12_mc->Draw("PL same");
-  h_dedxByLayer12_data->GetXaxis()->SetTitle("dE/dx (GeV/cm)");
+  h_dedxByLayer12_data->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
   leg->Draw();
   
   cc_summary->cd(14);
   h_dedxByLayer13_data->Draw("PL");
   h_dedxByLayer13_mc->Draw("PL same");
-  h_dedxByLayer13_data->GetXaxis()->SetTitle("dE/dx (GeV/cm)");
+  h_dedxByLayer13_data->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
   leg->Draw();
   
   
   cc_summary->SaveAs ("complete.root");
 
+  TFile* fileOut = new TFile ("tocalibrate.root", "RECREATE");
+  h_dedxByLayer0_data->Write();                        h_dedxByLayer0_mc->Write();
+  h_dedxByLayer1_data->Write();                        h_dedxByLayer1_mc->Write();
+  h_dedxByLayer2_data->Write();                        h_dedxByLayer2_mc->Write();
+  h_dedxByLayer3_data->Write();                        h_dedxByLayer3_mc->Write();
+  h_dedxByLayer4_data->Write();                        h_dedxByLayer4_mc->Write();
+  h_dedxByLayer5_data->Write();                        h_dedxByLayer5_mc->Write();
+  h_dedxByLayer6_data->Write();                        h_dedxByLayer6_mc->Write();
+  h_dedxByLayer7_data->Write();                        h_dedxByLayer7_mc->Write();
+  h_dedxByLayer8_data->Write();                        h_dedxByLayer8_mc->Write();
+  h_dedxByLayer9_data->Write();                        h_dedxByLayer9_mc->Write();
+  h_dedxByLayer10_data->Write();                       h_dedxByLayer10_mc->Write();
+  h_dedxByLayer11_data->Write();                       h_dedxByLayer11_mc->Write();
+  h_dedxByLayer12_data->Write();                       h_dedxByLayer12_mc->Write();
+  h_dedxByLayer13_data->Write();                       h_dedxByLayer13_mc->Write();
   
+  fileOut->Close();
   
   
   
