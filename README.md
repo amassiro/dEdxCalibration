@@ -32,6 +32,9 @@ Calibrate:
     r99t calibrateAuto.cxx\(\"tocalibrate.root\"\)
     
     
-    
+Compile:
+
+    g++ -o calibrateAuto.exe calibrateAuto.cpp  `root-config --cflags --glibs`
+    g++ -o calibrate.exe     calibrate.cpp      `root-config --cflags --glibs`
     
     
