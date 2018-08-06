@@ -63,8 +63,9 @@ public:
 //       std::cout << " --> bin_number = " << bin_number << std::endl;
     }
     
-    return ( (_reference_histogram -> GetBinContent (bin_number)) / _integral );
-
+//     return ( (_reference_histogram -> GetBinContent (bin_number)) / _integral ) * _scale_value ;  // ---> NO!
+    return ( (_reference_histogram -> GetBinContent (bin_number)) / _integral ) ;
+    
     //     }
   }
   
@@ -104,6 +105,9 @@ int main(int argc, char** argv) {
   
   TCanvas* cc_summary_entries_scan = new TCanvas ("cc_summary_entries_scan","",1000,1000);
   cc_summary_entries_scan->Divide(4,4);
+  
+  TCanvas* cc_summary_likelihood_scan_closure = new TCanvas ("cc_summary_likelihood_scan_closure","",1000,1000);
+  cc_summary_likelihood_scan_closure->Divide(4,4);
   
   TCanvas* cc_summary_likelihood_scan = new TCanvas ("cc_summary_likelihood_scan","",1000,1000);
   cc_summary_likelihood_scan->Divide(4,4);
@@ -170,22 +174,22 @@ int main(int argc, char** argv) {
     
     //---- template fit
     TemplateFit myFit;
-    //---- define the reference histogram
+    //---- define the reference histogram 
+    //---> first check bias in data vs data
     myFit.set_reference_histogram(h_dedxByLayer_data.at(i));
-//     myFit.set_reference_histogram(h_dedxByLayer_mc.at(i));
     myFit.set_min_max( 0.0,    8.0 );
 
     
-    cc_summary_likelihood_scan->cd(i+1);
+    cc_summary_likelihood_scan_closure->cd(i+1);
     TGraph* likelihoodScan = new TGraph();
     TGraph* entriesScan = new TGraph();
     
-    for (int ipoint=0; ipoint<20; ipoint++) {
+    for (int ipoint=0; ipoint<40; ipoint++) {
       float likelihood = 1;
       float loglikelihood = 0;
       float entries = 0;
       
-      float scale_value = 0.9 + 0.01 * ipoint;
+      float scale_value = 0.80 + 0.01 * ipoint;
       myFit.set_scale( scale_value );
       
       for (int ibin=0; ibin<h_dedxByLayer_data.at(i)->GetNbinsX(); ibin++) {
@@ -195,10 +199,13 @@ int main(int argc, char** argv) {
             float value = myFit.evaluate (h_dedxByLayer_data.at(i) -> GetBinCenter (ibin+1));
             if (value != 0) {
               likelihood *= ( pow( value , (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1))) ) ;
-              loglikelihood += (log ( value ) * (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1)) ) ;
+              loglikelihood += ( (log ( value )) * (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1)) ) ;
               //               std::cout << " >>> entries[" << ibin << " ] = " << entries << " + " <<  (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1)) << "    val = " << value << std::endl;
 //               std::cout << " >>> entries[" << ibin << " ] = " << entries << " --> " <<  value * h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1) << std::endl;
               entries += (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1));
+            }
+            else {
+//               std::cout << " value = 0 ! " << std::endl;
             }
           }
           else {
@@ -206,7 +213,7 @@ int main(int argc, char** argv) {
           }
         }
         else {
-          std::cout << " how is it possible?" << std::endl;
+//           std::cout << " how is it possible?" << std::endl;
         }
       }
       
@@ -214,11 +221,12 @@ int main(int argc, char** argv) {
       likelihoodScan -> SetPoint ( ipoint, scale_value, -2 * loglikelihood  ); 
       entriesScan -> SetPoint ( ipoint, scale_value, entries ); 
       
-      std::cout << " [" << i << "] entries, scale_value, loglikelihood, likelihood = " << entries << " , " << scale_value << " , " << loglikelihood << " , " << likelihood << std::endl;
+//       std::cout << " [" << i << "] entries, scale_value, -2*loglikelihood, likelihood = " << entries << " , " << scale_value << " , " << -2*loglikelihood << " , " << likelihood << std::endl;
       
     }
     
-    std::cout << std::endl;
+//     std::cout << std::endl;
+    
     
     
     likelihoodScan->SetLineColor (kBlue);
@@ -228,8 +236,68 @@ int main(int argc, char** argv) {
     
     likelihoodScan->DrawClone("APL");
     
+    TF1 parabola ("parabola", "[0]*x*x + [1]*x + [2]", 0.8, 1.2);
+    likelihoodScan->Fit("parabola", "Q");
+    float bias_min_value = - parabola.GetParameter (1) / (2. *  parabola.GetParameter (0) );
+    std::cout << " min = " << bias_min_value << std::endl;
+    bias_min_value = (1. - bias_min_value);
+    
     cc_summary_entries_scan->cd(i+1);
     entriesScan->DrawClone("APL");
+    
+    
+    
+    
+    //---- now do the mc to data fit
+    myFit.set_reference_histogram(h_dedxByLayer_mc.at(i));
+    
+    cc_summary_likelihood_scan->cd(i+1);
+    TGraph* likelihoodScan_mc_data = new TGraph();
+    
+    for (int ipoint=0; ipoint<40; ipoint++) {
+      float likelihood = 1;
+      float loglikelihood = 0;
+      float entries = 0;
+      
+      float scale_value = 0.80 + 0.01 * ipoint;
+      myFit.set_scale( scale_value );
+      
+      for (int ibin=0; ibin<h_dedxByLayer_data.at(i)->GetNbinsX(); ibin++) {
+        if ( (h_dedxByLayer_data.at(i) -> GetBinCenter (ibin+1)) >= min_histo && (h_dedxByLayer_data.at(i) -> GetBinCenter (ibin+1)) <= max_histo) {
+          if (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1) > 0) {
+            
+            float value = myFit.evaluate (h_dedxByLayer_data.at(i) -> GetBinCenter (ibin+1));
+            if (value != 0) {
+              likelihood *= ( pow( value , (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1))) ) ;
+              loglikelihood += ( (log ( value )) * (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1)) ) ;
+              entries += (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1));
+            }
+          }
+        }
+      }
+      
+      //---                                               add the bias obtained in the data 2 data
+      likelihoodScan_mc_data -> SetPoint ( ipoint, scale_value + bias_min_value, -2 * loglikelihood  ); 
+      
+//       std::cout << " [" << i << "] entries, scale_value, -2*loglikelihood, likelihood = " << entries << " , " << scale_value + bias_min_value << " , " << -2*loglikelihood << " , " << likelihood << std::endl;
+      
+    }
+    
+//     std::cout << std::endl;
+    
+    
+    
+    likelihoodScan_mc_data->SetLineColor (kBlue);
+    likelihoodScan_mc_data->SetLineWidth (2);
+    likelihoodScan_mc_data->SetMarkerSize (2);
+    likelihoodScan_mc_data->SetMarkerStyle (20);
+    
+    likelihoodScan_mc_data->DrawClone("APL");
+    
+    TF1 parabola_result ("parabola_result", "[0]*x*x + [1]*x + [2]", 0.8, 1.2);
+    likelihoodScan_mc_data->Fit("parabola_result", "Q");
+    float final_scale = - parabola_result.GetParameter (1) / (2. *  parabola_result.GetParameter (0) );
+    std::cout << " Scale [ " << i << "] = " << final_scale << std::endl;
     
     
   }
@@ -257,6 +325,7 @@ int main(int argc, char** argv) {
   cc_summary_mc->Write();
   cc_summary_data_mc->Write();
   cc_summary_likelihood_scan->Write();
+  cc_summary_likelihood_scan_closure->Write();
   cc_summary_entries_scan->Write();
   
   outputCanvas.Close();
