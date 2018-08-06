@@ -44,10 +44,28 @@ public:
   Double_t evaluate (Double_t x) {
     Double_t x_scaled = 0;
     x_scaled = (x) * _scale_value;
-    if (_min_histo > x || _max_histo < x) return 0.;
-    else {
-      return ( (_reference_histogram -> GetBinContent ( _reference_histogram->GetXaxis()->FindBin(x_scaled) )) / _integral );
+//     if (_min_histo > x || _max_histo < x) return 0.;
+//     else {
+    
+    int bin_number = _reference_histogram->GetXaxis()->FindBin(x_scaled);
+    int bin_number_noscale = _reference_histogram->GetXaxis()->FindBin(x);
+    
+//     std::cout << " " << bin_number_noscale << " -> " << bin_number << " (" << x << " -> " << x_scaled << ")" << std::endl;
+    
+    //---- fix overflow and underflow
+    if (bin_number >  _reference_histogram->GetNbinsX()) bin_number = _reference_histogram->GetNbinsX();
+    if (bin_number == 0) bin_number = 1;
+      
+    while ( ( (_reference_histogram -> GetBinContent ( bin_number )) / _integral ) == 0) {
+//       std::cout << " 0! --> bin = " << bin_number;
+      if (bin_number != _reference_histogram->GetNbinsX()) bin_number += 1;
+      else bin_number -=1;
+//       std::cout << " --> bin_number = " << bin_number << std::endl;
     }
+    
+    return ( (_reference_histogram -> GetBinContent (bin_number)) / _integral );
+
+    //     }
   }
   
 };
@@ -83,6 +101,10 @@ int main(int argc, char** argv) {
   std::vector< float > calibration_values_data;
   std::vector< float > calibration_values_mc;
 
+  
+  TCanvas* cc_summary_entries_scan = new TCanvas ("cc_summary_entries_scan","",1000,1000);
+  cc_summary_entries_scan->Divide(4,4);
+  
   TCanvas* cc_summary_likelihood_scan = new TCanvas ("cc_summary_likelihood_scan","",1000,1000);
   cc_summary_likelihood_scan->Divide(4,4);
   
@@ -149,7 +171,8 @@ int main(int argc, char** argv) {
     //---- template fit
     TemplateFit myFit;
     //---- define the reference histogram
-    myFit.set_reference_histogram(h_dedxByLayer_mc.at(i));
+    myFit.set_reference_histogram(h_dedxByLayer_data.at(i));
+//     myFit.set_reference_histogram(h_dedxByLayer_mc.at(i));
     myFit.set_min_max( 0.0,    8.0 );
 
     
@@ -160,22 +183,30 @@ int main(int argc, char** argv) {
     for (int ipoint=0; ipoint<20; ipoint++) {
       float likelihood = 1;
       float loglikelihood = 0;
-      int entries = 0;
+      float entries = 0;
       
       float scale_value = 0.9 + 0.01 * ipoint;
       myFit.set_scale( scale_value );
       
       for (int ibin=0; ibin<h_dedxByLayer_data.at(i)->GetNbinsX(); ibin++) {
-        if ( (h_dedxByLayer_data.at(i) -> GetBinCenter (ibin+1)) > min_histo && (h_dedxByLayer_data.at(i) -> GetBinCenter (ibin+1)) < max_histo) {
-          if (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1) != 0) {
+        if ( (h_dedxByLayer_data.at(i) -> GetBinCenter (ibin+1)) >= min_histo && (h_dedxByLayer_data.at(i) -> GetBinCenter (ibin+1)) <= max_histo) {
+          if (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1) > 0) {
             
             float value = myFit.evaluate (h_dedxByLayer_data.at(i) -> GetBinCenter (ibin+1));
             if (value != 0) {
-              likelihood *= (  value * h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1) ) ;
-              loglikelihood += log (( value * h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1) ) );
-              entries += h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1);
+              likelihood *= ( pow( value , (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1))) ) ;
+              loglikelihood += (log ( value ) * (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1)) ) ;
+              //               std::cout << " >>> entries[" << ibin << " ] = " << entries << " + " <<  (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1)) << "    val = " << value << std::endl;
+//               std::cout << " >>> entries[" << ibin << " ] = " << entries << " --> " <<  value * h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1) << std::endl;
+              entries += (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1));
             }
           }
+          else {
+//             std::cout << " how is it possible? 0 entries in bin " << ibin+1 << std::endl;
+          }
+        }
+        else {
+          std::cout << " how is it possible?" << std::endl;
         }
       }
       
@@ -183,10 +214,12 @@ int main(int argc, char** argv) {
       likelihoodScan -> SetPoint ( ipoint, scale_value, -2 * loglikelihood  ); 
       entriesScan -> SetPoint ( ipoint, scale_value, entries ); 
       
-//       std::cout << " scale_value, likelihood = " << scale_value << " , " << likelihood << std::endl;
-      std::cout << " scale_value, loglikelihood = " << scale_value << " , " << loglikelihood << std::endl;
+      std::cout << " [" << i << "] entries, scale_value, loglikelihood, likelihood = " << entries << " , " << scale_value << " , " << loglikelihood << " , " << likelihood << std::endl;
       
     }
+    
+    std::cout << std::endl;
+    
     
     likelihoodScan->SetLineColor (kBlue);
     likelihoodScan->SetLineWidth (2);
@@ -194,6 +227,10 @@ int main(int argc, char** argv) {
     likelihoodScan->SetMarkerStyle (20);
     
     likelihoodScan->DrawClone("APL");
+    
+    cc_summary_entries_scan->cd(i+1);
+    entriesScan->DrawClone("APL");
+    
     
   }
   
@@ -220,6 +257,7 @@ int main(int argc, char** argv) {
   cc_summary_mc->Write();
   cc_summary_data_mc->Write();
   cc_summary_likelihood_scan->Write();
+  cc_summary_entries_scan->Write();
   
   outputCanvas.Close();
   

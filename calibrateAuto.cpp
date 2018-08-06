@@ -226,7 +226,7 @@ int main(int argc, char** argv) {
       
       for (int ibin=0; ibin<h_dedxByLayer_data.at(i)->GetNbinsX(); ibin++) {
         if ( (h_dedxByLayer_data.at(i) -> GetBinCenter (ibin+1)) > min_histo && (h_dedxByLayer_data.at(i) -> GetBinCenter (ibin+1)) < max_histo) {
-          if (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1) != 0) {
+          if (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1) > 0) {
             
 //             std::cout << "  (" << h_dedxByLayer_data.at(i) -> GetBinCenter (ibin+1) << " * " << h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1) << " = " << func->Eval (h_dedxByLayer_data.at(i) -> GetBinCenter (ibin+1)) * h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1)  << std::endl;
             

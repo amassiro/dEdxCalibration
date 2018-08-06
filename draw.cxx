@@ -408,8 +408,8 @@ void draw(std::string name_input_file_data = "out.root", std::string name_input_
   
   
   
-  h_dedxByLayer0_data->Scale(1./h_dedxByLayer0_data->Integral());
-  h_dedxByLayer0_mc  ->Scale(1./h_dedxByLayer0_mc  ->Integral());
+//   h_dedxByLayer0_data->Scale(1./h_dedxByLayer0_data->Integral());
+//   h_dedxByLayer0_mc  ->Scale(1./h_dedxByLayer0_mc  ->Integral());
   
   h_ntracks_data->Scale(1./h_ntracks_data->Integral());
   h_ntracks_mc  ->Scale(1./h_ntracks_mc  ->Integral());
