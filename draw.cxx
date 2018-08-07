@@ -169,23 +169,23 @@ void draw(std::string name_input_file_data = "out.root", std::string name_input_
 //   
   
   
-  TH1F* h_dedxByLayer0_data  = new TH1F ("h_dedxByLayer0_data", "data", 500, 0, 10);
-  TH1F* h_dedxByLayer1_data  = new TH1F ("h_dedxByLayer1_data", "data", 500, 0, 10);
-  TH1F* h_dedxByLayer2_data  = new TH1F ("h_dedxByLayer2_data", "data", 500, 0, 10);
-  TH1F* h_dedxByLayer3_data  = new TH1F ("h_dedxByLayer3_data", "data", 500, 0, 10);
-  TH1F* h_dedxByLayer4_data  = new TH1F ("h_dedxByLayer4_data", "data", 500, 0, 10);
-  TH1F* h_dedxByLayer5_data  = new TH1F ("h_dedxByLayer5_data", "data", 500, 0, 10);
-  TH1F* h_dedxByLayer6_data  = new TH1F ("h_dedxByLayer6_data", "data", 500, 0, 10);
-  TH1F* h_dedxByLayer7_data  = new TH1F ("h_dedxByLayer7_data", "data", 500, 0, 10);
-  TH1F* h_dedxByLayer8_data  = new TH1F ("h_dedxByLayer8_data", "data", 500, 0, 10);
-  TH1F* h_dedxByLayer9_data  = new TH1F ("h_dedxByLayer9_data", "data", 500, 0, 10);
-  TH1F* h_dedxByLayer10_data = new TH1F ("h_dedxByLayer10_data", "data", 500, 0, 10);
-  TH1F* h_dedxByLayer11_data = new TH1F ("h_dedxByLayer11_data", "data", 500, 0, 10);
-  TH1F* h_dedxByLayer12_data = new TH1F ("h_dedxByLayer12_data", "data", 500, 0, 10);
-  TH1F* h_dedxByLayer13_data = new TH1F ("h_dedxByLayer13_data", "data", 500, 0, 10);
+  TH1F* h_dedxByLayer0_data  = new TH1F ("h_dedxByLayer0_data", "data", 2000, 0, 10);
+  TH1F* h_dedxByLayer1_data  = new TH1F ("h_dedxByLayer1_data", "data", 2000, 0, 10);
+  TH1F* h_dedxByLayer2_data  = new TH1F ("h_dedxByLayer2_data", "data", 2000, 0, 10);
+  TH1F* h_dedxByLayer3_data  = new TH1F ("h_dedxByLayer3_data", "data", 2000, 0, 10);
+  TH1F* h_dedxByLayer4_data  = new TH1F ("h_dedxByLayer4_data", "data", 2000, 0, 10);
+  TH1F* h_dedxByLayer5_data  = new TH1F ("h_dedxByLayer5_data", "data", 2000, 0, 10);
+  TH1F* h_dedxByLayer6_data  = new TH1F ("h_dedxByLayer6_data", "data", 2000, 0, 10);
+  TH1F* h_dedxByLayer7_data  = new TH1F ("h_dedxByLayer7_data", "data", 2000, 0, 10);
+  TH1F* h_dedxByLayer8_data  = new TH1F ("h_dedxByLayer8_data", "data", 2000, 0, 10);
+  TH1F* h_dedxByLayer9_data  = new TH1F ("h_dedxByLayer9_data", "data", 2000, 0, 10);
+  TH1F* h_dedxByLayer10_data = new TH1F ("h_dedxByLayer10_data", "data", 2000, 0, 10);
+  TH1F* h_dedxByLayer11_data = new TH1F ("h_dedxByLayer11_data", "data", 2000, 0, 10);
+  TH1F* h_dedxByLayer12_data = new TH1F ("h_dedxByLayer12_data", "data", 2000, 0, 10);
+  TH1F* h_dedxByLayer13_data = new TH1F ("h_dedxByLayer13_data", "data", 2000, 0, 10);
 
-  TH1F* h_ntracks_data = new TH1F ("h_ntracks_data", "data", 500, 0, 100);
-  TH1F* h_LepGood_pt_data = new TH1F ("h_LepGood_pt_data", "data", 500, 0, 100);
+  TH1F* h_ntracks_data = new TH1F ("h_ntracks_data", "data", 2000, 0, 100);
+  TH1F* h_LepGood_pt_data = new TH1F ("h_LepGood_pt_data", "data", 2000, 0, 100);
   TH1F* h_mass_data = new TH1F ("h_mass_data", "data", 100, 86, 106);
   
   setupHisto(h_dedxByLayer0_data , 10);
@@ -288,23 +288,23 @@ void draw(std::string name_input_file_data = "out.root", std::string name_input_
   
   
   
-  TH1F* h_dedxByLayer0_mc = new TH1F ("h_dedxByLayer0_mc", "mc", 500, 0, 10);
-  TH1F* h_dedxByLayer1_mc = new TH1F ("h_dedxByLayer1_mc", "mc", 500, 0, 10);
-  TH1F* h_dedxByLayer2_mc = new TH1F ("h_dedxByLayer2_mc", "mc", 500, 0, 10);
-  TH1F* h_dedxByLayer3_mc = new TH1F ("h_dedxByLayer3_mc", "mc", 500, 0, 10);
-  TH1F* h_dedxByLayer4_mc = new TH1F ("h_dedxByLayer4_mc", "mc", 500, 0, 10);
-  TH1F* h_dedxByLayer5_mc = new TH1F ("h_dedxByLayer5_mc", "mc", 500, 0, 10);
-  TH1F* h_dedxByLayer6_mc = new TH1F ("h_dedxByLayer6_mc", "mc", 500, 0, 10);
-  TH1F* h_dedxByLayer7_mc = new TH1F ("h_dedxByLayer7_mc", "mc", 500, 0, 10);
-  TH1F* h_dedxByLayer8_mc = new TH1F ("h_dedxByLayer8_mc", "mc", 500, 0, 10);
-  TH1F* h_dedxByLayer9_mc = new TH1F ("h_dedxByLayer9_mc", "mc", 500, 0, 10);
-  TH1F* h_dedxByLayer10_mc = new TH1F ("h_dedxByLayer10_mc", "mc", 500, 0, 10);
-  TH1F* h_dedxByLayer11_mc = new TH1F ("h_dedxByLayer11_mc", "mc", 500, 0, 10);
-  TH1F* h_dedxByLayer12_mc = new TH1F ("h_dedxByLayer12_mc", "mc", 500, 0, 10);
-  TH1F* h_dedxByLayer13_mc = new TH1F ("h_dedxByLayer13_mc", "mc", 500, 0, 10);
+  TH1F* h_dedxByLayer0_mc = new TH1F ("h_dedxByLayer0_mc", "mc", 2000, 0, 10);
+  TH1F* h_dedxByLayer1_mc = new TH1F ("h_dedxByLayer1_mc", "mc", 2000, 0, 10);
+  TH1F* h_dedxByLayer2_mc = new TH1F ("h_dedxByLayer2_mc", "mc", 2000, 0, 10);
+  TH1F* h_dedxByLayer3_mc = new TH1F ("h_dedxByLayer3_mc", "mc", 2000, 0, 10);
+  TH1F* h_dedxByLayer4_mc = new TH1F ("h_dedxByLayer4_mc", "mc", 2000, 0, 10);
+  TH1F* h_dedxByLayer5_mc = new TH1F ("h_dedxByLayer5_mc", "mc", 2000, 0, 10);
+  TH1F* h_dedxByLayer6_mc = new TH1F ("h_dedxByLayer6_mc", "mc", 2000, 0, 10);
+  TH1F* h_dedxByLayer7_mc = new TH1F ("h_dedxByLayer7_mc", "mc", 2000, 0, 10);
+  TH1F* h_dedxByLayer8_mc = new TH1F ("h_dedxByLayer8_mc", "mc", 2000, 0, 10);
+  TH1F* h_dedxByLayer9_mc = new TH1F ("h_dedxByLayer9_mc", "mc", 2000, 0, 10);
+  TH1F* h_dedxByLayer10_mc = new TH1F ("h_dedxByLayer10_mc", "mc", 2000, 0, 10);
+  TH1F* h_dedxByLayer11_mc = new TH1F ("h_dedxByLayer11_mc", "mc", 2000, 0, 10);
+  TH1F* h_dedxByLayer12_mc = new TH1F ("h_dedxByLayer12_mc", "mc", 2000, 0, 10);
+  TH1F* h_dedxByLayer13_mc = new TH1F ("h_dedxByLayer13_mc", "mc", 2000, 0, 10);
 
-  TH1F* h_ntracks_mc = new TH1F ("h_ntracks_mc", "mc", 500, 0, 100);
-  TH1F* h_LepGood_pt_mc = new TH1F ("h_LepGood_pt_mc", "mc", 500, 0, 100);
+  TH1F* h_ntracks_mc = new TH1F ("h_ntracks_mc", "mc", 2000, 0, 100);
+  TH1F* h_LepGood_pt_mc = new TH1F ("h_LepGood_pt_mc", "mc", 2000, 0, 100);
   TH1F* h_mass_mc = new TH1F ("h_mass_mc", "mc", 100, 86, 106);
   
   setupHisto(h_dedxByLayer0_mc , 11);

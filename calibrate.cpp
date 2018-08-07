@@ -44,29 +44,21 @@ public:
   Double_t evaluate (Double_t x) {
     Double_t x_scaled = 0;
     x_scaled = (x) * _scale_value;
-//     if (_min_histo > x || _max_histo < x) return 0.;
-//     else {
     
     int bin_number = _reference_histogram->GetXaxis()->FindBin(x_scaled);
-    int bin_number_noscale = _reference_histogram->GetXaxis()->FindBin(x);
-    
-//     std::cout << " " << bin_number_noscale << " -> " << bin_number << " (" << x << " -> " << x_scaled << ")" << std::endl;
+//     int bin_number_noscale = _reference_histogram->GetXaxis()->FindBin(x);
     
     //---- fix overflow and underflow
     if (bin_number >  _reference_histogram->GetNbinsX()) bin_number = _reference_histogram->GetNbinsX();
     if (bin_number == 0) bin_number = 1;
       
     while ( ( (_reference_histogram -> GetBinContent ( bin_number )) / _integral ) == 0) {
-//       std::cout << " 0! --> bin = " << bin_number;
       if (bin_number != _reference_histogram->GetNbinsX()) bin_number += 1;
       else bin_number -=1;
-//       std::cout << " --> bin_number = " << bin_number << std::endl;
     }
     
-//     return ( (_reference_histogram -> GetBinContent (bin_number)) / _integral ) * _scale_value ;  // ---> NO!
-    return ( (_reference_histogram -> GetBinContent (bin_number)) / _integral ) ;
-    
-    //     }
+//     return ( (_reference_histogram -> GetBinContent (bin_number)) / _integral ) ;
+    return ( (_reference_histogram -> GetBinContent (bin_number)) / _integral ) * _scale_value ;
   }
   
 };
@@ -184,12 +176,12 @@ int main(int argc, char** argv) {
     TGraph* likelihoodScan = new TGraph();
     TGraph* entriesScan = new TGraph();
     
-    for (int ipoint=0; ipoint<40; ipoint++) {
+    for (int ipoint=0; ipoint<100; ipoint++) {
       float likelihood = 1;
       float loglikelihood = 0;
       float entries = 0;
       
-      float scale_value = 0.80 + 0.01 * ipoint;
+      float scale_value = 0.95 + 0.001 * ipoint;
       myFit.set_scale( scale_value );
       
       for (int ibin=0; ibin<h_dedxByLayer_data.at(i)->GetNbinsX(); ibin++) {
@@ -231,7 +223,7 @@ int main(int argc, char** argv) {
     
     likelihoodScan->SetLineColor (kBlue);
     likelihoodScan->SetLineWidth (2);
-    likelihoodScan->SetMarkerSize (2);
+    likelihoodScan->SetMarkerSize (1);
     likelihoodScan->SetMarkerStyle (20);
     
     likelihoodScan->DrawClone("APL");
@@ -254,12 +246,12 @@ int main(int argc, char** argv) {
     cc_summary_likelihood_scan->cd(i+1);
     TGraph* likelihoodScan_mc_data = new TGraph();
     
-    for (int ipoint=0; ipoint<40; ipoint++) {
+    for (int ipoint=0; ipoint<100; ipoint++) {
       float likelihood = 1;
       float loglikelihood = 0;
       float entries = 0;
       
-      float scale_value = 0.80 + 0.01 * ipoint;
+      float scale_value = 0.95 + 0.001 * ipoint;
       myFit.set_scale( scale_value );
       
       for (int ibin=0; ibin<h_dedxByLayer_data.at(i)->GetNbinsX(); ibin++) {
@@ -289,7 +281,7 @@ int main(int argc, char** argv) {
     
     likelihoodScan_mc_data->SetLineColor (kBlue);
     likelihoodScan_mc_data->SetLineWidth (2);
-    likelihoodScan_mc_data->SetMarkerSize (2);
+    likelihoodScan_mc_data->SetMarkerSize (1);
     likelihoodScan_mc_data->SetMarkerStyle (20);
     
     likelihoodScan_mc_data->DrawClone("APL");
