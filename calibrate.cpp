@@ -234,6 +234,11 @@ int main(int argc, char** argv) {
     std::cout << " min = " << bias_min_value << std::endl;
     bias_min_value = (1. - bias_min_value);
     
+    //---- FIX bias deactivated
+    bias_min_value = 0;
+    //----
+    
+    
     cc_summary_entries_scan->cd(i+1);
     entriesScan->DrawClone("APL");
     

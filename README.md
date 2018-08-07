@@ -37,4 +37,23 @@ Compile:
     g++ -o calibrateAuto.exe calibrateAuto.cpp  `root-config --cflags --glibs`
     g++ -o calibrate.exe     calibrate.cpp      `root-config --cflags --glibs`
     
+
     
+Toys likelihood fit:
+
+    r99t -q toySimulate.cxx\(1000\)
+    r99t -q toySimulate.cxx\(10000\)
+    r99t -q toySimulate.cxx\(100000\)
+    r99t -q toySimulate.cxx\(1000000\)
+    r99t -q toySimulate.cxx\(10000000\)
+    r99t -q toySimulate.cxx\(100000000\)
+    
+    
+    g++ -o toyCalibrate.exe toyCalibrate.cpp `root-config --cflags --glibs`
+     
+    ./toyCalibrate.exe
+     
+    
+    
+    
+     
