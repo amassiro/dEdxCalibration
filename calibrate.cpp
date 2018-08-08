@@ -14,6 +14,7 @@
 #include "TFile.h"
 #include "TCanvas.h"
 #include "TGraph.h"
+#include "TMultiGraph.h"
 
 
 
@@ -66,6 +67,35 @@ public:
 
 
 
+void setupTGraph(TGraph* graph, int icolor) {
+  
+  Color_t* color = new Color_t [200];
+  color[0] = kAzure; //kRed ;
+  color[1] = kAzure + 10 ;
+  color[2] = kYellow + 2 ;
+  color[3] = kGreen ;
+  color[4] = kGreen + 4 ;
+  color[5] = kBlue ;
+  color[6] = kCyan ;
+  color[7] = kPink + 1 ;
+  color[8] = kBlack ;
+  color[9] = kYellow + 4 ;
+  color[10]= kRed ;
+  for (int i=0; i<30; i++) {
+    color[i+11] = kBlue + i;
+  }
+  
+  
+  graph->SetLineColor(color[icolor]);
+  graph->SetMarkerColor(color[icolor]);
+  graph->SetMarkerSize(1);
+  graph->SetMarkerStyle(20+icolor);
+}
+
+
+
+
+
 int main(int argc, char** argv) {
   
   std::string fileIn_name = "";
@@ -90,10 +120,13 @@ int main(int argc, char** argv) {
     
   }
   
+  std::vector< float > calibration_values_likelihood_result;
   std::vector< float > calibration_values_result;
   std::vector< float > calibration_values_data;
   std::vector< float > calibration_values_mc;
-
+  std::vector< float > calibration_values_gauss_data;
+  std::vector< float > calibration_values_gauss_mc;
+  
   
   TCanvas* cc_summary_entries_scan = new TCanvas ("cc_summary_entries_scan","",1000,1000);
   cc_summary_entries_scan->Divide(4,4);
@@ -114,47 +147,68 @@ int main(int argc, char** argv) {
   cc_summary_mc->Divide(4,4);
   
   
-  float min_landau = 2.15;
-  float max_landau = 4.4;
+//   float min_landau = 2.15;
+//   float max_landau = 4.4;
+  float min_landau = 2.0;
+  float max_landau = 6.5;
   
-  float min_histo = 0.0;
+  float min_histo = 0.1; //---- remove peak at 0
   float max_histo = 10.0;
   
   
-  TF1* f_gauss = new TF1 ("f_gauss", "[0] + [1] * [1] *TMath::Gaus(x,[3],[2],1)", 1.5, 6.5);
+//   TF1* f_gauss = new TF1 ("f_gauss", "[0] + x*[4] + [1] * [1] *TMath::Gaus(x,[3],[2],1)", 2.0, 4.0);
+//   TF1* f_gauss = new TF1 ("f_gauss", "[0] + [1] * [1] *TMath::Gaus(x,[3],[2],1)", 2.0, 4.0);
+  TF1* f_gauss = new TF1 ("f_gauss", "[0] + [1] * [1] *TMath::Gaus(x,[3],[2],1)", 2.2, 4.0);
   TF1* f_landau = new TF1 ("f_landau", "[0] + [1] * [1] * TMath::Landau(x,[3],[2],1)", min_landau, max_landau);
+  
+  f_gauss->SetLineColor (kOrange+2);
+  f_landau->SetLineColor (kMagenta);
   
   
   f_gauss->SetParameter(0, 0);
   f_gauss->SetParameter(2, 2);
 
   f_landau->SetParameter(0, 0);
-  f_landau->SetParameter(2, 2);
+  f_landau->SetParameter(2, 1);
   
   
   for (int i=0; i<14; i++) {
     cc_summary_data->cd(i+1);
     h_dedxByLayer_data.at(i)->Draw("hist");
     
-    f_gauss->SetParameter(1, sqrt(h_dedxByLayer_data.at(i)->Integral()));
-    f_gauss->SetParameter(3, h_dedxByLayer_data.at(i)->GetMean());  
+//     f_gauss->SetParameter(1, sqrt(h_dedxByLayer_data.at(i)->Integral()));
+    f_gauss->SetParameter(1, sqrt(1000));
+    //     f_gauss->SetParameter(3, h_dedxByLayer_data.at(i)->GetMean());  
+    f_gauss->SetParameter(3, 3.0);  
+    f_gauss->SetParameter(2, 2.0);  
     f_landau->SetParameter(1, sqrt(h_dedxByLayer_data.at(i)->Integral()));
-    f_landau->SetParameter(3, h_dedxByLayer_data.at(i)->GetMean());  
+//     f_landau->SetParameter(3, h_dedxByLayer_data.at(i)->GetMean());  
+    f_landau->SetParameter(3, 3);  
+    f_landau->SetParameter(2, 2.0);  
     h_dedxByLayer_data.at(i)->Fit("f_gauss", "RMIQ", "", 2.5, 3.4); //---- gauss
+    calibration_values_gauss_data.push_back (f_gauss->GetParameter(3));
     h_dedxByLayer_data.at(i)->Fit("f_landau", "RMIQ", "", min_landau, max_landau); //---- landau
     calibration_values_data.push_back (f_landau->GetParameter(3));
     f_landau->DrawClone("same");
+    f_gauss->DrawClone("same");
     
     cc_summary_mc->cd(i+1);
     h_dedxByLayer_mc.at(i)->Draw("hist");
-    f_gauss->SetParameter(1, sqrt(h_dedxByLayer_mc.at(i)->Integral()));
-    f_gauss->SetParameter(3, h_dedxByLayer_mc.at(i)->GetMean());  
+//     f_gauss->SetParameter(1, sqrt(h_dedxByLayer_mc.at(i)->Integral()));
+    f_gauss->SetParameter(1, sqrt(1000));
+    //     f_gauss->SetParameter(3, h_dedxByLayer_mc.at(i)->GetMean());  
+    f_gauss->SetParameter(3, 3.0);  
+    f_gauss->SetParameter(2, 2.0);  
     f_landau->SetParameter(1, sqrt(h_dedxByLayer_mc.at(i)->Integral()));
-    f_landau->SetParameter(3, h_dedxByLayer_mc.at(i)->GetMean());  
+//     f_landau->SetParameter(3, h_dedxByLayer_mc.at(i)->GetMean());  
+    f_landau->SetParameter(3, 3);  
+    f_landau->SetParameter(2, 2.0);  
     h_dedxByLayer_mc.at(i)->Fit("f_gauss", "RMIQ", "", 2.5, 3.4); //---- gauss
+    calibration_values_gauss_mc.push_back (f_gauss->GetParameter(3));
     h_dedxByLayer_mc.at(i)->Fit("f_landau", "RMIQ", "", min_landau, max_landau); //---- landau
     calibration_values_mc.push_back (f_landau->GetParameter(3));
     f_landau->DrawClone("same");
+    f_gauss->DrawClone("same");
     
     
     
@@ -196,16 +250,7 @@ int main(int argc, char** argv) {
 //               std::cout << " >>> entries[" << ibin << " ] = " << entries << " --> " <<  value * h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1) << std::endl;
               entries += (h_dedxByLayer_data.at(i) -> GetBinContent(ibin+1));
             }
-            else {
-//               std::cout << " value = 0 ! " << std::endl;
-            }
           }
-          else {
-//             std::cout << " how is it possible? 0 entries in bin " << ibin+1 << std::endl;
-          }
-        }
-        else {
-//           std::cout << " how is it possible?" << std::endl;
         }
       }
       
@@ -223,13 +268,15 @@ int main(int argc, char** argv) {
     
     likelihoodScan->SetLineColor (kBlue);
     likelihoodScan->SetLineWidth (2);
-    likelihoodScan->SetMarkerSize (1);
+    likelihoodScan->SetMarkerSize (0.5);
     likelihoodScan->SetMarkerStyle (20);
     
     likelihoodScan->DrawClone("APL");
     
-    TF1 parabola ("parabola", "[0]*x*x + [1]*x + [2]", 0.8, 1.2);
+    TF1 parabola ("parabola", "[0]*x*x + [1]*x + [2]", 0.90, 1.10);
+    parabola.SetLineColor (kRed);
     likelihoodScan->Fit("parabola", "Q");
+    parabola.DrawClone ("same");
     float bias_min_value = - parabola.GetParameter (1) / (2. *  parabola.GetParameter (0) );
     std::cout << " min = " << bias_min_value << std::endl;
     bias_min_value = (1. - bias_min_value);
@@ -286,16 +333,18 @@ int main(int argc, char** argv) {
     
     likelihoodScan_mc_data->SetLineColor (kBlue);
     likelihoodScan_mc_data->SetLineWidth (2);
-    likelihoodScan_mc_data->SetMarkerSize (1);
+    likelihoodScan_mc_data->SetMarkerSize (0.5);
     likelihoodScan_mc_data->SetMarkerStyle (20);
     
     likelihoodScan_mc_data->DrawClone("APL");
     
-    TF1 parabola_result ("parabola_result", "[0]*x*x + [1]*x + [2]", 0.8, 1.2);
+    TF1 parabola_result ("parabola_result", "[0]*x*x + [1]*x + [2]", 0.90, 1.10);
     likelihoodScan_mc_data->Fit("parabola_result", "Q");
+    parabola_result.SetLineColor (kRed);
+    parabola_result.DrawClone ("same");
     float final_scale = - parabola_result.GetParameter (1) / (2. *  parabola_result.GetParameter (0) );
     std::cout << " Scale [ " << i << "] = " << final_scale << std::endl;
-    
+    calibration_values_likelihood_result.push_back(final_scale);
     
   }
   
@@ -315,6 +364,61 @@ int main(int argc, char** argv) {
   
   
   
+  TCanvas* cc_summary_scale = new TCanvas ("cc_summary_scale","",1000,1000);
+  
+  TGraph* gr_likelihood = new TGraph ();
+  TGraph* gr_landau     = new TGraph ();
+  TGraph* gr_gauss      = new TGraph ();
+  
+  std::cout << " ~~~~ " << std::endl;
+  
+  for (int i=0; i<14; i++) {
+    gr_likelihood->SetPoint (i, i, calibration_values_likelihood_result.at(i));
+    float data = calibration_values_data.at(i);
+    float mc   = calibration_values_mc  .at(i);
+    float scale = mc/data;
+    if ( (fabs(scale)) >10 ) {
+      scale = 0;
+    }
+    calibration_values_result.push_back(scale);
+    gr_landau->SetPoint (i, i, scale);
+    std::cout << " [" << i << "] = " << scale;
+    
+    
+    data = calibration_values_gauss_data.at(i);
+    mc   = calibration_values_gauss_mc  .at(i);
+    scale = mc/data;
+    if ( (fabs(scale)) >10 ) {
+      scale = 0;
+    }
+    gr_gauss->SetPoint (i, i, scale);
+    std::cout << "     " << scale;
+    
+    std::cout << "     " << calibration_values_likelihood_result.at(i);
+    
+    std::cout << std::endl;
+    
+  }
+
+  setupTGraph(gr_likelihood, 0);
+  setupTGraph(gr_landau,     1);
+  setupTGraph(gr_gauss,      2);
+  
+  gr_likelihood->SetTitle ("likelihood");
+  gr_landau    ->SetTitle ("landau");
+  gr_gauss     ->SetTitle ("gauss");
+  
+  TMultiGraph mg;
+  mg.Add(gr_likelihood);
+  mg.Add(gr_landau);
+  mg.Add(gr_gauss);
+  mg.Draw("APL");
+  cc_summary_scale->BuildLegend();
+  
+  
+  
+  
+  
   TFile outputCanvas ("outputCanvas2.root", "RECREATE");
   
   cc_summary_result->Write();
@@ -324,7 +428,7 @@ int main(int argc, char** argv) {
   cc_summary_likelihood_scan->Write();
   cc_summary_likelihood_scan_closure->Write();
   cc_summary_entries_scan->Write();
-  
+  cc_summary_scale->Write();
   outputCanvas.Close();
   
   
