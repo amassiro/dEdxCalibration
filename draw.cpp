@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+#include <fstream>
 
 #include "TTree.h"
 #include "TF1.h"
@@ -83,6 +84,59 @@ int main(int argc, char** argv) {
   eta_edges.push_back(1.6);
   eta_edges.push_back(2.1);
   eta_edges.push_back(2.5);
+  
+  
+  
+  //---- read calibration values
+  std::string fileCalibration = "calibration_eta.txt";
+  if (argc>=4) {
+    fileCalibration = argv[3];
+  }
+  
+  std::vector< std::vector<float> > calibration_values;
+  for (int iEdge = 0; iEdge<eta_edges.size(); iEdge++) {
+    std::vector<float> temp_calibration_values;
+    for (int i=0; i<14; i++) {
+      temp_calibration_values.push_back(1.0);
+    }
+    calibration_values.push_back (temp_calibration_values);
+  }
+  
+  std::ifstream file (fileCalibration); 
+  std::string buffer;
+  float value;
+  
+  if(!file.is_open()) {
+    std::cerr << "** ERROR: Can't open '" << fileCalibration << "' for input" << std::endl;
+    return false;
+  }
+  
+  int num_layer = 0;
+  while(!file.eof()) {
+    getline(file,buffer);
+    if (buffer != "" && buffer.at(0) != '#'){ ///---> save from empty line at the end!
+      std::stringstream line( buffer );      
+      for (int iEdge = 0; iEdge<eta_edges.size(); iEdge++) {
+      line >> value; 
+      (calibration_values.at(iEdge)).at(num_layer) = value;
+      }
+      num_layer++;
+    } 
+  }
+  
+  
+  for (int i=0; i<calibration_values.size(); i++) {
+    for (int j=0; j<calibration_values.at(i).size(); j++) {
+      std::cout << " [" << i << ", " << j << "] = " << calibration_values.at(i).at(j) << std::endl;
+    }
+  }
+  
+  
+  
+  
+  
+  
+  
   
   std::cout << " eta_edges :: " << eta_edges.size() << std::endl;
   
@@ -323,20 +377,20 @@ int main(int argc, char** argv) {
         
         if (iEdge != -1) {
           
-          h_dedxByLayer0_data [iEdge]->Fill(IsoTrack_dedxByLayer0 [best_track]);
-          h_dedxByLayer1_data [iEdge]->Fill(IsoTrack_dedxByLayer1 [best_track]);
-          h_dedxByLayer2_data [iEdge]->Fill(IsoTrack_dedxByLayer2 [best_track]);
-          h_dedxByLayer3_data [iEdge]->Fill(IsoTrack_dedxByLayer3 [best_track]);
-          h_dedxByLayer4_data [iEdge]->Fill(IsoTrack_dedxByLayer4 [best_track]);
-          h_dedxByLayer5_data [iEdge]->Fill(IsoTrack_dedxByLayer5 [best_track]);
-          h_dedxByLayer6_data [iEdge]->Fill(IsoTrack_dedxByLayer6 [best_track]);
-          h_dedxByLayer7_data [iEdge]->Fill(IsoTrack_dedxByLayer7 [best_track]);
-          h_dedxByLayer8_data [iEdge]->Fill(IsoTrack_dedxByLayer8 [best_track]);
-          h_dedxByLayer9_data [iEdge]->Fill(IsoTrack_dedxByLayer9 [best_track]);
-          h_dedxByLayer10_data[iEdge]->Fill(IsoTrack_dedxByLayer10[best_track]);
-          h_dedxByLayer11_data[iEdge]->Fill(IsoTrack_dedxByLayer11[best_track]);
-          h_dedxByLayer12_data[iEdge]->Fill(IsoTrack_dedxByLayer12[best_track]);
-          h_dedxByLayer13_data[iEdge]->Fill(IsoTrack_dedxByLayer13[best_track]);
+          h_dedxByLayer0_data [iEdge]->Fill(IsoTrack_dedxByLayer0 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  );
+          h_dedxByLayer1_data [iEdge]->Fill(IsoTrack_dedxByLayer1 [best_track]      *   (calibration_values.at(iEdge)).at(1 )  );
+          h_dedxByLayer2_data [iEdge]->Fill(IsoTrack_dedxByLayer2 [best_track]      *   (calibration_values.at(iEdge)).at(2 )  );
+          h_dedxByLayer3_data [iEdge]->Fill(IsoTrack_dedxByLayer3 [best_track]      *   (calibration_values.at(iEdge)).at(3 )  );
+          h_dedxByLayer4_data [iEdge]->Fill(IsoTrack_dedxByLayer4 [best_track]      *   (calibration_values.at(iEdge)).at(4 )  );
+          h_dedxByLayer5_data [iEdge]->Fill(IsoTrack_dedxByLayer5 [best_track]      *   (calibration_values.at(iEdge)).at(5 )  );
+          h_dedxByLayer6_data [iEdge]->Fill(IsoTrack_dedxByLayer6 [best_track]      *   (calibration_values.at(iEdge)).at(6 )  );
+          h_dedxByLayer7_data [iEdge]->Fill(IsoTrack_dedxByLayer7 [best_track]      *   (calibration_values.at(iEdge)).at(7 )  );
+          h_dedxByLayer8_data [iEdge]->Fill(IsoTrack_dedxByLayer8 [best_track]      *   (calibration_values.at(iEdge)).at(8 )  );
+          h_dedxByLayer9_data [iEdge]->Fill(IsoTrack_dedxByLayer9 [best_track]      *   (calibration_values.at(iEdge)).at(9 )  );
+          h_dedxByLayer10_data[iEdge]->Fill(IsoTrack_dedxByLayer10[best_track]      *   (calibration_values.at(iEdge)).at(10)  );
+          h_dedxByLayer11_data[iEdge]->Fill(IsoTrack_dedxByLayer11[best_track]      *   (calibration_values.at(iEdge)).at(11)  );
+          h_dedxByLayer12_data[iEdge]->Fill(IsoTrack_dedxByLayer12[best_track]      *   (calibration_values.at(iEdge)).at(12)  );
+          h_dedxByLayer13_data[iEdge]->Fill(IsoTrack_dedxByLayer13[best_track]      *   (calibration_values.at(iEdge)).at(13)  );
           
           
           TLorentzVector track;

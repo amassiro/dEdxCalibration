@@ -50,15 +50,16 @@ Draw after calibration:
 
     
     
-Draw compiled:
+Draw compiled and eta regions
 
     g++ -o draw.exe draw.cpp `root-config --cflags --glibs`
-    
-    
+     
     ./draw.exe ../XTracks/CR_Data/SingleMuon_Run2017B_17Nov2017/treeProducerXtracks/tree.root   ../XTracks/CR_MC/DYJetsToLL_M50/treeProducerXtracks/tree.root
     
     
+    g++ -o calibrate_eta.exe calibrate_eta.cpp `root-config --cflags --glibs`
     
+    ./calibrate_eta.exe  tocalibrate_complete_eta_edges.root
     
     
     
