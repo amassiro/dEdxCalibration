@@ -47,7 +47,15 @@ Draw after calibration:
     ./calibrate.exe   calibratedMy.root
     
     
+
     
+    
+Draw compiled:
+
+    g++ -o draw.exe draw.cpp `root-config --cflags --glibs`
+    
+    
+    ./draw.exe ../XTracks/CR_Data/SingleMuon_Run2017B_17Nov2017/treeProducerXtracks/tree.root   ../XTracks/CR_MC/DYJetsToLL_M50/treeProducerXtracks/tree.root
     
     
     
