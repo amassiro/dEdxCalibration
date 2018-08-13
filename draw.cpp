@@ -308,20 +308,20 @@ int main(int argc, char** argv) {
     
     TString name;
     
-    name = Form ("h_%d_dedxByLayer0_data" , iEdge);      h_dedxByLayer0_data [iEdge] = new TH1F (name.Data(), "data", 800, 0, 10);         setupHisto(h_dedxByLayer0_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer1_data" , iEdge);      h_dedxByLayer1_data [iEdge] = new TH1F (name.Data(), "data", 800, 0, 10);         setupHisto(h_dedxByLayer1_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer2_data" , iEdge);      h_dedxByLayer2_data [iEdge] = new TH1F (name.Data(), "data", 800, 0, 10);         setupHisto(h_dedxByLayer2_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer3_data" , iEdge);      h_dedxByLayer3_data [iEdge] = new TH1F (name.Data(), "data", 800, 0, 10);         setupHisto(h_dedxByLayer3_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer4_data" , iEdge);      h_dedxByLayer4_data [iEdge] = new TH1F (name.Data(), "data", 800, 0, 10);         setupHisto(h_dedxByLayer4_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer5_data" , iEdge);      h_dedxByLayer5_data [iEdge] = new TH1F (name.Data(), "data", 800, 0, 10);         setupHisto(h_dedxByLayer5_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer6_data" , iEdge);      h_dedxByLayer6_data [iEdge] = new TH1F (name.Data(), "data", 800, 0, 10);         setupHisto(h_dedxByLayer6_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer7_data" , iEdge);      h_dedxByLayer7_data [iEdge] = new TH1F (name.Data(), "data", 800, 0, 10);         setupHisto(h_dedxByLayer7_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer8_data" , iEdge);      h_dedxByLayer8_data [iEdge] = new TH1F (name.Data(), "data", 800, 0, 10);         setupHisto(h_dedxByLayer8_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer9_data" , iEdge);      h_dedxByLayer9_data [iEdge] = new TH1F (name.Data(), "data", 800, 0, 10);         setupHisto(h_dedxByLayer9_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer10_data", iEdge);      h_dedxByLayer10_data[iEdge] = new TH1F (name.Data(), "data", 800, 0, 10);         setupHisto(h_dedxByLayer10_data[iEdge], 10);
-    name = Form ("h_%d_dedxByLayer11_data", iEdge);      h_dedxByLayer11_data[iEdge] = new TH1F (name.Data(), "data", 800, 0, 10);         setupHisto(h_dedxByLayer11_data[iEdge], 10);
-    name = Form ("h_%d_dedxByLayer12_data", iEdge);      h_dedxByLayer12_data[iEdge] = new TH1F (name.Data(), "data", 800, 0, 10);         setupHisto(h_dedxByLayer12_data[iEdge], 10);
-    name = Form ("h_%d_dedxByLayer13_data", iEdge);      h_dedxByLayer13_data[iEdge] = new TH1F (name.Data(), "data", 800, 0, 10);         setupHisto(h_dedxByLayer13_data[iEdge], 10);
+    name = Form ("h_%d_dedxByLayer0_data" , iEdge);      h_dedxByLayer0_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer0_data [iEdge], 10);
+    name = Form ("h_%d_dedxByLayer1_data" , iEdge);      h_dedxByLayer1_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer1_data [iEdge], 10);
+    name = Form ("h_%d_dedxByLayer2_data" , iEdge);      h_dedxByLayer2_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer2_data [iEdge], 10);
+    name = Form ("h_%d_dedxByLayer3_data" , iEdge);      h_dedxByLayer3_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer3_data [iEdge], 10);
+    name = Form ("h_%d_dedxByLayer4_data" , iEdge);      h_dedxByLayer4_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer4_data [iEdge], 10);
+    name = Form ("h_%d_dedxByLayer5_data" , iEdge);      h_dedxByLayer5_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer5_data [iEdge], 10);
+    name = Form ("h_%d_dedxByLayer6_data" , iEdge);      h_dedxByLayer6_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer6_data [iEdge], 10);
+    name = Form ("h_%d_dedxByLayer7_data" , iEdge);      h_dedxByLayer7_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer7_data [iEdge], 10);
+    name = Form ("h_%d_dedxByLayer8_data" , iEdge);      h_dedxByLayer8_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer8_data [iEdge], 10);
+    name = Form ("h_%d_dedxByLayer9_data" , iEdge);      h_dedxByLayer9_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer9_data [iEdge], 10);
+    name = Form ("h_%d_dedxByLayer10_data", iEdge);      h_dedxByLayer10_data[iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer10_data[iEdge], 10);
+    name = Form ("h_%d_dedxByLayer11_data", iEdge);      h_dedxByLayer11_data[iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer11_data[iEdge], 10);
+    name = Form ("h_%d_dedxByLayer12_data", iEdge);      h_dedxByLayer12_data[iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer12_data[iEdge], 10);
+    name = Form ("h_%d_dedxByLayer13_data", iEdge);      h_dedxByLayer13_data[iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer13_data[iEdge], 10);
       
     name = Form ("h_%d_mass_data", iEdge);  
     h_mass_data[iEdge] = new TH1F (name.Data(), "data", 100, 86, 106);
