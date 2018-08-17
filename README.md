@@ -64,7 +64,25 @@ Draw compiled and eta regions
     
     ./calibrate_eta.exe  tocalibrate_complete_eta_edges_calibrated.root
     
-    
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Draw:
+
+    tree->Draw("IsoTrack_sizeXbyLayer2[0]:IsoTrack_subDetIdByLayer2[0] >> h(10,0,10,20,0,20)", "", "colz")
+
+ 
+ 
+ 
     
 Toys likelihood fit:
 
