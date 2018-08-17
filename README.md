@@ -67,7 +67,11 @@ Draw compiled and eta regions
  
  
  
- 
+Only Pixel tests:
+
+    g++ -o drawPixel.exe drawPixel.cpp `root-config --cflags --glibs`
+     
+    ./drawPixel.exe ../XTracks/CR_Data/SingleMuon_Run2017B_17Nov2017/treeProducerXtracks/tree.root   ../XTracks/CR_MC/DYJetsToLL_M50/treeProducerXtracks/tree.root
  
  
  
