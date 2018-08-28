@@ -21,6 +21,15 @@
 #include "TStyle.h"
   
   
+void Normalize(TH1F* histo) {
+  
+  float integral = histo->Integral();
+  if (integral != 0) {
+    histo-> Scale (1./integral);
+  }
+}
+
+  
 void setupHisto(TH1F* histo, int icolor) {
   
   Color_t* color = new Color_t [200];
@@ -429,7 +438,7 @@ int main(int argc, char** argv) {
   
   
   std::vector<int> detId;
-  for (int idet = 0; idet<10; idet++) {
+  for (int idet = 0; idet<4; idet++) {
     detId.push_back(idet);
   }
   
@@ -735,13 +744,31 @@ int main(int argc, char** argv) {
   }
   
   
+  
+  for (int iEdge = 0; iEdge<eta_edges.size(); iEdge++) {
+    for (int idet = 0; idet<detId.size(); idet++) {  
+      std::pair<int, int> edge_det;
+      edge_det.first = iEdge;
+      edge_det.second = idet;
+      
+      Normalize(map_h_dedxById_data[edge_det]);
+      Normalize(map_h_dedxById_mc[edge_det]);
+    }
+  }
+  
+  
+  
   for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+    
+    TString name;
+    
+    name = Form ("cc_summary_%d" , iEdge); 
+    TCanvas* cc_summary_ieta = new TCanvas (name.Data(),"",1000,500);
+    cc_summary_ieta->Divide(detId.size(), 1);
     
     TLegend* leg = new TLegend(0.70,0.70,0.90,0.90);
     leg->AddEntry(h_mass_data[iEdge],"data","pl");
     leg->AddEntry(h_mass_mc  [iEdge],"mc",  "pl");
-    
-    TString name;
     
     for (int idet = 0; idet<detId.size(); idet++) {     
       std::pair<int, int> edge_det;
@@ -749,7 +776,7 @@ int main(int argc, char** argv) {
       edge_det.second = idet;
       
       
-      name = Form ("cc_summary_%d_%d" , iEdge, idet); 
+      name = Form ("cc_bin_%d_%d" , iEdge, idet); 
       
       TCanvas* cc_summary = new TCanvas (name.Data(),"",1000,1000);
       
@@ -760,7 +787,20 @@ int main(int argc, char** argv) {
       leg->Draw();
       
       cc_summary->Write();
+      
+      
+      cc_summary_ieta->cd(idet+1);
+      map_h_dedxById_data[edge_det]->Draw("PL");
+      map_h_dedxById_mc[edge_det]  ->Draw("PL same");
+      
+      map_h_dedxById_data[edge_det]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
+      leg->Draw();
+      
+      
     }
+    
+    cc_summary_ieta->Write();
+    
   }
   
     
