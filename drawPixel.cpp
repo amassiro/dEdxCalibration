@@ -159,6 +159,17 @@ int main(int argc, char** argv) {
   gStyle->SetOptStat(0);
   
   
+//   
+//   IsoTrack_sizeXbyLayer2[0]:IsoTrack_subDetIdByLayer2[0]
+//   
+//   sizeXbyLayer is 0 for strips
+//                is != 0 for pixels
+//
+//   subDetIdByLayer is filled for strips and for pixels
+//                values: 0, 1, ... 5, 6, 7
+//
+  
+  
   //---- muon
   const Int_t kMaxLepGood = 10;
   Float_t LepGood_pt[kMaxLepGood];
@@ -205,6 +216,38 @@ int main(int argc, char** argv) {
   Float_t IsoTrack_dedxByLayer11[kMaxTracks];
   Float_t IsoTrack_dedxByLayer12[kMaxTracks];
   Float_t IsoTrack_dedxByLayer13[kMaxTracks];
+
+  Int_t IsoTrack_sizeXbyLayer0[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer1[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer2[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer3[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer4[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer5[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer6[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer7[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer8[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer9[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer10[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer11[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer12[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer13[kMaxTracks];
+  
+  Int_t IsoTrack_subDetIdByLayer0[kMaxTracks];
+  Int_t IsoTrack_subDetIdByLayer1[kMaxTracks];
+  Int_t IsoTrack_subDetIdByLayer2[kMaxTracks];
+  Int_t IsoTrack_subDetIdByLayer3[kMaxTracks];
+  Int_t IsoTrack_subDetIdByLayer4[kMaxTracks];
+  Int_t IsoTrack_subDetIdByLayer5[kMaxTracks];
+  Int_t IsoTrack_subDetIdByLayer6[kMaxTracks];
+  Int_t IsoTrack_subDetIdByLayer7[kMaxTracks];
+  Int_t IsoTrack_subDetIdByLayer8[kMaxTracks];
+  Int_t IsoTrack_subDetIdByLayer9[kMaxTracks];
+  Int_t IsoTrack_subDetIdByLayer10[kMaxTracks];
+  Int_t IsoTrack_subDetIdByLayer11[kMaxTracks];
+  Int_t IsoTrack_subDetIdByLayer12[kMaxTracks];
+  Int_t IsoTrack_subDetIdByLayer13[kMaxTracks];
+  
+  
   
   Float_t IsoTrack_pt[kMaxTracks];
   Float_t IsoTrack_eta[kMaxTracks];
@@ -214,47 +257,145 @@ int main(int argc, char** argv) {
   Int_t IsoTrack_highPurity[kMaxTracks];
   Int_t nIsoTrack;
 
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer0",  IsoTrack_dedxByLayer0);
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer0",  IsoTrack_dedxByLayer0);
-
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer1",  IsoTrack_dedxByLayer1);
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer1",  IsoTrack_dedxByLayer1);
-
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer2",  IsoTrack_dedxByLayer2);
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer2",  IsoTrack_dedxByLayer2);
-
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer3",  IsoTrack_dedxByLayer3);
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer3",  IsoTrack_dedxByLayer3);
-
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer4",  IsoTrack_dedxByLayer4);
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer4",  IsoTrack_dedxByLayer4);
-
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer5",  IsoTrack_dedxByLayer5);
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer5",  IsoTrack_dedxByLayer5);
-
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer6",  IsoTrack_dedxByLayer6);
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer6",  IsoTrack_dedxByLayer6);
-
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer7",  IsoTrack_dedxByLayer7);
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer7",  IsoTrack_dedxByLayer7);
-
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer8",  IsoTrack_dedxByLayer8);
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer8",  IsoTrack_dedxByLayer8);
-
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer9",  IsoTrack_dedxByLayer9);
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer9",  IsoTrack_dedxByLayer9);
-
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer10",  IsoTrack_dedxByLayer10);
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer10",  IsoTrack_dedxByLayer10);
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer0",  IsoTrack_dedxByLayer0);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer0",  IsoTrack_dedxByLayer0);                 
   
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer11",  IsoTrack_dedxByLayer11);
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer11",  IsoTrack_dedxByLayer11);
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer1",  IsoTrack_dedxByLayer1);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer1",  IsoTrack_dedxByLayer1);                 
   
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer12",  IsoTrack_dedxByLayer12);
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer12",  IsoTrack_dedxByLayer12);
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer2",  IsoTrack_dedxByLayer2);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer2",  IsoTrack_dedxByLayer2);                 
   
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer13",  IsoTrack_dedxByLayer13);
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer13",  IsoTrack_dedxByLayer13);
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer3",  IsoTrack_dedxByLayer3);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer3",  IsoTrack_dedxByLayer3);                 
+  
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer4",  IsoTrack_dedxByLayer4);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer4",  IsoTrack_dedxByLayer4);                 
+  
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer5",  IsoTrack_dedxByLayer5);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer5",  IsoTrack_dedxByLayer5);                 
+  
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer6",  IsoTrack_dedxByLayer6);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer6",  IsoTrack_dedxByLayer6);                 
+  
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer7",  IsoTrack_dedxByLayer7);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer7",  IsoTrack_dedxByLayer7);                 
+  
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer8",  IsoTrack_dedxByLayer8);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer8",  IsoTrack_dedxByLayer8);                 
+  
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer9",  IsoTrack_dedxByLayer9);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer9",  IsoTrack_dedxByLayer9);                 
+  
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer10",  IsoTrack_dedxByLayer10);               
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer10",  IsoTrack_dedxByLayer10);               
+  
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer11",  IsoTrack_dedxByLayer11);               
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer11",  IsoTrack_dedxByLayer11);               
+  
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer12",  IsoTrack_dedxByLayer12);               
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer12",  IsoTrack_dedxByLayer12);               
+  
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer13",  IsoTrack_dedxByLayer13);               
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer13",  IsoTrack_dedxByLayer13);               
+  
+  
+  
+  
+  
+  
+  
+  
+  inputTree_data->SetBranchAddress("IsoTrack_sizeXbyLayer0",  IsoTrack_sizeXbyLayer0);
+  inputTree_mc  ->SetBranchAddress("IsoTrack_sizeXbyLayer0",  IsoTrack_sizeXbyLayer0);
+  
+  inputTree_data->SetBranchAddress("IsoTrack_sizeXbyLayer1",  IsoTrack_sizeXbyLayer1);
+  inputTree_mc  ->SetBranchAddress("IsoTrack_sizeXbyLayer1",  IsoTrack_sizeXbyLayer1);
+  
+  inputTree_data->SetBranchAddress("IsoTrack_sizeXbyLayer2",  IsoTrack_sizeXbyLayer2);
+  inputTree_mc  ->SetBranchAddress("IsoTrack_sizeXbyLayer2",  IsoTrack_sizeXbyLayer2);
+  
+  inputTree_data->SetBranchAddress("IsoTrack_sizeXbyLayer3",  IsoTrack_sizeXbyLayer3);
+  inputTree_mc  ->SetBranchAddress("IsoTrack_sizeXbyLayer3",  IsoTrack_sizeXbyLayer3);
+  
+  inputTree_data->SetBranchAddress("IsoTrack_sizeXbyLayer4",  IsoTrack_sizeXbyLayer4);
+  inputTree_mc  ->SetBranchAddress("IsoTrack_sizeXbyLayer4",  IsoTrack_sizeXbyLayer4);
+  
+  inputTree_data->SetBranchAddress("IsoTrack_sizeXbyLayer5",  IsoTrack_sizeXbyLayer5);
+  inputTree_mc  ->SetBranchAddress("IsoTrack_sizeXbyLayer5",  IsoTrack_sizeXbyLayer5);
+  
+  inputTree_data->SetBranchAddress("IsoTrack_sizeXbyLayer6",  IsoTrack_sizeXbyLayer6);
+  inputTree_mc  ->SetBranchAddress("IsoTrack_sizeXbyLayer6",  IsoTrack_sizeXbyLayer6);
+  
+  inputTree_data->SetBranchAddress("IsoTrack_sizeXbyLayer7",  IsoTrack_sizeXbyLayer7);
+  inputTree_mc  ->SetBranchAddress("IsoTrack_sizeXbyLayer7",  IsoTrack_sizeXbyLayer7);
+  
+  inputTree_data->SetBranchAddress("IsoTrack_sizeXbyLayer8",  IsoTrack_sizeXbyLayer8);
+  inputTree_mc  ->SetBranchAddress("IsoTrack_sizeXbyLayer8",  IsoTrack_sizeXbyLayer8);
+  
+  inputTree_data->SetBranchAddress("IsoTrack_sizeXbyLayer9",  IsoTrack_sizeXbyLayer9);
+  inputTree_mc  ->SetBranchAddress("IsoTrack_sizeXbyLayer9",  IsoTrack_sizeXbyLayer9);
+  
+  inputTree_data->SetBranchAddress("IsoTrack_sizeXbyLayer10",  IsoTrack_sizeXbyLayer10);
+  inputTree_mc  ->SetBranchAddress("IsoTrack_sizeXbyLayer10",  IsoTrack_sizeXbyLayer10);
+  
+  inputTree_data->SetBranchAddress("IsoTrack_sizeXbyLayer11",  IsoTrack_sizeXbyLayer11);
+  inputTree_mc  ->SetBranchAddress("IsoTrack_sizeXbyLayer11",  IsoTrack_sizeXbyLayer11);
+  
+  inputTree_data->SetBranchAddress("IsoTrack_sizeXbyLayer12",  IsoTrack_sizeXbyLayer12);
+  inputTree_mc  ->SetBranchAddress("IsoTrack_sizeXbyLayer12",  IsoTrack_sizeXbyLayer12);
+  
+  inputTree_data->SetBranchAddress("IsoTrack_sizeXbyLayer13",  IsoTrack_sizeXbyLayer13);
+  inputTree_mc  ->SetBranchAddress("IsoTrack_sizeXbyLayer13",  IsoTrack_sizeXbyLayer13);
+  
+  
+  
+  
+  
+  
+  inputTree_data->SetBranchAddress("IsoTrack_subDetIdByLayer0",  IsoTrack_subDetIdByLayer0);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_subDetIdByLayer0",  IsoTrack_subDetIdByLayer0);                 
+  
+  inputTree_data->SetBranchAddress("IsoTrack_subDetIdByLayer1",  IsoTrack_subDetIdByLayer1);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_subDetIdByLayer1",  IsoTrack_subDetIdByLayer1);                 
+  
+  inputTree_data->SetBranchAddress("IsoTrack_subDetIdByLayer2",  IsoTrack_subDetIdByLayer2);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_subDetIdByLayer2",  IsoTrack_subDetIdByLayer2);                 
+  
+  inputTree_data->SetBranchAddress("IsoTrack_subDetIdByLayer3",  IsoTrack_subDetIdByLayer3);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_subDetIdByLayer3",  IsoTrack_subDetIdByLayer3);                 
+  
+  inputTree_data->SetBranchAddress("IsoTrack_subDetIdByLayer4",  IsoTrack_subDetIdByLayer4);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_subDetIdByLayer4",  IsoTrack_subDetIdByLayer4);                 
+  
+  inputTree_data->SetBranchAddress("IsoTrack_subDetIdByLayer5",  IsoTrack_subDetIdByLayer5);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_subDetIdByLayer5",  IsoTrack_subDetIdByLayer5);                 
+  
+  inputTree_data->SetBranchAddress("IsoTrack_subDetIdByLayer6",  IsoTrack_subDetIdByLayer6);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_subDetIdByLayer6",  IsoTrack_subDetIdByLayer6);                 
+  
+  inputTree_data->SetBranchAddress("IsoTrack_subDetIdByLayer7",  IsoTrack_subDetIdByLayer7);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_subDetIdByLayer7",  IsoTrack_subDetIdByLayer7);                 
+  
+  inputTree_data->SetBranchAddress("IsoTrack_subDetIdByLayer8",  IsoTrack_subDetIdByLayer8);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_subDetIdByLayer8",  IsoTrack_subDetIdByLayer8);                 
+  
+  inputTree_data->SetBranchAddress("IsoTrack_subDetIdByLayer9",  IsoTrack_subDetIdByLayer9);                 
+  inputTree_mc  ->SetBranchAddress("IsoTrack_subDetIdByLayer9",  IsoTrack_subDetIdByLayer9);                 
+  
+  inputTree_data->SetBranchAddress("IsoTrack_subDetIdByLayer10",  IsoTrack_subDetIdByLayer10);               
+  inputTree_mc  ->SetBranchAddress("IsoTrack_subDetIdByLayer10",  IsoTrack_subDetIdByLayer10);               
+  
+  inputTree_data->SetBranchAddress("IsoTrack_subDetIdByLayer11",  IsoTrack_subDetIdByLayer11);               
+  inputTree_mc  ->SetBranchAddress("IsoTrack_subDetIdByLayer11",  IsoTrack_subDetIdByLayer11);               
+  
+  inputTree_data->SetBranchAddress("IsoTrack_subDetIdByLayer12",  IsoTrack_subDetIdByLayer12);               
+  inputTree_mc  ->SetBranchAddress("IsoTrack_subDetIdByLayer12",  IsoTrack_subDetIdByLayer12);               
+  
+  inputTree_data->SetBranchAddress("IsoTrack_subDetIdByLayer13",  IsoTrack_subDetIdByLayer13);               
+  inputTree_mc  ->SetBranchAddress("IsoTrack_subDetIdByLayer13",  IsoTrack_subDetIdByLayer13);               
+  
+  
   
   
   inputTree_data->SetBranchAddress("IsoTrack_pt",  IsoTrack_pt);
@@ -287,46 +428,36 @@ int main(int argc, char** argv) {
 //   
   
   
-  TH1F* h_dedxByLayer0_data  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer1_data  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer2_data  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer3_data  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer4_data  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer5_data  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer6_data  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer7_data  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer8_data  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer9_data  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer10_data [eta_edges.size()-1];
-  TH1F* h_dedxByLayer11_data [eta_edges.size()-1];
-  TH1F* h_dedxByLayer12_data [eta_edges.size()-1];
-  TH1F* h_dedxByLayer13_data [eta_edges.size()-1];
+  std::vector<int> detId;
+  for (int idet = 0; idet<10; idet++) {
+    detId.push_back(idet);
+  }
+  
+  
+  std::map< std::pair<int, int> , TH1F*> map_h_dedxById_data;
+
+  for (int iEdge = 0; iEdge<eta_edges.size(); iEdge++) {
+    for (int idet = 0; idet<detId.size(); idet++) {     
+      std::pair<int, int> edge_det;
+      edge_det.first = iEdge;
+      edge_det.second = idet;
+      
+      TString name;      
+      name = Form ("h_%d_%d_dedxById_data" , edge_det.first , edge_det.second);   
+      TH1F* temp = new TH1F (name.Data(), "data", 400, 0, 10);  
+      setupHisto(temp, 10);
+      
+      map_h_dedxById_data[edge_det] = temp;
+    }
+  }
+  
   
   TH1F* h_mass_data [eta_edges.size()-1];
-  
   for (int iEdge = 0; iEdge<eta_edges.size(); iEdge++) {
-    
-    TString name;
-    
-    name = Form ("h_%d_dedxByLayer0_data" , iEdge);      h_dedxByLayer0_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer0_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer1_data" , iEdge);      h_dedxByLayer1_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer1_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer2_data" , iEdge);      h_dedxByLayer2_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer2_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer3_data" , iEdge);      h_dedxByLayer3_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer3_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer4_data" , iEdge);      h_dedxByLayer4_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer4_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer5_data" , iEdge);      h_dedxByLayer5_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer5_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer6_data" , iEdge);      h_dedxByLayer6_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer6_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer7_data" , iEdge);      h_dedxByLayer7_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer7_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer8_data" , iEdge);      h_dedxByLayer8_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer8_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer9_data" , iEdge);      h_dedxByLayer9_data [iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer9_data [iEdge], 10);
-    name = Form ("h_%d_dedxByLayer10_data", iEdge);      h_dedxByLayer10_data[iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer10_data[iEdge], 10);
-    name = Form ("h_%d_dedxByLayer11_data", iEdge);      h_dedxByLayer11_data[iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer11_data[iEdge], 10);
-    name = Form ("h_%d_dedxByLayer12_data", iEdge);      h_dedxByLayer12_data[iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer12_data[iEdge], 10);
-    name = Form ("h_%d_dedxByLayer13_data", iEdge);      h_dedxByLayer13_data[iEdge] = new TH1F (name.Data(), "data", 400, 0, 10);         setupHisto(h_dedxByLayer13_data[iEdge], 10);
-      
+    TString name;    
     name = Form ("h_%d_mass_data", iEdge);  
     h_mass_data[iEdge] = new TH1F (name.Data(), "data", 100, 86, 106);
-    setupHisto(h_mass_data[iEdge], 10);
-    
+    setupHisto(h_mass_data[iEdge], 10);  
   }
   
     
@@ -377,20 +508,54 @@ int main(int argc, char** argv) {
         
         if (iEdge != -1) {
           
-          h_dedxByLayer0_data [iEdge]->Fill(IsoTrack_dedxByLayer0 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  );
-          h_dedxByLayer1_data [iEdge]->Fill(IsoTrack_dedxByLayer1 [best_track]      *   (calibration_values.at(iEdge)).at(1 )  );
-          h_dedxByLayer2_data [iEdge]->Fill(IsoTrack_dedxByLayer2 [best_track]      *   (calibration_values.at(iEdge)).at(2 )  );
-          h_dedxByLayer3_data [iEdge]->Fill(IsoTrack_dedxByLayer3 [best_track]      *   (calibration_values.at(iEdge)).at(3 )  );
-          h_dedxByLayer4_data [iEdge]->Fill(IsoTrack_dedxByLayer4 [best_track]      *   (calibration_values.at(iEdge)).at(4 )  );
-          h_dedxByLayer5_data [iEdge]->Fill(IsoTrack_dedxByLayer5 [best_track]      *   (calibration_values.at(iEdge)).at(5 )  );
-          h_dedxByLayer6_data [iEdge]->Fill(IsoTrack_dedxByLayer6 [best_track]      *   (calibration_values.at(iEdge)).at(6 )  );
-          h_dedxByLayer7_data [iEdge]->Fill(IsoTrack_dedxByLayer7 [best_track]      *   (calibration_values.at(iEdge)).at(7 )  );
-          h_dedxByLayer8_data [iEdge]->Fill(IsoTrack_dedxByLayer8 [best_track]      *   (calibration_values.at(iEdge)).at(8 )  );
-          h_dedxByLayer9_data [iEdge]->Fill(IsoTrack_dedxByLayer9 [best_track]      *   (calibration_values.at(iEdge)).at(9 )  );
-          h_dedxByLayer10_data[iEdge]->Fill(IsoTrack_dedxByLayer10[best_track]      *   (calibration_values.at(iEdge)).at(10)  );
-          h_dedxByLayer11_data[iEdge]->Fill(IsoTrack_dedxByLayer11[best_track]      *   (calibration_values.at(iEdge)).at(11)  );
-          h_dedxByLayer12_data[iEdge]->Fill(IsoTrack_dedxByLayer12[best_track]      *   (calibration_values.at(iEdge)).at(12)  );
-          h_dedxByLayer13_data[iEdge]->Fill(IsoTrack_dedxByLayer13[best_track]      *   (calibration_values.at(iEdge)).at(13)  );
+          //
+          //   sizeXbyLayer is 0 for strips
+          //                is != 0 for pixels
+          //
+          //   subDetIdByLayer is filled for strips and for pixels
+          //                values: 0, 1, ... 5, 6, 7
+          //
+          
+          
+          std::pair<int, int> edge_det;
+          edge_det.first = iEdge;
+         
+          if (IsoTrack_sizeXbyLayer0[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer0[best_track];
+            map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer0 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
+          if (IsoTrack_sizeXbyLayer1[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer1[best_track];
+            map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer1 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
+          if (IsoTrack_sizeXbyLayer2[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer2[best_track];
+            map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer2 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
+          if (IsoTrack_sizeXbyLayer3[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer3[best_track];
+            map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer3 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
+          if (IsoTrack_sizeXbyLayer4[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer4[best_track];
+            map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer4 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
+          if (IsoTrack_sizeXbyLayer5[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer5[best_track];
+            map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer5 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
+          if (IsoTrack_sizeXbyLayer6[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer6[best_track];
+            map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer6 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
+          if (IsoTrack_sizeXbyLayer7[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer7[best_track];
+            map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer7 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
+          if (IsoTrack_sizeXbyLayer8[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer8[best_track];
+            map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer8 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
           
           
           TLorentzVector track;
@@ -405,49 +570,36 @@ int main(int argc, char** argv) {
   
 
   
+
   
   
   
-  TH1F* h_dedxByLayer0_mc  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer1_mc  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer2_mc  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer3_mc  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer4_mc  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer5_mc  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer6_mc  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer7_mc  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer8_mc  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer9_mc  [eta_edges.size()-1];
-  TH1F* h_dedxByLayer10_mc [eta_edges.size()-1];
-  TH1F* h_dedxByLayer11_mc [eta_edges.size()-1];
-  TH1F* h_dedxByLayer12_mc [eta_edges.size()-1];
-  TH1F* h_dedxByLayer13_mc [eta_edges.size()-1];
   
-  TH1F* h_mass_mc [eta_edges.size()-1];
+  
+  std::map< std::pair<int, int> , TH1F*> map_h_dedxById_mc;
   
   for (int iEdge = 0; iEdge<eta_edges.size(); iEdge++) {
-    
-    TString name;
-    
-    name = Form ("h_%d_dedxByLayer0_mc" , iEdge);      h_dedxByLayer0_mc [iEdge] = new TH1F (name.Data(), "mc", 200, 0, 10);         setupHisto(h_dedxByLayer0_mc [iEdge], 11);
-    name = Form ("h_%d_dedxByLayer1_mc" , iEdge);      h_dedxByLayer1_mc [iEdge] = new TH1F (name.Data(), "mc", 200, 0, 10);         setupHisto(h_dedxByLayer1_mc [iEdge], 11);
-    name = Form ("h_%d_dedxByLayer2_mc" , iEdge);      h_dedxByLayer2_mc [iEdge] = new TH1F (name.Data(), "mc", 200, 0, 10);         setupHisto(h_dedxByLayer2_mc [iEdge], 11);
-    name = Form ("h_%d_dedxByLayer3_mc" , iEdge);      h_dedxByLayer3_mc [iEdge] = new TH1F (name.Data(), "mc", 200, 0, 10);         setupHisto(h_dedxByLayer3_mc [iEdge], 11);
-    name = Form ("h_%d_dedxByLayer4_mc" , iEdge);      h_dedxByLayer4_mc [iEdge] = new TH1F (name.Data(), "mc", 200, 0, 10);         setupHisto(h_dedxByLayer4_mc [iEdge], 11);
-    name = Form ("h_%d_dedxByLayer5_mc" , iEdge);      h_dedxByLayer5_mc [iEdge] = new TH1F (name.Data(), "mc", 200, 0, 10);         setupHisto(h_dedxByLayer5_mc [iEdge], 11);
-    name = Form ("h_%d_dedxByLayer6_mc" , iEdge);      h_dedxByLayer6_mc [iEdge] = new TH1F (name.Data(), "mc", 200, 0, 10);         setupHisto(h_dedxByLayer6_mc [iEdge], 11);
-    name = Form ("h_%d_dedxByLayer7_mc" , iEdge);      h_dedxByLayer7_mc [iEdge] = new TH1F (name.Data(), "mc", 200, 0, 10);         setupHisto(h_dedxByLayer7_mc [iEdge], 11);
-    name = Form ("h_%d_dedxByLayer8_mc" , iEdge);      h_dedxByLayer8_mc [iEdge] = new TH1F (name.Data(), "mc", 200, 0, 10);         setupHisto(h_dedxByLayer8_mc [iEdge], 11);
-    name = Form ("h_%d_dedxByLayer9_mc" , iEdge);      h_dedxByLayer9_mc [iEdge] = new TH1F (name.Data(), "mc", 200, 0, 10);         setupHisto(h_dedxByLayer9_mc [iEdge], 11);
-    name = Form ("h_%d_dedxByLayer10_mc", iEdge);      h_dedxByLayer10_mc[iEdge] = new TH1F (name.Data(), "mc", 200, 0, 10);         setupHisto(h_dedxByLayer10_mc[iEdge], 11);
-    name = Form ("h_%d_dedxByLayer11_mc", iEdge);      h_dedxByLayer11_mc[iEdge] = new TH1F (name.Data(), "mc", 200, 0, 10);         setupHisto(h_dedxByLayer11_mc[iEdge], 11);
-    name = Form ("h_%d_dedxByLayer12_mc", iEdge);      h_dedxByLayer12_mc[iEdge] = new TH1F (name.Data(), "mc", 200, 0, 10);         setupHisto(h_dedxByLayer12_mc[iEdge], 11);
-    name = Form ("h_%d_dedxByLayer13_mc", iEdge);      h_dedxByLayer13_mc[iEdge] = new TH1F (name.Data(), "mc", 200, 0, 10);         setupHisto(h_dedxByLayer13_mc[iEdge], 11);
-    
+    for (int idet = 0; idet<detId.size(); idet++) {     
+      std::pair<int, int> edge_det;
+      edge_det.first = iEdge;
+      edge_det.second = idet;
+      
+      TString name;      
+      name = Form ("h_%d_%d_dedxById_mc" , edge_det.first , edge_det.second);   
+      TH1F* temp = new TH1F (name.Data(), "mc", 400, 0, 10);  
+      setupHisto(temp, 11);
+      
+      map_h_dedxById_mc[edge_det] = temp;
+    }
+  }
+  
+  
+  TH1F* h_mass_mc [eta_edges.size()-1];
+  for (int iEdge = 0; iEdge<eta_edges.size(); iEdge++) {
+    TString name;    
     name = Form ("h_%d_mass_mc", iEdge);  
     h_mass_mc[iEdge] = new TH1F (name.Data(), "mc", 100, 86, 106);
-    setupHisto(h_mass_mc[iEdge], 11);
-    
+    setupHisto(h_mass_mc[iEdge], 11);  
   }
   
   
@@ -498,20 +650,54 @@ int main(int argc, char** argv) {
         
         if (iEdge != -1) {
           
-          h_dedxByLayer0_mc [iEdge]->Fill(IsoTrack_dedxByLayer0 [best_track]);
-          h_dedxByLayer1_mc [iEdge]->Fill(IsoTrack_dedxByLayer1 [best_track]);
-          h_dedxByLayer2_mc [iEdge]->Fill(IsoTrack_dedxByLayer2 [best_track]);
-          h_dedxByLayer3_mc [iEdge]->Fill(IsoTrack_dedxByLayer3 [best_track]);
-          h_dedxByLayer4_mc [iEdge]->Fill(IsoTrack_dedxByLayer4 [best_track]);
-          h_dedxByLayer5_mc [iEdge]->Fill(IsoTrack_dedxByLayer5 [best_track]);
-          h_dedxByLayer6_mc [iEdge]->Fill(IsoTrack_dedxByLayer6 [best_track]);
-          h_dedxByLayer7_mc [iEdge]->Fill(IsoTrack_dedxByLayer7 [best_track]);
-          h_dedxByLayer8_mc [iEdge]->Fill(IsoTrack_dedxByLayer8 [best_track]);
-          h_dedxByLayer9_mc [iEdge]->Fill(IsoTrack_dedxByLayer9 [best_track]);
-          h_dedxByLayer10_mc[iEdge]->Fill(IsoTrack_dedxByLayer10[best_track]);
-          h_dedxByLayer11_mc[iEdge]->Fill(IsoTrack_dedxByLayer11[best_track]);
-          h_dedxByLayer12_mc[iEdge]->Fill(IsoTrack_dedxByLayer12[best_track]);
-          h_dedxByLayer13_mc[iEdge]->Fill(IsoTrack_dedxByLayer13[best_track]);
+          //
+          //   sizeXbyLayer is 0 for strips
+          //                is != 0 for pixels
+          //
+          //   subDetIdByLayer is filled for strips and for pixels
+          //                values: 0, 1, ... 5, 6, 7
+          //
+          
+          
+          std::pair<int, int> edge_det;
+          edge_det.first = iEdge;
+          
+          if (IsoTrack_sizeXbyLayer0[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer0[best_track];
+            map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer0 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
+          if (IsoTrack_sizeXbyLayer1[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer1[best_track];
+            map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer1 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
+          if (IsoTrack_sizeXbyLayer2[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer2[best_track];
+            map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer2 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
+          if (IsoTrack_sizeXbyLayer3[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer3[best_track];
+            map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer3 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
+          if (IsoTrack_sizeXbyLayer4[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer4[best_track];
+            map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer4 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
+          if (IsoTrack_sizeXbyLayer5[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer5[best_track];
+            map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer5 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
+          if (IsoTrack_sizeXbyLayer6[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer6[best_track];
+            map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer6 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
+          if (IsoTrack_sizeXbyLayer7[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer7[best_track];
+            map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer7 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
+          if (IsoTrack_sizeXbyLayer8[best_track] != 0) {           
+            edge_det.second = IsoTrack_subDetIdByLayer8[best_track];
+            map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer8 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          }
           
           
           TLorentzVector track;
@@ -525,133 +711,59 @@ int main(int argc, char** argv) {
   
   
   
-  TFile* fileOut = new TFile ("tocalibrate_complete_eta_edges.root", "RECREATE");
- 
   
+  
+   
+  
+  
+  
+  TFile* fileOut = new TFile ("tocalibrate_complete_eta_edges_idet.root", "RECREATE");
+ 
+  for (int iEdge = 0; iEdge<eta_edges.size(); iEdge++) {
+    for (int idet = 0; idet<detId.size(); idet++) {     
+      std::pair<int, int> edge_det;
+      edge_det.first = iEdge;
+      edge_det.second = idet;
+      map_h_dedxById_data[edge_det] -> Write();
+      map_h_dedxById_mc[edge_det]   -> Write();
+    }
+  }
+      
+      
   for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
-    h_dedxByLayer0_data [iEdge]->Write();                       h_dedxByLayer0_mc [iEdge]->Write();
-    h_dedxByLayer1_data [iEdge]->Write();                       h_dedxByLayer1_mc [iEdge]->Write();
-    h_dedxByLayer2_data [iEdge]->Write();                       h_dedxByLayer2_mc [iEdge]->Write();
-    h_dedxByLayer3_data [iEdge]->Write();                       h_dedxByLayer3_mc [iEdge]->Write();
-    h_dedxByLayer4_data [iEdge]->Write();                       h_dedxByLayer4_mc [iEdge]->Write();
-    h_dedxByLayer5_data [iEdge]->Write();                       h_dedxByLayer5_mc [iEdge]->Write();
-    h_dedxByLayer6_data [iEdge]->Write();                       h_dedxByLayer6_mc [iEdge]->Write();
-    h_dedxByLayer7_data [iEdge]->Write();                       h_dedxByLayer7_mc [iEdge]->Write();
-    h_dedxByLayer8_data [iEdge]->Write();                       h_dedxByLayer8_mc [iEdge]->Write();
-    h_dedxByLayer9_data [iEdge]->Write();                       h_dedxByLayer9_mc [iEdge]->Write();
-    h_dedxByLayer10_data[iEdge]->Write();                       h_dedxByLayer10_mc[iEdge]->Write();
-    h_dedxByLayer11_data[iEdge]->Write();                       h_dedxByLayer11_mc[iEdge]->Write();
-    h_dedxByLayer12_data[iEdge]->Write();                       h_dedxByLayer12_mc[iEdge]->Write();
-    h_dedxByLayer13_data[iEdge]->Write();                       h_dedxByLayer13_mc[iEdge]->Write(); 
-    
-    h_mass_data[iEdge]->Write();                                h_mass_mc[iEdge]->Write();
-    
+      h_mass_data[iEdge]->Write();                                h_mass_mc[iEdge]->Write();
   }
   
   
   for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
     
     TLegend* leg = new TLegend(0.70,0.70,0.90,0.90);
-    leg->AddEntry(h_dedxByLayer0_data[iEdge],"data","pl");
-    leg->AddEntry(h_dedxByLayer0_mc[iEdge]  ,"mc",  "pl");
+    leg->AddEntry(h_mass_data[iEdge],"data","pl");
+    leg->AddEntry(h_mass_mc  [iEdge],"mc",  "pl");
     
     TString name;
     
-    name = Form ("cc_summary_%d" , iEdge); 
-    
-    TCanvas* cc_summary = new TCanvas (name.Data(),"",1000,1000);
-    
-    cc_summary->Divide(4,4);
-    
-    cc_summary->cd(1);
-    h_dedxByLayer0_data[iEdge]->Draw("PL");
-    h_dedxByLayer0_mc[iEdge]->Draw("PL same");
-    h_dedxByLayer0_data[iEdge]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
-    leg->Draw();
-    
-    cc_summary->cd(2);
-    h_dedxByLayer1_data[iEdge]->Draw("PL");
-    h_dedxByLayer1_mc[iEdge]->Draw("PL same");
-    h_dedxByLayer1_data[iEdge]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
-    leg->Draw();
-    
-    cc_summary->cd(3);
-    h_dedxByLayer2_data[iEdge]->Draw("PL");
-    h_dedxByLayer2_mc[iEdge]->Draw("PL same");
-    h_dedxByLayer2_data[iEdge]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
-    leg->Draw();
-    
-    cc_summary->cd(4);
-    h_dedxByLayer3_data[iEdge]->Draw("PL");
-    h_dedxByLayer3_mc[iEdge]->Draw("PL same");
-    h_dedxByLayer3_data[iEdge]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
-    leg->Draw();
-    
-    cc_summary->cd(5);
-    h_dedxByLayer4_data[iEdge]->Draw("PL");
-    h_dedxByLayer4_mc[iEdge]->Draw("PL same");
-    h_dedxByLayer4_data[iEdge]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
-    leg->Draw();
-    
-    cc_summary->cd(6);
-    h_dedxByLayer5_data[iEdge]->Draw("PL");
-    h_dedxByLayer5_mc[iEdge]->Draw("PL same");
-    h_dedxByLayer5_data[iEdge]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
-    leg->Draw();
-    
-    cc_summary->cd(7);
-    h_dedxByLayer6_data[iEdge]->Draw("PL");
-    h_dedxByLayer6_mc[iEdge]->Draw("PL same");
-    h_dedxByLayer6_data[iEdge]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
-    leg->Draw();
-    
-    cc_summary->cd(8);
-    h_dedxByLayer7_data[iEdge]->Draw("PL");
-    h_dedxByLayer7_mc[iEdge]->Draw("PL same");
-    h_dedxByLayer7_data[iEdge]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
-    leg->Draw();
-    
-    cc_summary->cd(9);
-    h_dedxByLayer8_data[iEdge]->Draw("PL");
-    h_dedxByLayer8_mc[iEdge]->Draw("PL same");
-    h_dedxByLayer8_data[iEdge]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
-    leg->Draw();
-    
-    cc_summary->cd(10);
-    h_dedxByLayer9_data[iEdge]->Draw("PL");
-    h_dedxByLayer9_mc[iEdge]->Draw("PL same");
-    h_dedxByLayer9_data[iEdge]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
-    leg->Draw();
-    
-    cc_summary->cd(11);
-    h_dedxByLayer10_data[iEdge]->Draw("PL");
-    h_dedxByLayer10_mc[iEdge]->Draw("PL same");
-    h_dedxByLayer10_data[iEdge]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
-    leg->Draw();
-    
-    cc_summary->cd(12);
-    h_dedxByLayer11_data[iEdge]->Draw("PL");
-    h_dedxByLayer11_mc[iEdge]->Draw("PL same");
-    h_dedxByLayer11_data[iEdge]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
-    leg->Draw();
-    
-    cc_summary->cd(13);
-    h_dedxByLayer12_data[iEdge]->Draw("PL");
-    h_dedxByLayer12_mc[iEdge]->Draw("PL same");
-    h_dedxByLayer12_data[iEdge]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
-    leg->Draw();
-    
-    cc_summary->cd(14);
-    h_dedxByLayer13_data[iEdge]->Draw("PL");
-    h_dedxByLayer13_mc[iEdge]->Draw("PL same");
-    h_dedxByLayer13_data[iEdge]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
-    leg->Draw();
-    
-    
-    cc_summary->Write();
-  
+    for (int idet = 0; idet<detId.size(); idet++) {     
+      std::pair<int, int> edge_det;
+      edge_det.first = iEdge;
+      edge_det.second = idet;
+      
+      
+      name = Form ("cc_summary_%d_%d" , iEdge, idet); 
+      
+      TCanvas* cc_summary = new TCanvas (name.Data(),"",1000,1000);
+      
+      map_h_dedxById_data[edge_det]->Draw("PL");
+      map_h_dedxById_mc[edge_det]  ->Draw("PL same");
+      
+      map_h_dedxById_data[edge_det]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
+      leg->Draw();
+      
+      cc_summary->Write();
+    }
   }
   
+    
   
   
   fileOut->Close();
