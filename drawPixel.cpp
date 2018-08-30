@@ -89,6 +89,9 @@ int main(int argc, char** argv) {
   
   std::vector<float> eta_edges;
   eta_edges.push_back(0.0);
+  eta_edges.push_back(0.3);
+  eta_edges.push_back(0.6);
+  eta_edges.push_back(1.0);
   eta_edges.push_back(1.3);
   eta_edges.push_back(1.6);
   eta_edges.push_back(2.1);
@@ -96,51 +99,94 @@ int main(int argc, char** argv) {
   
   
   
+  std::vector<int> detId;
+  for (int idet = 0; idet<4; idet++) {
+    detId.push_back(idet);
+  }
+  
+  std::vector<int> layerId;
+  for (int ilayer = 0; ilayer<6; ilayer++) {
+    layerId.push_back(ilayer);
+  }
+  
+  
+  
+  
+  //----     layer                   eta   det      calibration
+  std::map < int, std::map< std::pair<int, int> , float> > map_calibration;
+  
+  for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+    std::map< std::pair<int, int> , float> mini_map_calibration;
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+      for (int idet = 0; idet<detId.size(); idet++) {     
+        std::pair<int, int> edge_det;
+        edge_det.first = iEdge;
+        edge_det.second = idet;
+        mini_map_calibration[edge_det] = 1.0;
+      }
+    }  
+    map_calibration[ilayer] = mini_map_calibration;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
   //---- read calibration values
-  std::string fileCalibration = "calibration_eta.txt";
+  std::string fileCalibration = "scale_pixels_reduced_default.txt";
   if (argc>=4) {
     fileCalibration = argv[3];
-  }
   
-  std::vector< std::vector<float> > calibration_values;
-  for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
-    std::vector<float> temp_calibration_values;
-    for (int i=0; i<14; i++) {
-      temp_calibration_values.push_back(1.0);
+    std::ifstream file (fileCalibration); 
+    std::string buffer;
+    float value;
+    
+    if(!file.is_open()) {
+      std::cerr << "** ERROR: Can't open '" << fileCalibration << "' for input" << std::endl;
+      return false;
     }
-    calibration_values.push_back (temp_calibration_values);
+    
+    int num_layer = 0;
+    while(!file.eof()) {
+      getline(file,buffer);
+      if (buffer != "" && buffer.at(0) != '#'){ ///---> save from empty line at the end!
+        std::stringstream line( buffer );  
+        
+        int ilayer;
+        int idet;
+        int iEdge;
+        
+        line >> iEdge;
+        line >> ilayer;
+        line >> idet;
+        
+        
+        float calibration_factor = 1.0;
+        line >> calibration_factor;
+        
+        map_calibration[ilayer][std::pair<int, int>(iEdge,idet)] = calibration_factor;
+        
+      } 
+    }
   }
   
-  std::ifstream file (fileCalibration); 
-  std::string buffer;
-  float value;
   
-  if(!file.is_open()) {
-    std::cerr << "** ERROR: Can't open '" << fileCalibration << "' for input" << std::endl;
-    return false;
-  }
   
-  int num_layer = 0;
-  while(!file.eof()) {
-    getline(file,buffer);
-    if (buffer != "" && buffer.at(0) != '#'){ ///---> save from empty line at the end!
-      std::stringstream line( buffer );      
-      for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
-      line >> value; 
-      (calibration_values.at(iEdge)).at(num_layer) = value;
+  //---- print calibration map
+  for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+    std::cout << " [ " << ilayer << ", ";
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+      std::cout << " " << iEdge << "] = ";
+      for (int idet = 0; idet<detId.size(); idet++) {  
+        std::cout << " :: " << map_calibration[ilayer][std::pair<int, int>(iEdge,idet)];
       }
-      num_layer++;
-    } 
-  }
-  
-  
-  for (int i=0; i<calibration_values.size(); i++) {
-    for (int j=0; j<calibration_values.at(i).size(); j++) {
-      std::cout << " [" << i << ", " << j << "] = " << calibration_values.at(i).at(j) << std::endl;
+      std::cout << std::endl;
     }
   }
-  
-  
   
   
   
@@ -437,19 +483,6 @@ int main(int argc, char** argv) {
 //   
   
   
-  std::vector<int> detId;
-  for (int idet = 0; idet<4; idet++) {
-    detId.push_back(idet);
-  }
-  
-  std::vector<int> layerId;
-  for (int ilayer = 0; ilayer<6; ilayer++) {
-    layerId.push_back(ilayer);
-  }
-  
- 
-
-  
   
   //----     layer                   eta   det
   std::map < int, std::map< std::pair<int, int> , TH1F*> > map_h_dedxById_data;
@@ -543,47 +576,28 @@ int main(int argc, char** argv) {
          
           if (IsoTrack_sizeXbyLayer0[best_track] != 0) {           
             edge_det.second = IsoTrack_subDetIdByLayer0[best_track];
-            //             map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer0 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
-            (map_h_dedxById_data[0])[edge_det] ->Fill(IsoTrack_dedxByLayer0 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+            (map_h_dedxById_data[0])[edge_det] ->Fill(IsoTrack_dedxByLayer0 [best_track]   *   map_calibration[0][edge_det]  ); 
           }
           if (IsoTrack_sizeXbyLayer1[best_track] != 0) {           
             edge_det.second = IsoTrack_subDetIdByLayer1[best_track];
-//             map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer1 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
-            (map_h_dedxById_data[1])[edge_det] ->Fill(IsoTrack_dedxByLayer1 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+            (map_h_dedxById_data[1])[edge_det] ->Fill(IsoTrack_dedxByLayer1 [best_track]   *   map_calibration[1][edge_det]  ); 
           }
           if (IsoTrack_sizeXbyLayer2[best_track] != 0) {           
             edge_det.second = IsoTrack_subDetIdByLayer2[best_track];
-//             map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer2 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
-            (map_h_dedxById_data[2])[edge_det] ->Fill(IsoTrack_dedxByLayer2 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+            (map_h_dedxById_data[2])[edge_det] ->Fill(IsoTrack_dedxByLayer2 [best_track]   *   map_calibration[2][edge_det]  ); 
           }
           if (IsoTrack_sizeXbyLayer3[best_track] != 0) {           
             edge_det.second = IsoTrack_subDetIdByLayer3[best_track];
-//             map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer3 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
-            (map_h_dedxById_data[3])[edge_det] ->Fill(IsoTrack_dedxByLayer3 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+            (map_h_dedxById_data[3])[edge_det] ->Fill(IsoTrack_dedxByLayer3 [best_track]   *   map_calibration[3][edge_det]  ); 
           }
           if (IsoTrack_sizeXbyLayer4[best_track] != 0) {           
             edge_det.second = IsoTrack_subDetIdByLayer4[best_track];
-//             map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer4 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
-            (map_h_dedxById_data[4])[edge_det] ->Fill(IsoTrack_dedxByLayer4 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+            (map_h_dedxById_data[4])[edge_det] ->Fill(IsoTrack_dedxByLayer4 [best_track]   *   map_calibration[4][edge_det]  ); 
           }
           if (IsoTrack_sizeXbyLayer5[best_track] != 0) {           
             edge_det.second = IsoTrack_subDetIdByLayer5[best_track];
-//             map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer5 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
-            (map_h_dedxById_data[5])[edge_det] ->Fill(IsoTrack_dedxByLayer5 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+            (map_h_dedxById_data[5])[edge_det] ->Fill(IsoTrack_dedxByLayer5 [best_track]   *   map_calibration[5][edge_det]  ); 
           }
-//           if (IsoTrack_sizeXbyLayer6[best_track] != 0) {           
-//             edge_det.second = IsoTrack_subDetIdByLayer6[best_track];
-//             map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer6 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
-//           }
-//           if (IsoTrack_sizeXbyLayer7[best_track] != 0) {           
-//             edge_det.second = IsoTrack_subDetIdByLayer7[best_track];
-//             map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer7 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
-//           }
-//           if (IsoTrack_sizeXbyLayer8[best_track] != 0) {           
-//             edge_det.second = IsoTrack_subDetIdByLayer8[best_track];
-//             map_h_dedxById_data[edge_det] ->Fill(IsoTrack_dedxByLayer8 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
-//           }
-//           
           
           TLorentzVector track;
           track.SetPtEtaPhiM(IsoTrack_pt[best_track], IsoTrack_eta[best_track], IsoTrack_phi[best_track], 0);
@@ -695,45 +709,45 @@ int main(int argc, char** argv) {
           
           if (IsoTrack_sizeXbyLayer0[best_track] != 0) {           
             edge_det.second = IsoTrack_subDetIdByLayer0[best_track];
-            //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer0 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
-            (map_h_dedxById_mc[0])[edge_det] ->Fill(IsoTrack_dedxByLayer0 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+            //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer0 [best_track]        ); 
+            (map_h_dedxById_mc[0])[edge_det] ->Fill(IsoTrack_dedxByLayer0 [best_track]        ); 
           }
           if (IsoTrack_sizeXbyLayer1[best_track] != 0) {           
             edge_det.second = IsoTrack_subDetIdByLayer1[best_track];
-            //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer1 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
-            (map_h_dedxById_mc[1])[edge_det] ->Fill(IsoTrack_dedxByLayer1 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+            //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer1 [best_track]        ); 
+            (map_h_dedxById_mc[1])[edge_det] ->Fill(IsoTrack_dedxByLayer1 [best_track]        ); 
           }
           if (IsoTrack_sizeXbyLayer2[best_track] != 0) {           
             edge_det.second = IsoTrack_subDetIdByLayer2[best_track];
-            //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer2 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
-            (map_h_dedxById_mc[2])[edge_det] ->Fill(IsoTrack_dedxByLayer2 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+            //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer2 [best_track]        ); 
+            (map_h_dedxById_mc[2])[edge_det] ->Fill(IsoTrack_dedxByLayer2 [best_track]        ); 
           }
           if (IsoTrack_sizeXbyLayer3[best_track] != 0) {           
             edge_det.second = IsoTrack_subDetIdByLayer3[best_track];
-            //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer3 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
-            (map_h_dedxById_mc[3])[edge_det] ->Fill(IsoTrack_dedxByLayer3 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+            //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer3 [best_track]        ); 
+            (map_h_dedxById_mc[3])[edge_det] ->Fill(IsoTrack_dedxByLayer3 [best_track]        ); 
           }
           if (IsoTrack_sizeXbyLayer4[best_track] != 0) {           
             edge_det.second = IsoTrack_subDetIdByLayer4[best_track];
-            //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer4 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
-            (map_h_dedxById_mc[4])[edge_det] ->Fill(IsoTrack_dedxByLayer4 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+            //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer4 [best_track]        ); 
+            (map_h_dedxById_mc[4])[edge_det] ->Fill(IsoTrack_dedxByLayer4 [best_track]        ); 
           }
           if (IsoTrack_sizeXbyLayer5[best_track] != 0) {           
             edge_det.second = IsoTrack_subDetIdByLayer5[best_track];
-            //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer5 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
-            (map_h_dedxById_mc[5])[edge_det] ->Fill(IsoTrack_dedxByLayer5 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+            //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer5 [best_track]        ); 
+            (map_h_dedxById_mc[5])[edge_det] ->Fill(IsoTrack_dedxByLayer5 [best_track]        ); 
           }
           //           if (IsoTrack_sizeXbyLayer6[best_track] != 0) {           
           //             edge_det.second = IsoTrack_subDetIdByLayer6[best_track];
-          //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer6 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer6 [best_track]        ); 
           //           }
           //           if (IsoTrack_sizeXbyLayer7[best_track] != 0) {           
           //             edge_det.second = IsoTrack_subDetIdByLayer7[best_track];
-          //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer7 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer7 [best_track]        ); 
           //           }
           //           if (IsoTrack_sizeXbyLayer8[best_track] != 0) {           
           //             edge_det.second = IsoTrack_subDetIdByLayer8[best_track];
-          //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer8 [best_track]      *   (calibration_values.at(iEdge)).at(0 )  ); 
+          //             map_h_dedxById_mc[edge_det] ->Fill(IsoTrack_dedxByLayer8 [best_track]        ); 
           //           }
           //           
           
@@ -808,8 +822,8 @@ int main(int argc, char** argv) {
         
         TCanvas* cc_summary = new TCanvas (name.Data(),"",1000,1000);
         
-        map_h_dedxById_data[ilayer][edge_det]->Draw("PL");
-        map_h_dedxById_mc[ilayer][edge_det]  ->Draw("PL same");
+        map_h_dedxById_mc[ilayer][edge_det]  ->Draw("PL");
+        map_h_dedxById_data[ilayer][edge_det]->Draw("PL same");
         
         map_h_dedxById_data[ilayer][edge_det]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
         leg->Draw();
@@ -818,8 +832,8 @@ int main(int argc, char** argv) {
         
         
         cc_summary_ieta->cd(idet+1);
-        map_h_dedxById_data[ilayer][edge_det]->Draw("PL");
-        map_h_dedxById_mc[ilayer][edge_det]  ->Draw("PL same");
+        map_h_dedxById_mc[ilayer][edge_det]  ->Draw("PL");
+        map_h_dedxById_data[ilayer][edge_det]->Draw("PL same");
         
         map_h_dedxById_data[ilayer][edge_det]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
         leg->Draw();

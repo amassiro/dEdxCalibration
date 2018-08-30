@@ -81,6 +81,8 @@ Only Pixel tests:
     ./calibratePixel.exe    tocalibrate_complete_eta_edges_idet.root
     
  
+    Draw calibrated 
+    ./drawPixel.exe ../XTracks/CR_Data/SingleMuon_Run2017B_17Nov2017/treeProducerXtracks/tree.root   ../XTracks/CR_MC/DYJetsToLL_M50/treeProducerXtracks/tree.root    scale_pixels_reduced.txt
  
  
  

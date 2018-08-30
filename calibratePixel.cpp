@@ -125,10 +125,16 @@ int main(int argc, char** argv) {
   
   std::ofstream myfile;
   myfile.open ("scale_pixels.txt");
+ 
+  std::ofstream myfile_reduced;
+  myfile_reduced.open ("scale_pixels_reduced.txt");
   
   
   std::vector<float> eta_edges;
   eta_edges.push_back(0.0);
+  eta_edges.push_back(0.3);
+  eta_edges.push_back(0.6);
+  eta_edges.push_back(1.0);
   eta_edges.push_back(1.3);
   eta_edges.push_back(1.6);
   eta_edges.push_back(2.1);
@@ -461,6 +467,33 @@ int main(int argc, char** argv) {
         
         myfile << "    " << calibration_values_likelihood_result.at(iterator_pad)  << std::endl;
         
+        
+        
+        
+        myfile_reduced << iEdge << " " << ilayer << " " << idet << "               ";
+        float best_value = 1.;
+        
+        float value_1;
+        if (calibration_values_data.at(iterator_pad) != 0 ) value_1 = calibration_values_mc.at(iterator_pad) / calibration_values_data.at(iterator_pad);
+        float value_2;
+        if (calibration_values_gauss_data.at(iterator_pad) != 0 ) value_2 = calibration_values_gauss_mc.at(iterator_pad) / calibration_values_gauss_data.at(iterator_pad);
+        float value_3 = calibration_values_likelihood_result.at(iterator_pad);
+        
+        if (fabs(value_1-1.0) > 2) {
+          if (fabs(value_2-1.0) > 2) {
+            best_value = value_3;
+          }
+          else {
+            best_value = value_2;
+          }
+        }
+        else {
+          best_value = value_1;
+        }
+        
+        myfile_reduced << best_value << std::endl;
+        std::cout << " best_value = " << best_value << std::endl;
+        
         gr_likelihood->SetPoint (iterator_pad, iterator_pad, calibration_values_likelihood_result.at(iterator_pad));
         float data = calibration_values_data.at(iterator_pad);
         float mc   = calibration_values_mc  .at(iterator_pad);
@@ -597,7 +630,7 @@ int main(int argc, char** argv) {
   outputCanvas.Close();
   
   myfile.close(); 
-  
+  myfile_reduced.close();
   
 }
 
