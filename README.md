@@ -76,6 +76,10 @@ Only Pixel tests:
  
  
  
+    g++ -o calibratePixel.exe calibratePixel.cpp `root-config --cflags --glibs`
+ 
+    ./calibratePixel.exe    tocalibrate_complete_eta_edges_idet.root
+    
  
  
  

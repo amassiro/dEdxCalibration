@@ -103,7 +103,7 @@ int main(int argc, char** argv) {
   }
   
   std::vector< std::vector<float> > calibration_values;
-  for (int iEdge = 0; iEdge<eta_edges.size(); iEdge++) {
+  for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
     std::vector<float> temp_calibration_values;
     for (int i=0; i<14; i++) {
       temp_calibration_values.push_back(1.0);
@@ -125,7 +125,7 @@ int main(int argc, char** argv) {
     getline(file,buffer);
     if (buffer != "" && buffer.at(0) != '#'){ ///---> save from empty line at the end!
       std::stringstream line( buffer );      
-      for (int iEdge = 0; iEdge<eta_edges.size(); iEdge++) {
+      for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
       line >> value; 
       (calibration_values.at(iEdge)).at(num_layer) = value;
       }
@@ -451,12 +451,12 @@ int main(int argc, char** argv) {
 
   
   
-   
+  //----     layer                   eta   det
   std::map < int, std::map< std::pair<int, int> , TH1F*> > map_h_dedxById_data;
 
   for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
     std::map< std::pair<int, int> , TH1F*> mini_map_h_dedxById_data;
-    for (int iEdge = 0; iEdge<eta_edges.size(); iEdge++) {
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
       for (int idet = 0; idet<detId.size(); idet++) {     
         std::pair<int, int> edge_det;
         edge_det.first = iEdge;
@@ -464,7 +464,7 @@ int main(int argc, char** argv) {
         
         TString name;      
         name = Form ("h_%d_%d_%d_dedxById_data" , ilayer, edge_det.first , edge_det.second);   
-        TH1F* temp = new TH1F (name.Data(), "data", 400, 0, 10);  
+        TH1F* temp = new TH1F (name.Data(), "data", 100, 0, 10);  
         setupHisto(temp, 10);
         
         mini_map_h_dedxById_data[edge_det] = temp;
@@ -474,7 +474,7 @@ int main(int argc, char** argv) {
   }
   
   TH1F* h_mass_data [eta_edges.size()-1];
-  for (int iEdge = 0; iEdge<eta_edges.size(); iEdge++) {
+  for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
     TString name;    
     name = Form ("h_%d_mass_data", iEdge);  
     h_mass_data[iEdge] = new TH1F (name.Data(), "data", 100, 86, 106);
@@ -608,7 +608,7 @@ int main(int argc, char** argv) {
   
   for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
     std::map< std::pair<int, int> , TH1F*> mini_map_h_dedxById_mc;
-    for (int iEdge = 0; iEdge<eta_edges.size(); iEdge++) {
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
       for (int idet = 0; idet<detId.size(); idet++) {     
         std::pair<int, int> edge_det;
         edge_det.first = iEdge;
@@ -616,7 +616,7 @@ int main(int argc, char** argv) {
         
         TString name;      
         name = Form ("h_%d_%d_%d_dedxById_mc" , ilayer, edge_det.first , edge_det.second);   
-        TH1F* temp = new TH1F (name.Data(), "mc", 400, 0, 10);  
+        TH1F* temp = new TH1F (name.Data(), "mc", 100, 0, 10);  
         setupHisto(temp, 11);
         
         mini_map_h_dedxById_mc[edge_det] = temp;
@@ -626,7 +626,7 @@ int main(int argc, char** argv) {
   }
   
   TH1F* h_mass_mc [eta_edges.size()-1];
-  for (int iEdge = 0; iEdge<eta_edges.size(); iEdge++) {
+  for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
     TString name;    
     name = Form ("h_%d_mass_mc", iEdge);  
     h_mass_mc[iEdge] = new TH1F (name.Data(), "mc", 100, 86, 106);
@@ -752,7 +752,7 @@ int main(int argc, char** argv) {
   TFile* fileOut = new TFile ("tocalibrate_complete_eta_edges_idet.root", "RECREATE");
  
   for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {  
-    for (int iEdge = 0; iEdge<eta_edges.size(); iEdge++) {
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
       for (int idet = 0; idet<detId.size(); idet++) {     
         std::pair<int, int> edge_det;
         edge_det.first = iEdge;
@@ -771,7 +771,7 @@ int main(int argc, char** argv) {
   
   
   for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {  
-    for (int iEdge = 0; iEdge<eta_edges.size(); iEdge++) {
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
       for (int idet = 0; idet<detId.size(); idet++) {  
         std::pair<int, int> edge_det;
         edge_det.first = iEdge;
@@ -791,7 +791,7 @@ int main(int argc, char** argv) {
     for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {  
       
       name = Form ("cc_summary_layer_%d_eta_%d" , ilayer, iEdge); 
-      TCanvas* cc_summary_ieta = new TCanvas (name.Data(),"",1000,500);
+      TCanvas* cc_summary_ieta = new TCanvas (name.Data(),"",1400,500);
       cc_summary_ieta->Divide(detId.size(), 1);
       
       TLegend* leg = new TLegend(0.70,0.70,0.90,0.90);
@@ -828,6 +828,9 @@ int main(int argc, char** argv) {
       }
       
       cc_summary_ieta->Write();
+      name = Form ("plots/cc_summary_layer_%d_eta_%d.png" , ilayer, iEdge); 
+      cc_summary_ieta->SaveAs(name.Data());
+      
     }
   }
   
