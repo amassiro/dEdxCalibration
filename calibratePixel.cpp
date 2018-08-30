@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+#include <fstream>
 
 #include "TTree.h"
 #include "TF1.h"
@@ -61,6 +62,15 @@ public:
 //       if (bin_number != _reference_histogram->GetNbinsX()) bin_number += 1;
 //       else bin_number -=1;
 //     }
+        
+    int max_reached = 0;
+    while ( ( (_reference_histogram -> GetBinContent ( bin_number )) / _integral ) == 0 ) {
+      if ( bin_number != _reference_histogram->GetNbinsX() && (max_reached ==0) ) bin_number += 1;
+      else {
+        bin_number -=1;
+        max_reached = 1;
+      }
+    }
     
 //     return ( (_reference_histogram -> GetBinContent (bin_number)) / _integral ) ;
     return ( (_reference_histogram -> GetBinContent (bin_number)) / _integral ) * _scale_value ;
@@ -113,6 +123,8 @@ int main(int argc, char** argv) {
   
   TFile outputCanvas ("outputCanvas_Calibration.root", "RECREATE");
   
+  std::ofstream myfile;
+  myfile.open ("scale_pixels.txt");
   
   
   std::vector<float> eta_edges;
@@ -427,6 +439,70 @@ int main(int argc, char** argv) {
     }
     
     
+    
+    
+    TCanvas* cc_summary_scale = new TCanvas ("cc_summary_scale","",1000,1000);
+    
+    TGraph* gr_likelihood = new TGraph ();
+    TGraph* gr_landau     = new TGraph ();
+    TGraph* gr_gauss      = new TGraph ();
+    
+    iterator_pad = 0;
+    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {  
+      for (int idet = 0; idet<detId.size(); idet++) { 
+        
+        //----      |     eta             layer            det   |
+        myfile << " |" << iEdge << " " << ilayer << " " << idet << "|";
+        myfile << "    " << calibration_values_mc.at(iterator_pad) / calibration_values_data.at(iterator_pad);
+        myfile  << " [ " << calibration_values_mc.at(iterator_pad) << " / " << calibration_values_data.at(iterator_pad) << " ]" ;
+        
+        myfile  << "    " << calibration_values_gauss_mc.at(iterator_pad) / calibration_values_gauss_data.at(iterator_pad) ;
+        myfile  << " [ " << calibration_values_gauss_mc.at(iterator_pad) << " / " << calibration_values_gauss_data.at(iterator_pad) << " ]";
+        
+        myfile << "    " << calibration_values_likelihood_result.at(iterator_pad)  << std::endl;
+        
+        gr_likelihood->SetPoint (iterator_pad, iterator_pad, calibration_values_likelihood_result.at(iterator_pad));
+        float data = calibration_values_data.at(iterator_pad);
+        float mc   = calibration_values_mc  .at(iterator_pad);
+        float scale = mc/data;
+        if ( (fabs(scale)) >10 ) {
+          scale = 0;
+        }
+        calibration_values_result.push_back(scale);
+        gr_landau->SetPoint (iterator_pad, iterator_pad, scale);
+        
+        
+        data = calibration_values_gauss_data.at(iterator_pad);
+        mc   = calibration_values_gauss_mc  .at(iterator_pad);
+        scale = mc/data;
+        if ( (fabs(scale)) >10 ) {
+          scale = 0;
+        }
+        gr_gauss->SetPoint (iterator_pad, iterator_pad, scale);
+        
+        
+        iterator_pad++;
+        
+      }
+    }
+    
+    setupTGraph(gr_likelihood, 0);
+    setupTGraph(gr_landau,     1);
+    setupTGraph(gr_gauss,      2);
+    
+    gr_likelihood->SetTitle ("likelihood");
+    gr_landau    ->SetTitle ("landau");
+    gr_gauss     ->SetTitle ("gauss");
+    
+    TMultiGraph mg;
+    mg.Add(gr_likelihood);
+    mg.Add(gr_landau);
+    mg.Add(gr_gauss);
+    mg.Draw("APL");
+    cc_summary_scale->BuildLegend();
+    
+    
+    
     cc_summary_result->Write();
     cc_summary_data->Write();
     cc_summary_mc->Write();
@@ -434,7 +510,7 @@ int main(int argc, char** argv) {
     cc_summary_likelihood_scan->Write();
     cc_summary_likelihood_scan_closure->Write();
     cc_summary_entries_scan->Write();
-    //   cc_summary_scale->Write();
+    cc_summary_scale->Write();
     
     
   }
@@ -519,6 +595,8 @@ int main(int argc, char** argv) {
     
   
   outputCanvas.Close();
+  
+  myfile.close(); 
   
   
 }
