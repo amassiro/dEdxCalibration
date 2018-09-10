@@ -90,7 +90,8 @@ Draw:
 
     tree->Draw("IsoTrack_sizeXbyLayer2[0]:IsoTrack_subDetIdByLayer2[0] >> h(10,0,10,20,0,20)", "", "colz")
 
- 
+    tree = (TTree*) _file0 -> Get ("tree")
+    tree->Draw("IsoTrack_layerPixelByLayer", "", "")
  
  
     
