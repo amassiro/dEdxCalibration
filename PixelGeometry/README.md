@@ -18,6 +18,7 @@ Filter:
      
     ./filterTree.exe data/tree.root   data/tree_out.root  
     ./filterTree.exe ../../XTracks/CR_MC/DYJetsToLL_M50/treeProducerXtracks/tree.root   data/tree_mc.root  
+    ./filterTree.exe data/tree_DY.root   data/tree_filtered_DY.root  
  
  
  

@@ -163,7 +163,7 @@ int main(int argc, char** argv) {
     
   }
   
-  std::cout << " saved entries = " << outputTree->GetEntries() << std::endl;
+  std::cout << " saved entries = " << outputTree->GetEntries() << " out of: " << inputTree->GetEntries() << std::endl;
   
   outputTree->AutoSave();
     
