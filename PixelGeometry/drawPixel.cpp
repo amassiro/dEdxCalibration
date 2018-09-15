@@ -225,6 +225,13 @@ int main(int argc, char** argv) {
 //
   
   
+  //---- best track
+  
+  int best_track;
+  inputTree_data->SetBranchAddress("best_track",    &best_track);
+  inputTree_mc  ->SetBranchAddress("best_track",    &best_track);
+  
+  
   //---- muon
   const Int_t kMaxLepGood = 10;
   Float_t LepGood_pt[kMaxLepGood];
@@ -535,27 +542,10 @@ int main(int argc, char** argv) {
       muon.SetPtEtaPhiM(LepGood_pt[best_iMuon], LepGood_eta[best_iMuon], LepGood_phi[best_iMuon], 0);
        
       //---- tracks
-      max_pt = 0;   
-      int best_track = -1;
-      for (int iTrack = 0; iTrack < std::min(kMaxTracks, nIsoTrack); iTrack++) {
-        if (
-          IsoTrack_pt[iTrack] > max_pt &&
-          IsoTrack_highPurity[iTrack] == 1 && 
-          fabs(IsoTrack_dxy[iTrack]) < 0.02 &&
-          fabs(IsoTrack_dz[iTrack]) < 0.5
-        ) {
-          
-          TLorentzVector track;
-          track.SetPtEtaPhiM(IsoTrack_pt[iTrack], IsoTrack_eta[iTrack], IsoTrack_phi[iTrack], 0);
-          
-          float mass_mu_track = (track+muon).M();
-          
-          if (mass_mu_track > 86 && mass_mu_track < 106) {
-            best_track = iTrack;
-            max_pt = IsoTrack_pt[iTrack];
-          }
-        }
-      }
+      //
+      //       best_track read from tree
+      //
+      
       if (best_track != -1) {
     
         int iEdge = FindEdge (IsoTrack_eta[best_track], eta_edges);
@@ -668,27 +658,11 @@ int main(int argc, char** argv) {
       muon.SetPtEtaPhiM(LepGood_pt[best_iMuon], LepGood_eta[best_iMuon], LepGood_phi[best_iMuon], 0);
       
       //---- tracks
-      max_pt = 0;   
-      int best_track = -1;
-      for (int iTrack = 0; iTrack < std::min(kMaxTracks, nIsoTrack); iTrack++) {
-        if (
-          IsoTrack_pt[iTrack] > max_pt &&
-          IsoTrack_highPurity[iTrack] == 1 && 
-          fabs(IsoTrack_dxy[iTrack]) < 0.02 &&
-          fabs(IsoTrack_dz[iTrack]) < 0.5
-        ) {
-          
-          TLorentzVector track;
-          track.SetPtEtaPhiM(IsoTrack_pt[iTrack], IsoTrack_eta[iTrack], IsoTrack_phi[iTrack], 0);
-          
-          float mass_mu_track = (track+muon).M();
-          
-          if (mass_mu_track > 86 && mass_mu_track < 106) {
-            best_track = iTrack;
-            max_pt = IsoTrack_pt[iTrack];
-          }
-        }
-      }
+      //---- tracks
+      //
+      //       best_track read from tree
+      //
+
       if (best_track != -1) {
         
         int iEdge = FindEdge (IsoTrack_eta[best_track], eta_edges);
