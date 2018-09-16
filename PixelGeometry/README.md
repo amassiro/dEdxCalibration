@@ -38,7 +38,23 @@ Draw geometry:
     
     tree = (TTree*)  _file0 -> Get ("tree");
     
-    tree->Draw("IsoTrack_XbyLayer0[best_track]:IsoTrack_YbyLayer0[best_track]")    
+    tree->Draw("IsoTrack_XbyLayer0[best_track]:IsoTrack_YbyLayer0[best_track]", "", "colz")    
+    
+    BPIX
+    tree->Draw("IsoTrack_XbyLayer0[best_track]:IsoTrack_YbyLayer0[best_track]", "IsoTrack_ladderPixelByLayer0[best_track]>-10", "colz")    
+    
+    tree->Draw("IsoTrack_XbyLayer0[best_track]:IsoTrack_layerPixelByLayer0[best_track]", "IsoTrack_ladderPixelByLayer0[best_track]>-10", "colz")    
+    tree->Draw("IsoTrack_YbyLayer0[best_track]:IsoTrack_layerPixelByLayer0[best_track]", "IsoTrack_ladderPixelByLayer0[best_track]>-10", "colz")    
+    tree->Draw("IsoTrack_YbyLayer0[best_track]:IsoTrack_XbyLayer0[best_track]:IsoTrack_layerPixelByLayer0[best_track]", "IsoTrack_ladderPixelByLayer0[best_track]>-10", "")    
+    tree->Draw("IsoTrack_YbyLayer1[best_track]:IsoTrack_XbyLayer1[best_track]:IsoTrack_layerPixelByLayer1[best_track]", "IsoTrack_ladderPixelByLayer1[best_track]>-11", "")    
+    tree->Draw("IsoTrack_YbyLayer1[best_track]:IsoTrack_XbyLayer1[best_track]:IsoTrack_layerPixelByLayer1[best_track]:IsoTrack_dedxByLayer1[best_track]", "IsoTrack_ladderPixelByLayer1[best_track]>-11", "")    
+
+    tree->Draw("IsoTrack_dedxByLayer1[best_track]:IsoTrack_YbyLayer1[best_track]:IsoTrack_XbyLayer1[best_track]", "(IsoTrack_layerPixelByLayer1[best_track] == 0) * (IsoTrack_ladderPixelByLayer1[best_track]>-11)", "")    
+
+    
+    FPIX
+    tree->Draw("IsoTrack_XbyLayer0[best_track]:IsoTrack_YbyLayer0[best_track]", "IsoTrack_diskPixelByLayer0[best_track]>-10", "colz")    
+    
     
     # BPIX
     

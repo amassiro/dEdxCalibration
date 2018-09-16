@@ -706,20 +706,11 @@ int main(int argc, char** argv) {
             if (IsoTrack_layerPixelByLayer0[best_track] > -10) {
               //---- BPIX
               edge_det.second = 1;
-//               std::cout << " IsoTrack_layerPixelByLayer0[best_track] = " << IsoTrack_layerPixelByLayer0[best_track] << std::endl;
-//               std::cout << " (map_h_dedxById_data[ IsoTrack_layerPixelByLayer0[best_track] ])[edge_det] = " << (map_h_dedxById_data[ IsoTrack_layerPixelByLayer0[best_track] ])[edge_det] << std::endl;
-//               std::cout << "  map_calibration[ IsoTrack_layerPixelByLayer0[best_track] ][edge_det] = " << map_calibration[ IsoTrack_layerPixelByLayer0[best_track] ][edge_det]  << std::endl;
-              
               (map_h_dedxById_data[ IsoTrack_layerPixelByLayer0[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer0 [best_track]   *   map_calibration[ IsoTrack_layerPixelByLayer0[best_track] ][edge_det]  ); 
             }
             else {
               //---- FPIX
               edge_det.second = 2;
-
-//               std::cout << " IsoTrack_diskPixelByLayer0[best_track] = " << IsoTrack_diskPixelByLayer0[best_track] << std::endl;
-//               std::cout << " (map_h_dedxById_data[ IsoTrack_diskPixelByLayer0[best_track] ])[edge_det] = " << (map_h_dedxById_data[ IsoTrack_diskPixelByLayer0[best_track] ])[edge_det] << std::endl;
-//               std::cout << "  map_calibration[ IsoTrack_diskPixelByLayer0[best_track] ][edge_det] = " << map_calibration[ IsoTrack_diskPixelByLayer0[best_track] ][edge_det]  << std::endl;
-
               (map_h_dedxById_data[ IsoTrack_diskPixelByLayer0[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer0 [best_track]   *   map_calibration[ IsoTrack_diskPixelByLayer0[best_track] ][edge_det]  ); 
             }
           }
@@ -728,19 +719,11 @@ int main(int argc, char** argv) {
             if (IsoTrack_layerPixelByLayer1[best_track] > -10) {
               //---- BPIX
               edge_det.second = 1;
-
-//               std::cout << " IsoTrack_layerPixelByLayer1[best_track] = " << IsoTrack_layerPixelByLayer1[best_track] << std::endl;
-//               std::cout << " (map_h_dedxById_data[ IsoTrack_layerPixelByLayer1[best_track] ])[edge_det] = " << (map_h_dedxById_data[ IsoTrack_layerPixelByLayer1[best_track] ])[edge_det] << std::endl;
-//               std::cout << "  map_calibration[ IsoTrack_layerPixelByLayer1[best_track] ][edge_det] = " << map_calibration[ IsoTrack_layerPixelByLayer1[best_track] ][edge_det]  << std::endl;
-
               (map_h_dedxById_data[ IsoTrack_layerPixelByLayer1[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer1 [best_track]   *   map_calibration[ IsoTrack_layerPixelByLayer1[best_track] ][edge_det]  ); 
             }
             else {
               //---- FPIX
               edge_det.second = 2;
-//               std::cout << " IsoTrack_diskPixelByLayer1[best_track] = " << IsoTrack_diskPixelByLayer1[best_track] << std::endl;
-//               std::cout << " (map_h_dedxById_data[ IsoTrack_diskPixelByLayer1[best_track] ])[edge_det] = " << (map_h_dedxById_data[ IsoTrack_diskPixelByLayer1[best_track] ])[edge_det] << std::endl;
-//               std::cout << "  map_calibration[ IsoTrack_diskPixelByLayer1[best_track] ][edge_det] = " << map_calibration[ IsoTrack_diskPixelByLayer1[best_track] ][edge_det]  << std::endl;
               (map_h_dedxById_data[ IsoTrack_diskPixelByLayer1[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer1 [best_track]   *   map_calibration[ IsoTrack_diskPixelByLayer1[best_track] ][edge_det]  ); 
             }
           }
@@ -749,19 +732,11 @@ int main(int argc, char** argv) {
             if (IsoTrack_layerPixelByLayer2[best_track] > -10) {
               //---- BPIX
               edge_det.second = 1;
-
-//               std::cout << " IsoTrack_layerPixelByLayer2[best_track] = " << IsoTrack_layerPixelByLayer2[best_track] << std::endl;
-//               std::cout << " (map_h_dedxById_data[ IsoTrack_layerPixelByLayer2[best_track] ])[edge_det] = " << (map_h_dedxById_data[ IsoTrack_layerPixelByLayer2[best_track] ])[edge_det] << std::endl;
-//               std::cout << "  map_calibration[ IsoTrack_layerPixelByLayer2[best_track] ][edge_det] = " << map_calibration[ IsoTrack_layerPixelByLayer2[best_track] ][edge_det]  << std::endl;
-
               (map_h_dedxById_data[ IsoTrack_layerPixelByLayer2[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer2 [best_track]   *   map_calibration[ IsoTrack_layerPixelByLayer2[best_track] ][edge_det]  ); 
             }
             else {
               //---- FPIX
               edge_det.second = 2;
-//               std::cout << " IsoTrack_diskPixelByLayer2[best_track] = " << IsoTrack_diskPixelByLayer2[best_track] << std::endl;
-//               std::cout << " (map_h_dedxById_data[ IsoTrack_diskPixelByLayer2[best_track] ])[edge_det] = " << (map_h_dedxById_data[ IsoTrack_diskPixelByLayer2[best_track] ])[edge_det] << std::endl;
-//               std::cout << "  map_calibration[ IsoTrack_diskPixelByLayer2[best_track] ][edge_det] = " << map_calibration[ IsoTrack_diskPixelByLayer2[best_track] ][edge_det]  << std::endl;
               (map_h_dedxById_data[ IsoTrack_diskPixelByLayer2[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer2 [best_track]   *   map_calibration[ IsoTrack_diskPixelByLayer2[best_track] ][edge_det]  ); 
             }
           }
@@ -770,19 +745,11 @@ int main(int argc, char** argv) {
             if (IsoTrack_layerPixelByLayer3[best_track] > -10) {
               //---- BPIX
               edge_det.second = 1;
-
-//               std::cout << " IsoTrack_layerPixelByLayer3[best_track] = " << IsoTrack_layerPixelByLayer3[best_track] << std::endl;
-//               std::cout << " (map_h_dedxById_data[ IsoTrack_layerPixelByLayer3[best_track] ])[edge_det] = " << (map_h_dedxById_data[ IsoTrack_layerPixelByLayer3[best_track] ])[edge_det] << std::endl;
-//               std::cout << "  map_calibration[ IsoTrack_layerPixelByLayer3[best_track] ][edge_det] = " << map_calibration[ IsoTrack_layerPixelByLayer3[best_track] ][edge_det]  << std::endl;
-
               (map_h_dedxById_data[ IsoTrack_layerPixelByLayer3[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer3 [best_track]   *   map_calibration[ IsoTrack_layerPixelByLayer3[best_track] ][edge_det]  ); 
             }
             else {
               //---- FPIX
               edge_det.second = 2;
-//               std::cout << " IsoTrack_diskPixelByLayer3[best_track] = " << IsoTrack_diskPixelByLayer3[best_track] << std::endl;
-//               std::cout << " (map_h_dedxById_data[ IsoTrack_diskPixelByLayer3[best_track] ])[edge_det] = " << (map_h_dedxById_data[ IsoTrack_diskPixelByLayer3[best_track] ])[edge_det] << std::endl;
-//               std::cout << "  map_calibration[ IsoTrack_diskPixelByLayer3[best_track] ][edge_det] = " << map_calibration[ IsoTrack_diskPixelByLayer3[best_track] ][edge_det]  << std::endl;
               (map_h_dedxById_data[ IsoTrack_diskPixelByLayer3[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer3 [best_track]   *   map_calibration[ IsoTrack_diskPixelByLayer3[best_track] ][edge_det]  ); 
             }
           }
@@ -791,19 +758,11 @@ int main(int argc, char** argv) {
             if (IsoTrack_layerPixelByLayer4[best_track] > -10) {
               //---- BPIX
               edge_det.second = 1;
-
-//               std::cout << " IsoTrack_layerPixelByLayer4[best_track] = " << IsoTrack_layerPixelByLayer4[best_track] << std::endl;
-//               std::cout << " (map_h_dedxById_data[ IsoTrack_layerPixelByLayer4[best_track] ])[edge_det] = " << (map_h_dedxById_data[ IsoTrack_layerPixelByLayer4[best_track] ])[edge_det] << std::endl;
-//               std::cout << "  map_calibration[ IsoTrack_layerPixelByLayer4[best_track] ][edge_det] = " << map_calibration[ IsoTrack_layerPixelByLayer4[best_track] ][edge_det]  << std::endl;
-
               (map_h_dedxById_data[ IsoTrack_layerPixelByLayer4[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer4 [best_track]   *   map_calibration[ IsoTrack_layerPixelByLayer4[best_track] ][edge_det]  ); 
             }
             else {
               //---- FPIX
               edge_det.second = 2;
-//               std::cout << " IsoTrack_diskPixelByLayer4[best_track] = " << IsoTrack_diskPixelByLayer4[best_track] << std::endl;
-//               std::cout << " (map_h_dedxById_data[ IsoTrack_diskPixelByLayer4[best_track] ])[edge_det] = " << (map_h_dedxById_data[ IsoTrack_diskPixelByLayer4[best_track] ])[edge_det] << std::endl;
-//               std::cout << "  map_calibration[ IsoTrack_diskPixelByLayer4[best_track] ][edge_det] = " << map_calibration[ IsoTrack_diskPixelByLayer4[best_track] ][edge_det]  << std::endl;
               (map_h_dedxById_data[ IsoTrack_diskPixelByLayer4[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer4 [best_track]   *   map_calibration[ IsoTrack_diskPixelByLayer4[best_track] ][edge_det]  ); 
             }
           }
@@ -812,19 +771,11 @@ int main(int argc, char** argv) {
             if (IsoTrack_layerPixelByLayer5[best_track] > -10) {
               //---- BPIX
               edge_det.second = 1;
-
-//               std::cout << " IsoTrack_layerPixelByLayer5[best_track] = " << IsoTrack_layerPixelByLayer5[best_track] << std::endl;
-//               std::cout << " (map_h_dedxById_data[ IsoTrack_layerPixelByLayer5[best_track] ])[edge_det] = " << (map_h_dedxById_data[ IsoTrack_layerPixelByLayer5[best_track] ])[edge_det] << std::endl;
-//               std::cout << "  map_calibration[ IsoTrack_layerPixelByLayer5[best_track] ][edge_det] = " << map_calibration[ IsoTrack_layerPixelByLayer5[best_track] ][edge_det]  << std::endl;
-
               (map_h_dedxById_data[ IsoTrack_layerPixelByLayer5[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer5 [best_track]   *   map_calibration[ IsoTrack_layerPixelByLayer5[best_track] ][edge_det]  ); 
             }
             else {
               //---- FPIX
               edge_det.second = 2;
-//               std::cout << " IsoTrack_diskPixelByLayer5[best_track] = " << IsoTrack_diskPixelByLayer5[best_track] << std::endl;
-//               std::cout << " (map_h_dedxById_data[ IsoTrack_diskPixelByLayer5[best_track] ])[edge_det] = " << (map_h_dedxById_data[ IsoTrack_diskPixelByLayer5[best_track] ])[edge_det] << std::endl;
-//               std::cout << "  map_calibration[ IsoTrack_diskPixelByLayer5[best_track] ][edge_det] = " << map_calibration[ IsoTrack_diskPixelByLayer5[best_track] ][edge_det]  << std::endl;
               (map_h_dedxById_data[ IsoTrack_diskPixelByLayer5[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer5 [best_track]   *   map_calibration[ IsoTrack_diskPixelByLayer5[best_track] ][edge_det]  ); 
             }
           }
@@ -833,19 +784,11 @@ int main(int argc, char** argv) {
             if (IsoTrack_layerPixelByLayer6[best_track] > -10) {
               //---- BPIX
               edge_det.second = 1;
-
-//               std::cout << " IsoTrack_layerPixelByLayer6[best_track] = " << IsoTrack_layerPixelByLayer6[best_track] << std::endl;
-//               std::cout << " (map_h_dedxById_data[ IsoTrack_layerPixelByLayer6[best_track] ])[edge_det] = " << (map_h_dedxById_data[ IsoTrack_layerPixelByLayer6[best_track] ])[edge_det] << std::endl;
-//               std::cout << "  map_calibration[ IsoTrack_layerPixelByLayer6[best_track] ][edge_det] = " << map_calibration[ IsoTrack_layerPixelByLayer6[best_track] ][edge_det]  << std::endl;
-
               (map_h_dedxById_data[ IsoTrack_layerPixelByLayer6[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer6 [best_track]   *   map_calibration[ IsoTrack_layerPixelByLayer6[best_track] ][edge_det]  ); 
             }
             else {
               //---- FPIX
               edge_det.second = 2;
-//               std::cout << " IsoTrack_diskPixelByLayer6[best_track] = " << IsoTrack_diskPixelByLayer6[best_track] << std::endl;
-//               std::cout << " (map_h_dedxById_data[ IsoTrack_diskPixelByLayer6[best_track] ])[edge_det] = " << (map_h_dedxById_data[ IsoTrack_diskPixelByLayer6[best_track] ])[edge_det] << std::endl;
-//               std::cout << "  map_calibration[ IsoTrack_diskPixelByLayer6[best_track] ][edge_det] = " << map_calibration[ IsoTrack_diskPixelByLayer6[best_track] ][edge_det]  << std::endl;
               (map_h_dedxById_data[ IsoTrack_diskPixelByLayer6[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer6 [best_track]   *   map_calibration[ IsoTrack_diskPixelByLayer6[best_track] ][edge_det]  ); 
             }
           }
