@@ -5,6 +5,7 @@ Copy files:
     scp amassiro@lxplus.cern.ch:/afs/cern.ch/work/a/amassiro/CMG/DisappearingTracks/CMSSW_9_4_6_patch1/src/CMGTools/TTHAnalysis/cfg/Test/Wino_M_300_cTau_3_Chunk12/treeProducerXtracks/tree.root data/
     scp amassiro@lxplus.cern.ch:/afs/cern.ch/work/a/amassiro/CMG/DisappearingTracks/CMSSW_9_4_6_patch1/src/CMGTools/TTHAnalysis/cfg/tree_DY.root data/
     scp amassiro@lxplus.cern.ch:/afs/cern.ch/work/a/amassiro/CMG/DisappearingTracks/CMSSW_9_4_6_patch1/src/CMGTools/TTHAnalysis/cfg/tree_DY_new.root data/
+    scp amassiro@lxplus.cern.ch:/afs/cern.ch/work/a/amassiro/CMG/DisappearingTracks/CMSSW_9_4_6_patch1/src/CMGTools/TTHAnalysis/cfg/tree_data.root data/
     
     
 Draw:
@@ -15,7 +16,9 @@ Draw:
     ./drawPixel.exe data/tree.root   data/tree.root  
     
     ./drawPixel.exe data/tree_filtered_DY.root   data/tree_filtered_DY.root
-    
+
+    ./drawPixel.exe data/tree_filtered_data.root   data/tree_filtered_DY.root
+
     
     
 Filter:
@@ -27,6 +30,21 @@ Filter:
     ./filterTree.exe ../../XTracks/CR_MC/DYJetsToLL_M50/treeProducerXtracks/tree.root   data/tree_mc.root  
     ./filterTree.exe data/tree_DY.root   data/tree_filtered_DY.root  
     ./filterTree.exe data/tree_DY_new.root   data/tree_filtered_DY.root  
+    ./filterTree.exe data/tree_data.root   data/tree_filtered_data.root  
+ 
+ 
+Calibrate:
+====
+
+
+    g++ -o calibratePixel.exe calibratePixel.cpp `root-config --cflags --glibs`
+ 
+    ./calibratePixel.exe    tocalibrate_complete_eta_edges_idet.root
+    
+ 
+    Draw calibrated 
+    ./drawPixel.exe  data/tree_filtered_data.root   data/tree_filtered_DY.root   scale_pixels_reduced.txt
+ 
  
  
  
