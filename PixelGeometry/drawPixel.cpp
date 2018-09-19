@@ -890,7 +890,7 @@ int main(int argc, char** argv) {
             }
             else {
               //---- FPIX
-              edge_det.second = 1;
+              edge_det.second = 2;
               (map_h_dedxById_mc[ IsoTrack_diskPixelByLayer0[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer0 [best_track]   ); 
             }
           }
@@ -903,7 +903,7 @@ int main(int argc, char** argv) {
             }
             else {
               //---- FPIX
-              edge_det.second = 1;
+              edge_det.second = 2;
               (map_h_dedxById_mc[ IsoTrack_diskPixelByLayer1[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer1 [best_track]   ); 
             }
           }
@@ -916,7 +916,7 @@ int main(int argc, char** argv) {
             }
             else {
               //---- FPIX
-              edge_det.second = 1;
+              edge_det.second = 2;
               (map_h_dedxById_mc[ IsoTrack_diskPixelByLayer2[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer2 [best_track]   ); 
             }
           }
@@ -929,7 +929,7 @@ int main(int argc, char** argv) {
             }
             else {
               //---- FPIX
-              edge_det.second = 1;
+              edge_det.second = 2;
               (map_h_dedxById_mc[ IsoTrack_diskPixelByLayer3[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer3 [best_track]   ); 
             }
           }
@@ -942,7 +942,7 @@ int main(int argc, char** argv) {
             }
             else {
               //---- FPIX
-              edge_det.second = 1;
+              edge_det.second = 2;
               (map_h_dedxById_mc[ IsoTrack_diskPixelByLayer4[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer4 [best_track]   ); 
             }
           }
@@ -955,7 +955,7 @@ int main(int argc, char** argv) {
             }
             else {
               //---- FPIX
-              edge_det.second = 1;
+              edge_det.second = 2;
               (map_h_dedxById_mc[ IsoTrack_diskPixelByLayer5[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer5 [best_track]   ); 
             }
           }
@@ -968,7 +968,7 @@ int main(int argc, char** argv) {
             }
             else {
               //---- FPIX
-              edge_det.second = 1;
+              edge_det.second = 2;
               (map_h_dedxById_mc[ IsoTrack_diskPixelByLayer6[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer6 [best_track]   ); 
             }
           }
