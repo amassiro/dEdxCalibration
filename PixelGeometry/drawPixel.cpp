@@ -62,6 +62,23 @@ int FindEdge (float eta, std::vector<float> eta_edges) {
   int ieta = -1;
   
   for (int iEdge = 0; iEdge<(eta_edges.size()-1); iEdge++) {
+    if (eta >= eta_edges.at(iEdge) && eta < eta_edges.at(iEdge+1)) {
+      ieta = iEdge;
+    }
+  }
+  
+  return ieta;
+}
+
+
+
+//---- find the eta range bin corresponding to the "eta" value
+//----  |eta|
+int FindEdgeAbs (float eta, std::vector<float> eta_edges) {
+  
+  int ieta = -1;
+  
+  for (int iEdge = 0; iEdge<(eta_edges.size()-1); iEdge++) {
     if (fabs(eta) >= eta_edges.at(iEdge) && fabs(eta) < eta_edges.at(iEdge+1)) {
       ieta = iEdge;
     }
@@ -88,7 +105,16 @@ int main(int argc, char** argv) {
   
   
   std::vector<float> eta_edges;
+  eta_edges.push_back(2.5);
+  eta_edges.push_back(2.1);
+  eta_edges.push_back(1.6);
+  eta_edges.push_back(1.3);
+  eta_edges.push_back(1.0);
+  eta_edges.push_back(0.6);
+  eta_edges.push_back(0.3);
+
   eta_edges.push_back(0.0);
+
   eta_edges.push_back(0.3);
   eta_edges.push_back(0.6);
   eta_edges.push_back(1.0);

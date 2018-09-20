@@ -20,6 +20,22 @@ Draw:
     ./drawPixel.exe data/tree_filtered_data.root   data/tree_filtered_DY.root
 
     
+    tree_filtered_data.root_before_300850.root
+    tree_filtered_data.root_after_300850.root
+
+    
+    
+    
+Split:
+====
+
+    g++ -o splitTree.exe splitTree.cpp `root-config --cflags --glibs`
+    
+    ./splitTree.exe  data/tree_filtered_data.root     300850
+    
+    Run half ~ 300850
+    
+    
     
 Filter:
 ====
