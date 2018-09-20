@@ -20,8 +20,23 @@ Draw:
     ./drawPixel.exe data/tree_filtered_data.root   data/tree_filtered_DY.root
 
     
-    tree_filtered_data.root_before_300850.root
-    tree_filtered_data.root_after_300850.root
+    
+    ./drawPixel.exe data/tree_filtered_data.root_before_300850.root  data/tree_filtered_data.root_after_300850.root
+
+    ./drawPixel.exe data/tree_filtered_data.root_before_300850.root_before_300000.root  data/tree_filtered_data.root_before_300850.root_after_300000.root
+    
+    ./drawPixel.exe data/tree_filtered_data.root_after_300850.root_before_301500.root  data/tree_filtered_data.root_after_300850.root_after_301500.root
+
+
+    
+
+    g++ -o drawPixelTime.exe drawPixelTime.cpp `root-config --cflags --glibs`
+    
+                                                                                   number of run intervals
+    ./drawPixelTime.exe data/tree_filtered_data.root    data/tree_filtered_DY.root     10
+    ./drawPixelTime.exe data/tree_filtered_data.root    data/tree_filtered_DY.root     4
+    
+    
 
     
     
@@ -34,6 +49,14 @@ Split:
     ./splitTree.exe  data/tree_filtered_data.root     300850
     
     Run half ~ 300850
+    
+    
+    ./splitTree.exe  data/tree_filtered_data.root     300850
+    
+    
+    ./splitTree.exe  data/tree_filtered_data.root_before_300850.root     300000
+    
+    ./splitTree.exe  data/tree_filtered_data.root_after_300850.root      301500
     
     
     
