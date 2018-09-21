@@ -143,7 +143,7 @@ int main(int argc, char** argv) {
   
   //---- BPIX vs FPIX
   std::vector<int> detId;
-  for (int idet = 0; idet<4; idet++) {
+  for (int idet = 0; idet<2; idet++) {
     detId.push_back(idet);
   }
   
@@ -631,7 +631,7 @@ int main(int argc, char** argv) {
   
   
   int minRun = inputTree_data->GetMinimum ("run");
-  int maxRun = inputTree_data->GetMaximum ("run");
+  int maxRun = inputTree_data->GetMaximum ("run") + 1;
   int deltaRun = (maxRun-minRun) / num_run_intervals;
   
   std::cout << " minRun = " << minRun << std::endl;
@@ -691,12 +691,12 @@ int main(int argc, char** argv) {
           if (IsoTrack_sizeXbyLayer0[best_track] != 0) {  
             if (IsoTrack_layerPixelByLayer0[best_track] > -10) {
               //---- BPIX
-              edge_det.second = 1;
+              edge_det.second = 0;
               ((vector_map_h_dedxById_data[iRun])[ IsoTrack_layerPixelByLayer0[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer0 [best_track]    ); 
             }
             else {
               //---- FPIX
-              edge_det.second = 2;
+              edge_det.second = 1;
               ((vector_map_h_dedxById_data[iRun])[ IsoTrack_diskPixelByLayer0[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer0 [best_track]   ); 
             }
           }
@@ -704,12 +704,12 @@ int main(int argc, char** argv) {
           if (IsoTrack_sizeXbyLayer1[best_track] != 0) {  
             if (IsoTrack_layerPixelByLayer1[best_track] > -10) {
               //---- BPIX
-              edge_det.second = 1;
+              edge_det.second = 0;
               ((vector_map_h_dedxById_data[iRun])[ IsoTrack_layerPixelByLayer1[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer1 [best_track]    ); 
             }
             else {
               //---- FPIX
-              edge_det.second = 2;
+              edge_det.second = 1;
               ((vector_map_h_dedxById_data[iRun])[ IsoTrack_diskPixelByLayer1[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer1 [best_track]   ); 
             }
           }
@@ -717,12 +717,12 @@ int main(int argc, char** argv) {
           if (IsoTrack_sizeXbyLayer2[best_track] != 0) {  
             if (IsoTrack_layerPixelByLayer2[best_track] > -10) {
               //---- BPIX
-              edge_det.second = 1;
+              edge_det.second = 0;
               ((vector_map_h_dedxById_data[iRun])[ IsoTrack_layerPixelByLayer2[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer2 [best_track]   ); 
             }
             else {
               //---- FPIX
-              edge_det.second = 2;
+              edge_det.second = 1;
               ((vector_map_h_dedxById_data[iRun])[ IsoTrack_diskPixelByLayer2[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer2 [best_track]  ); 
             }
           }
@@ -730,12 +730,12 @@ int main(int argc, char** argv) {
           if (IsoTrack_sizeXbyLayer3[best_track] != 0) {  
             if (IsoTrack_layerPixelByLayer3[best_track] > -10) {
               //---- BPIX
-              edge_det.second = 1;
+              edge_det.second = 0;
               ((vector_map_h_dedxById_data[iRun])[ IsoTrack_layerPixelByLayer3[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer3 [best_track]   ); 
             }
             else {
               //---- FPIX
-              edge_det.second = 2;
+              edge_det.second = 1;
               ((vector_map_h_dedxById_data[iRun])[ IsoTrack_diskPixelByLayer3[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer3 [best_track]  ); 
             }
           }
@@ -743,12 +743,12 @@ int main(int argc, char** argv) {
           if (IsoTrack_sizeXbyLayer4[best_track] != 0) {  
             if (IsoTrack_layerPixelByLayer4[best_track] > -10) {
               //---- BPIX
-              edge_det.second = 1;
+              edge_det.second = 0;
               ((vector_map_h_dedxById_data[iRun])[ IsoTrack_layerPixelByLayer4[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer4 [best_track]   ); 
             }
             else {
               //---- FPIX
-              edge_det.second = 2;
+              edge_det.second = 1;
               ((vector_map_h_dedxById_data[iRun])[ IsoTrack_diskPixelByLayer4[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer4 [best_track]  ); 
             }
           }
@@ -756,12 +756,12 @@ int main(int argc, char** argv) {
           if (IsoTrack_sizeXbyLayer5[best_track] != 0) {  
             if (IsoTrack_layerPixelByLayer5[best_track] > -10) {
               //---- BPIX
-              edge_det.second = 1;
+              edge_det.second = 0;
               ((vector_map_h_dedxById_data[iRun])[ IsoTrack_layerPixelByLayer5[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer5 [best_track]   ); 
             }
             else {
               //---- FPIX
-              edge_det.second = 2;
+              edge_det.second = 1;
               ((vector_map_h_dedxById_data[iRun])[ IsoTrack_diskPixelByLayer5[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer5 [best_track]  ); 
             }
           }
@@ -769,12 +769,12 @@ int main(int argc, char** argv) {
           if (IsoTrack_sizeXbyLayer6[best_track] != 0) {  
             if (IsoTrack_layerPixelByLayer6[best_track] > -10) {
               //---- BPIX
-              edge_det.second = 1;
+              edge_det.second = 0;
               ((vector_map_h_dedxById_data[iRun])[ IsoTrack_layerPixelByLayer6[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer6 [best_track]   ); 
             }
             else {
               //---- FPIX
-              edge_det.second = 2;
+              edge_det.second = 1;
               ((vector_map_h_dedxById_data[iRun])[ IsoTrack_diskPixelByLayer6[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer6 [best_track]  ); 
             }
           }
@@ -861,12 +861,12 @@ int main(int argc, char** argv) {
           if (IsoTrack_sizeXbyLayer0[best_track] != 0) {  
             if (IsoTrack_layerPixelByLayer0[best_track] > -10) {
               //---- BPIX
-              edge_det.second = 1;
+              edge_det.second = 0;
               (map_h_dedxById_mc[ IsoTrack_layerPixelByLayer0[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer0 [best_track]   ); 
             }
             else {
               //---- FPIX
-              edge_det.second = 2;
+              edge_det.second = 1;
               (map_h_dedxById_mc[ IsoTrack_diskPixelByLayer0[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer0 [best_track]   ); 
             }
           }
@@ -874,12 +874,12 @@ int main(int argc, char** argv) {
           if (IsoTrack_sizeXbyLayer1[best_track] != 0) {  
             if (IsoTrack_layerPixelByLayer1[best_track] > -10) {
               //---- BPIX
-              edge_det.second = 1;
+              edge_det.second = 0;
               (map_h_dedxById_mc[ IsoTrack_layerPixelByLayer1[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer1 [best_track]   ); 
             }
             else {
               //---- FPIX
-              edge_det.second = 2;
+              edge_det.second = 1;
               (map_h_dedxById_mc[ IsoTrack_diskPixelByLayer1[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer1 [best_track]   ); 
             }
           }
@@ -887,12 +887,12 @@ int main(int argc, char** argv) {
           if (IsoTrack_sizeXbyLayer2[best_track] != 0) {  
             if (IsoTrack_layerPixelByLayer2[best_track] > -10) {
               //---- BPIX
-              edge_det.second = 1;
+              edge_det.second = 0;
               (map_h_dedxById_mc[ IsoTrack_layerPixelByLayer2[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer2 [best_track]   ); 
             }
             else {
               //---- FPIX
-              edge_det.second = 2;
+              edge_det.second = 1;
               (map_h_dedxById_mc[ IsoTrack_diskPixelByLayer2[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer2 [best_track]   ); 
             }
           }
@@ -900,12 +900,12 @@ int main(int argc, char** argv) {
           if (IsoTrack_sizeXbyLayer3[best_track] != 0) {  
             if (IsoTrack_layerPixelByLayer3[best_track] > -10) {
               //---- BPIX
-              edge_det.second = 1;
+              edge_det.second = 0;
               (map_h_dedxById_mc[ IsoTrack_layerPixelByLayer3[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer3 [best_track]   ); 
             }
             else {
               //---- FPIX
-              edge_det.second = 2;
+              edge_det.second = 1;
               (map_h_dedxById_mc[ IsoTrack_diskPixelByLayer3[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer3 [best_track]   ); 
             }
           }
@@ -913,12 +913,12 @@ int main(int argc, char** argv) {
           if (IsoTrack_sizeXbyLayer4[best_track] != 0) {  
             if (IsoTrack_layerPixelByLayer4[best_track] > -10) {
               //---- BPIX
-              edge_det.second = 1;
+              edge_det.second = 0;
               (map_h_dedxById_mc[ IsoTrack_layerPixelByLayer4[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer4 [best_track]   ); 
             }
             else {
               //---- FPIX
-              edge_det.second = 2;
+              edge_det.second = 1;
               (map_h_dedxById_mc[ IsoTrack_diskPixelByLayer4[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer4 [best_track]   ); 
             }
           }
@@ -926,12 +926,12 @@ int main(int argc, char** argv) {
           if (IsoTrack_sizeXbyLayer5[best_track] != 0) {  
             if (IsoTrack_layerPixelByLayer5[best_track] > -10) {
               //---- BPIX
-              edge_det.second = 1;
+              edge_det.second = 0;
               (map_h_dedxById_mc[ IsoTrack_layerPixelByLayer5[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer5 [best_track]   ); 
             }
             else {
               //---- FPIX
-              edge_det.second = 2;
+              edge_det.second = 1;
               (map_h_dedxById_mc[ IsoTrack_diskPixelByLayer5[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer5 [best_track]   ); 
             }
           }
@@ -939,12 +939,12 @@ int main(int argc, char** argv) {
           if (IsoTrack_sizeXbyLayer6[best_track] != 0) {  
             if (IsoTrack_layerPixelByLayer6[best_track] > -10) {
               //---- BPIX
-              edge_det.second = 1;
+              edge_det.second = 0;
               (map_h_dedxById_mc[ IsoTrack_layerPixelByLayer6[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer6 [best_track]   ); 
             }
             else {
               //---- FPIX
-              edge_det.second = 2;
+              edge_det.second = 1;
               (map_h_dedxById_mc[ IsoTrack_diskPixelByLayer6[best_track] ])[edge_det] ->Fill(IsoTrack_dedxByLayer6 [best_track]   ); 
             }
           }
@@ -982,7 +982,7 @@ int main(int argc, char** argv) {
     for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {  
       
       name = Form ("cc_summary_layer_%d_eta_%d" , ilayer, iEdge); 
-      TCanvas* cc_summary_ieta = new TCanvas (name.Data(),"",1400,500);
+      TCanvas* cc_summary_ieta = new TCanvas (name.Data(),"",1400,700);
       cc_summary_ieta->Divide(detId.size(), 1);
       
       for (int idet = 0; idet<detId.size(); idet++) {     
