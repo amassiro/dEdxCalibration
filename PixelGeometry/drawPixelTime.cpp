@@ -599,6 +599,12 @@ int main(int argc, char** argv) {
   
   
   
+  
+  //---- output file
+  TFile* fileOut = new TFile ("tocalibrate_complete_eta_edges_idet_timeRanges.root", "RECREATE");
+  
+  
+  
   //---- a vector for the different run-ranges
   std::vector< std::map < int, std::map< std::pair<int, int> , TH1F*> > >  vector_map_h_dedxById_data;
   
@@ -616,7 +622,7 @@ int main(int argc, char** argv) {
         edge_det.second = idet;
         
         TString name;      
-        name = Form ("h_%d_%d_%d_%d_dedxById_data" , iRun, ilayer, edge_det.first , edge_det.second);   
+        name = Form ("h_irun_%d__ilayer_%d__ieta_%d__bpixfpix_%d__dedxById_data" , iRun, ilayer, edge_det.first , edge_det.second);   
         TH1F* temp = new TH1F (name.Data(), "data", 100, 0, 10);  
         setupHisto(temp, iRun);
         
@@ -807,7 +813,7 @@ int main(int argc, char** argv) {
         edge_det.second = idet;
         
         TString name;      
-        name = Form ("h_%d_%d_%d_dedxById_mc" , ilayer, edge_det.first , edge_det.second);   
+        name = Form ("h_ilayer_%d__ieta_%d__bpixfpix_%d__dedxById_mc" , ilayer, edge_det.first , edge_det.second);   
         TH1F* temp = new TH1F (name.Data(), "mc", 100, 0, 10);  
         setupHisto(temp, 11);
         
@@ -959,6 +965,32 @@ int main(int argc, char** argv) {
   
   
   
+  
+  
+  
+  //---- save in output file
+  fileOut->cd();
+  
+  for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+    TString name;
+    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {  
+      for (int idet = 0; idet<detId.size(); idet++) {   
+        std::pair<int, int> edge_det;
+        edge_det.first = iEdge;
+        edge_det.second = idet;
+        map_h_dedxById_mc[ilayer][edge_det]  -> Write();
+        for (int iRun =0; iRun < num_run_intervals; iRun++) { 
+          (vector_map_h_dedxById_data[iRun])[ilayer][edge_det]->Write();
+        }
+      }
+    }
+  }
+  
+  
+  
+  
+  //---- now prepare to draw ...
+  
   for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {  
     for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
       for (int idet = 0; idet<detId.size(); idet++) {  
@@ -974,6 +1006,8 @@ int main(int argc, char** argv) {
     }
   }
   
+  
+  //---- ... and draw.
   
   for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
     
@@ -1031,7 +1065,7 @@ int main(int argc, char** argv) {
     }
   }
   
-    
+  
   
 }
 
