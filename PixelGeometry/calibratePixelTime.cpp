@@ -275,19 +275,19 @@ int main(int argc, char** argv) {
         TString name;  
         
         name = Form ("cc_entries__iRun_%d__idet_%d__ilayer_%d" , iRun, idet, ilayer); 
-        mini_map_canvas_entries[layer_det] = new TCanvas (name.Data(),"",1000,1000);
+        mini_map_canvas_entries[layer_det] = new TCanvas (name.Data(),"",800,1200);
         mini_map_canvas_entries[layer_det]->Divide(2, eta_edges.size());
 
         name = Form ("cc_like_closure__iRun_%d__idet_%d__ilayer_%d" , iRun, idet, ilayer); 
-        mini_map_canvas_like_closure[layer_det] = new TCanvas (name.Data(),"",1000,1000);
+        mini_map_canvas_like_closure[layer_det] = new TCanvas (name.Data(),"",800,1200);
         mini_map_canvas_like_closure[layer_det]->Divide(2, eta_edges.size());
 
         name = Form ("cc_like_scan__iRun_%d__idet_%d__ilayer_%d" , iRun, idet, ilayer); 
-        mini_map_canvas_like_scan[layer_det] = new TCanvas (name.Data(),"",1000,1000);
+        mini_map_canvas_like_scan[layer_det] = new TCanvas (name.Data(),"",800,1200);
         mini_map_canvas_like_scan[layer_det]->Divide(2, eta_edges.size());
         
         name = Form ("cc_histo__iRun_%d__idet_%d__ilayer_%d" , iRun, idet, ilayer); 
-        mini_map_canvas_histo[layer_det] = new TCanvas (name.Data(),"",1000,1000);
+        mini_map_canvas_histo[layer_det] = new TCanvas (name.Data(),"",800,1200);
         mini_map_canvas_histo[layer_det]->Divide(2, eta_edges.size());
         
       }
@@ -570,6 +570,21 @@ int main(int argc, char** argv) {
         vector_map_canvas_histo        [iRun][layer_det]->Write();
         vector_map_canvas_like_closure [iRun][layer_det]->Write();
         vector_map_canvas_like_scan    [iRun][layer_det]->Write();
+        
+        TString name;
+        
+        name = Form ("plot_calibration_run/cc_entries__iRun_%d__idet_%d__ilayer_%d.png" , iRun, idet, ilayer); 
+        vector_map_canvas_entries      [iRun][layer_det]->SaveAs( name.Data() );
+        
+        name = Form ("plot_calibration_run/cc_like_closure__iRun_%d__idet_%d__ilayer_%d.png" , iRun, idet, ilayer); 
+        vector_map_canvas_histo        [iRun][layer_det]->SaveAs( name.Data() );
+        
+        name = Form ("plot_calibration_run/cc_like_scan__iRun_%d__idet_%d__ilayer_%d.png" , iRun, idet, ilayer); 
+        vector_map_canvas_like_closure [iRun][layer_det]->SaveAs( name.Data() );
+        
+        name = Form ("plot_calibration_run/cc_histo__iRun_%d__idet_%d__ilayer_%d.png" , iRun, idet, ilayer); 
+        vector_map_canvas_like_scan    [iRun][layer_det]->SaveAs( name.Data() );
+                
       }
     }
   }
