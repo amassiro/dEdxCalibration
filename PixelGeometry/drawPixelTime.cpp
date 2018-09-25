@@ -122,13 +122,13 @@ int main(int argc, char** argv) {
   
   
   std::vector<float> eta_edges;
-  eta_edges.push_back(-2.5);
-  eta_edges.push_back(-2.1);
-  eta_edges.push_back(-1.6);
-  eta_edges.push_back(-1.3);
-  eta_edges.push_back(-1.0);
-  eta_edges.push_back(-0.6);
-  eta_edges.push_back(-0.3);
+//   eta_edges.push_back(-2.5);           FindEdge  -> FindEdgeAbs
+//   eta_edges.push_back(-2.1);
+//   eta_edges.push_back(-1.6);
+//   eta_edges.push_back(-1.3);
+//   eta_edges.push_back(-1.0);
+//   eta_edges.push_back(-0.6);
+//   eta_edges.push_back(-0.3);
 
   eta_edges.push_back(0.0);
 
@@ -681,7 +681,7 @@ int main(int argc, char** argv) {
       
       if (best_track != -1) {
     
-        int iEdge = FindEdge (IsoTrack_eta[best_track], eta_edges);
+        int iEdge = FindEdgeAbs (IsoTrack_eta[best_track], eta_edges);
         
         if (iEdge != -1) {
           
@@ -851,7 +851,7 @@ int main(int argc, char** argv) {
 
       if (best_track != -1) {
         
-        int iEdge = FindEdge (IsoTrack_eta[best_track], eta_edges);
+        int iEdge = FindEdgeAbs (IsoTrack_eta[best_track], eta_edges);
         
         if (iEdge != -1) {
           

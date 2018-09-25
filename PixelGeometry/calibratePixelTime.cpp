@@ -141,13 +141,13 @@ int main(int argc, char** argv) {
   
   
   std::vector<float> eta_edges;
-  eta_edges.push_back(2.5);
-  eta_edges.push_back(2.1);
-  eta_edges.push_back(1.6);
-  eta_edges.push_back(1.3);
-  eta_edges.push_back(1.0);
-  eta_edges.push_back(0.6);
-  eta_edges.push_back(0.3);
+//   eta_edges.push_back(-2.5);
+//   eta_edges.push_back(-2.1);
+//   eta_edges.push_back(-1.6);
+//   eta_edges.push_back(-1.3);
+//   eta_edges.push_back(-1.0);
+//   eta_edges.push_back(-0.6);
+//   eta_edges.push_back(-0.3);
   
   eta_edges.push_back(0.0);
   
@@ -217,7 +217,12 @@ int main(int argc, char** argv) {
   
   
   
+  //----     layer                   eta   det   
   std::map < int, std::map< std::pair<int, int> , TH1F*> > map_h_dedxById_mc;
+  //----         layer                   eta   det   
+  std::map < int, std::map< std::pair<int, int> , float> > map_gaus_mc;
+  std::map < int, std::map< std::pair<int, int> , float> > map_land_mc;
+  
   
   for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
     for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
@@ -229,6 +234,10 @@ int main(int argc, char** argv) {
         TString name;      
         name = Form ("h_ilayer_%d__ieta_%d__bpixfpix_%d__dedxById_mc" , ilayer, edge_det.first , edge_det.second);   
         map_h_dedxById_mc  [ilayer][edge_det] = (TH1F*) fileIn->Get(name.Data());
+        
+        map_gaus_mc[ilayer][edge_det] = -1.0;
+        map_land_mc[ilayer][edge_det] = -1.0;
+        
       }
     }
   }
@@ -275,19 +284,19 @@ int main(int argc, char** argv) {
         TString name;  
         
         name = Form ("cc_entries__iRun_%d__idet_%d__ilayer_%d" , iRun, idet, ilayer); 
-        mini_map_canvas_entries[layer_det] = new TCanvas (name.Data(),"",800,1200);
+        mini_map_canvas_entries[layer_det] = new TCanvas (name.Data(),"",800,1800);
         mini_map_canvas_entries[layer_det]->Divide(2, eta_edges.size());
 
         name = Form ("cc_like_closure__iRun_%d__idet_%d__ilayer_%d" , iRun, idet, ilayer); 
-        mini_map_canvas_like_closure[layer_det] = new TCanvas (name.Data(),"",800,1200);
+        mini_map_canvas_like_closure[layer_det] = new TCanvas (name.Data(),"",800,1800);
         mini_map_canvas_like_closure[layer_det]->Divide(2, eta_edges.size());
 
         name = Form ("cc_like_scan__iRun_%d__idet_%d__ilayer_%d" , iRun, idet, ilayer); 
-        mini_map_canvas_like_scan[layer_det] = new TCanvas (name.Data(),"",800,1200);
+        mini_map_canvas_like_scan[layer_det] = new TCanvas (name.Data(),"",800,1800);
         mini_map_canvas_like_scan[layer_det]->Divide(2, eta_edges.size());
         
         name = Form ("cc_histo__iRun_%d__idet_%d__ilayer_%d" , iRun, idet, ilayer); 
-        mini_map_canvas_histo[layer_det] = new TCanvas (name.Data(),"",800,1200);
+        mini_map_canvas_histo[layer_det] = new TCanvas (name.Data(),"",800,1800);
         mini_map_canvas_histo[layer_det]->Divide(2, eta_edges.size());
         
       }
@@ -330,11 +339,6 @@ int main(int argc, char** argv) {
     outputCanvas.cd();
     outputCanvas.mkdir (name.Data());
     outputCanvas.cd(name.Data());
-    
-    
-    std::vector< float > calibration_values_landau_mc;
-    std::vector< float > calibration_values_gauss_mc;
-
     
     for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {  
       
@@ -406,10 +410,10 @@ int main(int argc, char** argv) {
             if (map_h_dedxById_mc[ilayer][edge_det]->Integral() == 0) continue;
             
             map_h_dedxById_mc[ilayer][edge_det]->Fit("f_gauss", "RMIQ", "", 2.5, 3.4); //---- gauss
-            calibration_values_gauss_mc.push_back (f_gauss->GetParameter(3));
+            map_gaus_mc[ilayer][edge_det] = f_gauss->GetParameter(3);
             
             map_h_dedxById_mc[ilayer][edge_det]->Fit("f_landau", "RMIQ", "", min_landau, max_landau); //---- landau
-            calibration_values_landau_mc.push_back (f_landau->GetParameter(3));
+            map_land_mc[ilayer][edge_det] = f_landau->GetParameter(3);
             
             f_landau->DrawClone("same");
             f_gauss->DrawClone("same");
@@ -478,7 +482,7 @@ int main(int argc, char** argv) {
           likelihoodScan->Fit("parabola", "Q");
           parabola.DrawClone ("same");
           float bias_min_value = - parabola.GetParameter (1) / (2. *  parabola.GetParameter (0) );
-          std::cout << " min = " << bias_min_value << std::endl;
+//           std::cout << " min = " << bias_min_value << std::endl;
           bias_min_value = (1. - bias_min_value);
           
         
@@ -577,17 +581,115 @@ int main(int argc, char** argv) {
         vector_map_canvas_entries      [iRun][layer_det]->SaveAs( name.Data() );
         
         name = Form ("plot_calibration_run/cc_like_closure__iRun_%d__idet_%d__ilayer_%d.png" , iRun, idet, ilayer); 
-        vector_map_canvas_histo        [iRun][layer_det]->SaveAs( name.Data() );
-        
-        name = Form ("plot_calibration_run/cc_like_scan__iRun_%d__idet_%d__ilayer_%d.png" , iRun, idet, ilayer); 
         vector_map_canvas_like_closure [iRun][layer_det]->SaveAs( name.Data() );
         
-        name = Form ("plot_calibration_run/cc_histo__iRun_%d__idet_%d__ilayer_%d.png" , iRun, idet, ilayer); 
+        name = Form ("plot_calibration_run/cc_like_scan__iRun_%d__idet_%d__ilayer_%d.png" , iRun, idet, ilayer); 
         vector_map_canvas_like_scan    [iRun][layer_det]->SaveAs( name.Data() );
+        
+        name = Form ("plot_calibration_run/cc_histo__iRun_%d__idet_%d__ilayer_%d.png" , iRun, idet, ilayer); 
+        vector_map_canvas_histo        [iRun][layer_det]->SaveAs( name.Data() );
                 
       }
     }
   }
+  
+  
+  
+  //---- now get the values and transform into historical dependence
+      
+  //----     iRun           eta                      layer  det   
+  std::map < int, std::map< int, std::map < std::pair<int, int> , float> > > map_scale;
+    
+  for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {  
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+      for (int idet = 0; idet<detId.size(); idet++) {
+        std::pair<int, int> edge_det;
+        edge_det.first = iEdge;
+        edge_det.second = idet;      
+        for (int iRun =0; iRun < num_run_intervals; iRun++) {
+          //----      |     eta             layer            det            iRun     |
+          myfile << " |" << iEdge << " " << ilayer << " " << idet << " " << iRun << "|";
+          myfile << "    " << map_land_mc[ilayer][edge_det] / vector_map_land_data[iRun][ilayer][edge_det];
+          myfile  << " [ " << map_land_mc[ilayer][edge_det] << " / " << vector_map_land_data[iRun][ilayer][edge_det] << " ]" ;
+          
+          myfile << "    " << map_gaus_mc[ilayer][edge_det] / vector_map_gaus_data[iRun][ilayer][edge_det];
+          myfile  << " [ " << map_gaus_mc[ilayer][edge_det] << " / " << vector_map_gaus_data[iRun][ilayer][edge_det] << " ]" ;
+          
+          myfile << "    " << vector_map_like_data[iRun][ilayer][edge_det]  << std::endl;
+          
+          
+          
+          myfile_reduced << iEdge << " " << ilayer << " " << idet << "               ";
+          float best_value = 1.;
+          
+          float value_1;
+          if (vector_map_land_data[iRun][ilayer][edge_det] != 0 ) value_1 = map_land_mc[ilayer][edge_det] / vector_map_land_data[iRun][ilayer][edge_det];
+          float value_2;
+          if (vector_map_gaus_data[iRun][ilayer][edge_det] != 0 ) value_2 = map_gaus_mc[ilayer][edge_det] / vector_map_gaus_data[iRun][ilayer][edge_det];
+          float value_3 =  vector_map_like_data[iRun][ilayer][edge_det];
+          
+          if (fabs(value_1-1.0) > 2) {
+            if (fabs(value_2-1.0) > 2) {
+              best_value = value_3;
+            }
+            else {
+              best_value = value_2;
+            }
+          }
+          else {
+            best_value = value_1;
+          }
+          
+          myfile_reduced << best_value << std::endl;
+         
+          std::pair<int, int> layer_det;
+          layer_det.first = ilayer;
+          layer_det.second = idet; 
+          
+          map_scale[iRun][iEdge][layer_det] = best_value;
+           
+        }
+      }
+    }
+    
+  }
+  
+  
+  //---- now plot
+
+  for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {  
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+      for (int idet = 0; idet<detId.size(); idet++) {
+        std::pair<int, int> layer_det;
+        layer_det.first = ilayer;
+        layer_det.second = idet; 
+        
+        TString name;
+        name = Form ("cc_scale__eta_%d__idet_%d__ilayer_%d" , iEdge, idet, ilayer); 
+        TCanvas* temp_canvas = new TCanvas (name.Data(), "", 800, 600);
+        
+        TGraph* evolution_scale = new TGraph();
+        
+        for (int iRun =0; iRun < num_run_intervals; iRun++) {
+          evolution_scale->SetPoint(iRun, iRun, map_scale[iRun][iEdge][layer_det]);
+        }
+        
+        evolution_scale->SetMarkerSize(2);
+        evolution_scale->SetMarkerStyle(21);
+        evolution_scale->SetMarkerColor(kRed);
+        evolution_scale->SetLineColor(kRed);
+        
+        evolution_scale->Draw("APL");
+        
+        name = Form ("plot_calibration_run/cc_scale__eta_%d__idet_%d__ilayer_%d.png" , iEdge, idet, ilayer); 
+        temp_canvas -> SaveAs (name.Data());
+        
+      }
+    }
+  }
+  
+  
+  
   
   outputCanvas.Close();
   
