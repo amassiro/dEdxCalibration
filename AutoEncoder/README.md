@@ -1,3 +1,6 @@
 AutoEncoder
 ====
 
+    python training.py
+    
+    
