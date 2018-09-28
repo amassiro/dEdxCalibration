@@ -38,7 +38,8 @@ def getDataFromFile(fileinfo, branchlist) :
 #
 
 zllfile = 'Data/flat_tree_Z.root'
-sigfile = 'Data/flat_tree_Sig_Wino_M_300_cTau_10.root'
+sigfile = 'Data/flat_tree_Sig.root'
+#sigfile = 'Data/flat_tree_Sig_Wino_M_300_cTau_10.root'
 
  
 brlist  = ['tk_dedxl0', 'tk_dedxl1', 'tk_dedxl2', 'tk_dedxl3']
@@ -101,8 +102,8 @@ model.summary()
 
 # train model
 history= model.fit(    data_train, labels_train, 
-                       batch_size=len(data_train)/2,
-                       epochs=25, shuffle=True, 
+                       batch_size=len(data_train)/8,
+                       epochs=100, shuffle=True, 
                        validation_data = (data_test, labels_test) 
                    )
 
@@ -119,6 +120,8 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D as plt3d
 
+import matplotlib as mpl
+mpl.rcParams['figure.facecolor'] = 'white' 
 
 #########################################################
 ## plot samples
@@ -131,11 +134,11 @@ plt.subplot(2,2,1)
 plt.title("Signal")
 plt.xlabel("layer 0")
 plt.ylabel("layer 1")
-plt.hist2d(np.array(data_sig_train)[:,0], np.array(data_sig_train)[:,1], range=range_, bins=20, cmap=cm.coolwarm)
+plt.hist2d(np.array(data_sig_train)[:,0], np.array(data_sig_train)[:,1], range=range_, bins=20, mplap=cm.coolwarm)
 
 plt.subplot(2,2,2)
 plt.title("Background")
-plt.hist2d(np.array(data_bkg_train)[:,0], np.array(data_bkg_train)[:,1], range=range_, bins=20, cmap=cm.coolwarm)
+plt.hist2d(np.array(data_bkg_train)[:,0], np.array(data_bkg_train)[:,1], range=range_, bins=20, mplap=cm.coolwarm)
 plt.xlabel("layer 0")
 plt.ylabel("layer 1")
 
@@ -143,11 +146,11 @@ plt.subplot(2,2,3)
 plt.title("Signal")
 plt.xlabel("layer 2")
 plt.ylabel("layer 3")
-plt.hist2d(np.array(data_sig_train)[:,2], np.array(data_sig_train)[:,3], range=range_, bins=20, cmap=cm.coolwarm)
+plt.hist2d(np.array(data_sig_train)[:,2], np.array(data_sig_train)[:,3], range=range_, bins=20, mplap=cm.coolwarm)
 
 plt.subplot(2,2,4)
 plt.title("Background")
-plt.hist2d(np.array(data_bkg_train)[:,2], np.array(data_bkg_train)[:,3], range=range_, bins=20, cmap=cm.coolwarm)
+plt.hist2d(np.array(data_bkg_train)[:,2], np.array(data_bkg_train)[:,3], range=range_, bins=20, mplap=cm.coolwarm)
 plt.xlabel("layer 2")
 plt.ylabel("layer 3")
 
@@ -209,6 +212,16 @@ plt.title('ROC curve (zoomed in at top left)')
 plt.legend(loc='best')
 
 
+
+# HEP glossary
+plt.figure(5)
+plt.plot([0, 1], [1, 0], 'k--')
+false_positive_one_minus_rates_keras = [ (1-value) for value in false_positive_rates_keras ]
+plt.plot(true_positive_rates_keras, false_positive_one_minus_rates_keras)
+plt.xlabel('Signal efficiency')
+plt.ylabel('Background rejection')
+plt.title('ROC curve')
+plt.legend(loc='best')
 
 
 

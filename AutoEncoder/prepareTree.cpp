@@ -108,30 +108,41 @@ int main(int argc, char** argv) {
   
   
   Float_t min_pt = 5; //--- no soft tracks < 5 GeV !
-      
+  Float_t max_pt = -1;
+  
   for (int iEntry=0; iEntry<inputTree->GetEntries(); iEntry++) {
     if (!(iEntry%50000)) std::cout << "   " << iEntry << " ; nIsoTrack = "  << nIsoTrack << std::endl;
     inputTree->GetEntry(iEntry);
      
-    
+    max_pt = -1;
+    int best_track = -1;
     for (int iTrack = 0; iTrack < std::min(kMaxTracks, nIsoTrack); iTrack++) {
       if (
         IsoTrack_pt[iTrack] > min_pt &&
+        IsoTrack_pt[iTrack] > max_pt &&
         IsoTrack_highPurity[iTrack] == 1 && 
         fabs(IsoTrack_dxy[iTrack]) < 0.02 &&
         fabs(IsoTrack_dz[iTrack]) < 0.5
       ) {
         
+        best_track = iTrack;
+        max_pt = IsoTrack_pt[iTrack] ;
         
-        tk_dedxl0 = IsoTrack_dedxByLayer0[iTrack];
-        tk_dedxl1 = IsoTrack_dedxByLayer1[iTrack];
-        tk_dedxl2 = IsoTrack_dedxByLayer2[iTrack];
-        tk_dedxl3 = IsoTrack_dedxByLayer3[iTrack];
-        
-        outputTree->Fill();     
         
       }
     }
+    
+    if (best_track != -1) {
+      
+      tk_dedxl0 = IsoTrack_dedxByLayer0[best_track];
+      tk_dedxl1 = IsoTrack_dedxByLayer1[best_track];
+      tk_dedxl2 = IsoTrack_dedxByLayer2[best_track];
+      tk_dedxl3 = IsoTrack_dedxByLayer3[best_track];
+      
+      outputTree->Fill();     
+    }
+    
+    
   }
 
   std::cout << " saved tracks = " << outputTree->GetEntries() << " out of: " << inputTree->GetEntries() << std::endl;
