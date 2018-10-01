@@ -92,6 +92,8 @@ model.add(Dense(100, input_dim = numvars, kernel_initializer='normal', activatio
 #model.add(Dropout(0.3))
 model.add(Dense(50, kernel_initializer='normal', activation='relu'))
 #model.add(Dropout(0.2))
+model.add(Dense(50, kernel_initializer='normal', activation='relu'))
+#model.add(Dropout(0.2))
 model.add(Dense(30, kernel_initializer='normal', activation='relu'))
 #model.add(Dropout(0.2))
 model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
@@ -103,7 +105,8 @@ model.summary()
 # train model
 history= model.fit(    data_train, labels_train, 
                        batch_size=len(data_train)/8,
-                       epochs=100, shuffle=True, 
+                       epochs=200,
+                       shuffle=True, 
                        validation_data = (data_test, labels_test) 
                    )
 
@@ -134,11 +137,11 @@ plt.subplot(2,2,1)
 plt.title("Signal")
 plt.xlabel("layer 0")
 plt.ylabel("layer 1")
-plt.hist2d(np.array(data_sig_train)[:,0], np.array(data_sig_train)[:,1], range=range_, bins=20, mplap=cm.coolwarm)
+plt.hist2d(np.array(data_sig_train)[:,0], np.array(data_sig_train)[:,1], range=range_, bins=20, cmap=cm.coolwarm)
 
 plt.subplot(2,2,2)
 plt.title("Background")
-plt.hist2d(np.array(data_bkg_train)[:,0], np.array(data_bkg_train)[:,1], range=range_, bins=20, mplap=cm.coolwarm)
+plt.hist2d(np.array(data_bkg_train)[:,0], np.array(data_bkg_train)[:,1], range=range_, bins=20, cmap=cm.coolwarm)
 plt.xlabel("layer 0")
 plt.ylabel("layer 1")
 
@@ -146,11 +149,11 @@ plt.subplot(2,2,3)
 plt.title("Signal")
 plt.xlabel("layer 2")
 plt.ylabel("layer 3")
-plt.hist2d(np.array(data_sig_train)[:,2], np.array(data_sig_train)[:,3], range=range_, bins=20, mplap=cm.coolwarm)
+plt.hist2d(np.array(data_sig_train)[:,2], np.array(data_sig_train)[:,3], range=range_, bins=20, cmap=cm.coolwarm)
 
 plt.subplot(2,2,4)
 plt.title("Background")
-plt.hist2d(np.array(data_bkg_train)[:,2], np.array(data_bkg_train)[:,3], range=range_, bins=20, mplap=cm.coolwarm)
+plt.hist2d(np.array(data_bkg_train)[:,2], np.array(data_bkg_train)[:,3], range=range_, bins=20, cmap=cm.coolwarm)
 plt.xlabel("layer 2")
 plt.ylabel("layer 3")
 
