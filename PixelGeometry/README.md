@@ -90,6 +90,7 @@ Calibrate:
  
     g++ -o calibratePixelTime.exe calibratePixelTime.cpp `root-config --cflags --glibs`
 
+                                                                                    num_run_intervals
     ./calibratePixelTime.exe    tocalibrate_complete_eta_edges_idet_timeRanges.root       4
     
     

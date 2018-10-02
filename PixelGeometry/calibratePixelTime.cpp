@@ -81,6 +81,34 @@ public:
 
 
 
+
+void setupHisto(TH1F* histo, int icolor) {
+  
+  Color_t* color = new Color_t [200];
+  color[0] = kAzure; //kRed ;
+  color[1] = kAzure + 10 ;
+  color[2] = kYellow + 2 ;
+  color[3] = kGreen ;
+  color[4] = kGreen + 4 ;
+  color[5] = kBlue ;
+  color[6] = kCyan ;
+  color[7] = kPink + 1 ;
+  color[8] = kBlack ;
+  color[9] = kYellow + 4 ;
+  color[10]= kRed ;
+  for (int i=0; i<30; i++) {
+    color[i+11] = kBlue + i;
+  }
+  
+  
+  histo->SetLineColor(color[icolor]);
+  histo->SetMarkerColor(color[icolor]);
+  histo->SetMarkerSize(1);
+  histo->SetMarkerStyle(20+icolor);
+}
+
+
+
 void setupTGraph(TGraph* graph, int icolor) {
   
   Color_t* color = new Color_t [200];
@@ -202,6 +230,7 @@ int main(int argc, char** argv) {
           TString name;      
           name = Form ("h_irun_%d__ilayer_%d__ieta_%d__bpixfpix_%d__dedxById_data" , iRun, ilayer, edge_det.first , edge_det.second);   
           map_h_dedxById_data[ilayer][edge_det] = (TH1F*) fileIn->Get(name.Data());
+          setupHisto(map_h_dedxById_data[ilayer][edge_det], iRun);
           
           map_scale_data[ilayer][edge_det] = 1.0;
         }
@@ -234,6 +263,7 @@ int main(int argc, char** argv) {
         TString name;      
         name = Form ("h_ilayer_%d__ieta_%d__bpixfpix_%d__dedxById_mc" , ilayer, edge_det.first , edge_det.second);   
         map_h_dedxById_mc  [ilayer][edge_det] = (TH1F*) fileIn->Get(name.Data());
+        setupHisto(map_h_dedxById_mc[ilayer][edge_det], 20); //---- kRed
         
         map_gaus_mc[ilayer][edge_det] = -1.0;
         map_land_mc[ilayer][edge_det] = -1.0;
