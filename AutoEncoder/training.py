@@ -38,7 +38,8 @@ def getDataFromFile(fileinfo, branchlist) :
 #
 
 zllfile = 'Data/flat_tree_Z.root'
-sigfile = 'Data/flat_tree_Sig.root'
+#sigfile = 'Data/flat_tree_Sig.root'
+sigfile = 'Data/flat_tree_Sig_all.root'
 #sigfile = 'Data/flat_tree_Sig_Wino_M_300_cTau_10.root'
 
  

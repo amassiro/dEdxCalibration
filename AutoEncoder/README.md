@@ -1,14 +1,6 @@
 AutoEncoder
 ====
 
-
-
-Simple NN
-====
-
-    python training.py
-    
-
     
  
     
@@ -43,5 +35,38 @@ Prepare flat tree
          
          
          
-         
-         
+    ls -alrth  Data/MoreData/*/treeProducerXtracks/ | grep "Data" | tr ":" " " | awk '{print " ./prepareTree.exe     "$1"tree.root "$1"flat_tree.root"}' 
+    ls -alrth  Data/MoreData/*/treeProducerXtracks/ | grep "Data" | tr ":" " " | awk '{print " ./prepareTree.exe     "$1"tree.root "$1"flat_tree.root"}'   | /bin/sh
+    
+    hadd    Data/flat_tree_Sig_all.root  \
+         Data/MoreData/Wino_M_1000_cTau_10/treeProducerXtracks/flat_tree.root   \
+         Data/MoreData/Wino_M_1000_cTau_20/treeProducerXtracks/flat_tree.root   \
+          Data/MoreData/Wino_M_300_cTau_10/treeProducerXtracks/flat_tree.root   \
+           Data/MoreData/Wino_M_300_cTau_3/treeProducerXtracks/flat_tree.root   \
+          Data/MoreData/Wino_M_300_cTau_30/treeProducerXtracks/flat_tree.root   \
+          Data/MoreData/Wino_M_500_cTau_10/treeProducerXtracks/flat_tree.root   \
+          Data/MoreData/Wino_M_500_cTau_20/treeProducerXtracks/flat_tree.root   \
+          Data/MoreData/Wino_M_650_cTau_10/treeProducerXtracks/flat_tree.root   \
+          Data/MoreData/Wino_M_650_cTau_20/treeProducerXtracks/flat_tree.root   \
+          Data/MoreData/Wino_M_800_cTau_10/treeProducerXtracks/flat_tree.root   \
+          Data/MoreData/Wino_M_800_cTau_20/treeProducerXtracks/flat_tree.root   
+          
+
+
+
+Simple NN train
+====
+
+    python training.py
+    
+
+    
+Simple NN check train
+====
+
+    python check.py
+    
+    
+    
+    
+    
