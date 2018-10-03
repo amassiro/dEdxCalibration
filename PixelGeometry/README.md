@@ -33,7 +33,7 @@ Draw:
     g++ -o drawPixelTime.exe drawPixelTime.cpp `root-config --cflags --glibs`
     
                                                                                    number of run intervals
-    ./drawPixelTime.exe data/tree_filtered_data.root    data/tree_filtered_DY.root     10
+    ./drawPixelTime.exe data/tree_filtered_data.root    data/tree_filtered_DY.root    10
     ./drawPixelTime.exe data/tree_filtered_data.root    data/tree_filtered_DY.root     4
     
     
@@ -92,6 +92,7 @@ Calibrate:
 
                                                                                     num_run_intervals
     ./calibratePixelTime.exe    tocalibrate_complete_eta_edges_idet_timeRanges.root       4
+    ./calibratePixelTime.exe    tocalibrate_complete_eta_edges_idet_timeRanges.root      10
     
     
     
