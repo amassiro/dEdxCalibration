@@ -37,7 +37,8 @@ Draw:
     ./drawPixelTime.exe data/tree_filtered_data.root    data/tree_filtered_DY.root     4
     
     
-
+    ./drawPixelTime.exe data/tree_filtered_data.root    data/tree_filtered_DY.root    10     scale_pixels_run_ranges_reduced.txt
+    
     
     
     
