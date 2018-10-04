@@ -72,6 +72,20 @@ int main(int argc, char** argv) {
   Float_t IsoTrack_dedxByLayer12[kMaxTracks];
   Float_t IsoTrack_dedxByLayer13[kMaxTracks];
   
+  Int_t IsoTrack_sizeXbyLayer0[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer1[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer2[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer3[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer4[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer5[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer6[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer7[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer8[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer9[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer10[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer11[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer12[kMaxTracks];
+  Int_t IsoTrack_sizeXbyLayer13[kMaxTracks];
   
   
   inputTree->SetBranchAddress("IsoTrack_pt",  IsoTrack_pt);
@@ -97,6 +111,21 @@ int main(int argc, char** argv) {
   inputTree->SetBranchAddress("IsoTrack_dedxByLayer12",  IsoTrack_dedxByLayer12);
   inputTree->SetBranchAddress("IsoTrack_dedxByLayer13",  IsoTrack_dedxByLayer13);
   
+  inputTree->SetBranchAddress("IsoTrack_sizeXbyLayer0",   IsoTrack_sizeXbyLayer0);
+  inputTree->SetBranchAddress("IsoTrack_sizeXbyLayer1",   IsoTrack_sizeXbyLayer1);
+  inputTree->SetBranchAddress("IsoTrack_sizeXbyLayer2",   IsoTrack_sizeXbyLayer2);
+  inputTree->SetBranchAddress("IsoTrack_sizeXbyLayer3",   IsoTrack_sizeXbyLayer3);
+  inputTree->SetBranchAddress("IsoTrack_sizeXbyLayer4",   IsoTrack_sizeXbyLayer4);
+  inputTree->SetBranchAddress("IsoTrack_sizeXbyLayer5",   IsoTrack_sizeXbyLayer5);
+  inputTree->SetBranchAddress("IsoTrack_sizeXbyLayer6",   IsoTrack_sizeXbyLayer6);
+  inputTree->SetBranchAddress("IsoTrack_sizeXbyLayer7",   IsoTrack_sizeXbyLayer7);
+  inputTree->SetBranchAddress("IsoTrack_sizeXbyLayer8",   IsoTrack_sizeXbyLayer8);
+  inputTree->SetBranchAddress("IsoTrack_sizeXbyLayer9",   IsoTrack_sizeXbyLayer9);
+  inputTree->SetBranchAddress("IsoTrack_sizeXbyLayer10",  IsoTrack_sizeXbyLayer10);
+  inputTree->SetBranchAddress("IsoTrack_sizeXbyLayer11",  IsoTrack_sizeXbyLayer11);
+  inputTree->SetBranchAddress("IsoTrack_sizeXbyLayer12",  IsoTrack_sizeXbyLayer12);
+  inputTree->SetBranchAddress("IsoTrack_sizeXbyLayer13",  IsoTrack_sizeXbyLayer13);
+  
   
   TFile* outputFile = new TFile (name_output_file.c_str(), "RECREATE");   
   TTree *outputTree = new TTree("flatTree", "flatTree");
@@ -105,6 +134,17 @@ int main(int argc, char** argv) {
   Float_t tk_dedxl1;      outputTree->Branch("tk_dedxl1", &tk_dedxl1);
   Float_t tk_dedxl2;      outputTree->Branch("tk_dedxl2", &tk_dedxl2);
   Float_t tk_dedxl3;      outputTree->Branch("tk_dedxl3", &tk_dedxl3);
+  Float_t tk_dedxl4;      outputTree->Branch("tk_dedxl4", &tk_dedxl4);
+  
+  Float_t tk_category;      outputTree->Branch("tk_category",   &tk_category);
+  //
+  // category -> 1, 2, 3 == 3 hits, 4 hits, 5 hits in pixel!
+  //
+  
+  Float_t tk_eta;      outputTree->Branch("tk_eta", &tk_eta);
+  
+  
+  
   
   
   Float_t min_pt = 5; //--- no soft tracks < 5 GeV !
@@ -134,12 +174,32 @@ int main(int argc, char** argv) {
     
     if (best_track != -1) {
       
-      tk_dedxl0 = IsoTrack_dedxByLayer0[best_track];
-      tk_dedxl1 = IsoTrack_dedxByLayer1[best_track];
-      tk_dedxl2 = IsoTrack_dedxByLayer2[best_track];
-      tk_dedxl3 = IsoTrack_dedxByLayer3[best_track];
+      tk_dedxl0 = -1;
+      tk_dedxl1 = -1;
+      tk_dedxl2 = -1;
+      tk_dedxl3 = -1;
+      tk_dedxl4 = -1;
+      
+      //
+      //   sizeXbyLayer is 0 for strips
+      //                is != 0 for pixels
+      //
+      
+      if (IsoTrack_sizeXbyLayer0[best_track] != 0)  tk_dedxl0 = IsoTrack_dedxByLayer0[best_track];
+      if (IsoTrack_sizeXbyLayer1[best_track] != 0)  tk_dedxl1 = IsoTrack_dedxByLayer1[best_track];
+      if (IsoTrack_sizeXbyLayer2[best_track] != 0)  tk_dedxl2 = IsoTrack_dedxByLayer2[best_track];
+      if (IsoTrack_sizeXbyLayer3[best_track] != 0)  tk_dedxl3 = IsoTrack_dedxByLayer3[best_track];
+      if (IsoTrack_sizeXbyLayer4[best_track] != 0)  tk_dedxl4 = IsoTrack_dedxByLayer4[best_track];
+      
+      tk_eta = IsoTrack_eta[best_track];
+      
+      tk_category = -1;
+      if ( (tk_dedxl0!= -1) && (tk_dedxl1!= -1) && (tk_dedxl2!= -1) && (tk_dedxl3!= -1) )  tk_category = 3;
+      if ( (tk_dedxl0!= -1) && (tk_dedxl1!= -1) && (tk_dedxl2!= -1) && (tk_dedxl3== -1) )  tk_category = 2;
+      if ( (tk_dedxl0!= -1) && (tk_dedxl1!= -1) && (tk_dedxl2== -1) && (tk_dedxl3== -1) )  tk_category = 1;
       
       outputTree->Fill();     
+    
     }
     
     

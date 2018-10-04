@@ -224,6 +224,8 @@ int main(int argc, char** argv) {
         float calibration_factor = 1.0;
         for (int iRun = 0; iRun < num_run_intervals; iRun++) {
           line >> calibration_factor;
+          //---- fix
+          if (calibration_factor < 0) calibration_factor = 1;
           (map_calibration[ilayer][std::pair<int, int>(iEdge,idet)])[iRun] = calibration_factor;
         }
         
