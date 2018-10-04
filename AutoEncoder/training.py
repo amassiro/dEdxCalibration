@@ -43,7 +43,7 @@ sigfile = 'Data/flat_tree_Sig_all.root'
 #sigfile = 'Data/flat_tree_Sig_Wino_M_300_cTau_10.root'
 
  
-brlist  = ['tk_dedxl0', 'tk_dedxl1', 'tk_dedxl2', 'tk_dedxl3']
+brlist  = ['tk_dedxl0', 'tk_dedxl1', 'tk_dedxl2', 'tk_dedxl3', 'tk_dedxl4', 'tk_dedxl5', 'tk_dedxl6', 'tk_category']
 numvars = len(brlist)
 ntrain  =  0.50   # 80% for train
 ntest   =  1 - ntrain

@@ -135,10 +135,13 @@ int main(int argc, char** argv) {
   Float_t tk_dedxl2;      outputTree->Branch("tk_dedxl2", &tk_dedxl2);
   Float_t tk_dedxl3;      outputTree->Branch("tk_dedxl3", &tk_dedxl3);
   Float_t tk_dedxl4;      outputTree->Branch("tk_dedxl4", &tk_dedxl4);
+  Float_t tk_dedxl5;      outputTree->Branch("tk_dedxl5", &tk_dedxl5);
+  Float_t tk_dedxl6;      outputTree->Branch("tk_dedxl6", &tk_dedxl6);
+  Float_t tk_dedxl7;      outputTree->Branch("tk_dedxl7", &tk_dedxl7);
   
   Float_t tk_category;      outputTree->Branch("tk_category",   &tk_category);
   //
-  // category -> 1, 2, 3 == 3 hits, 4 hits, 5 hits in pixel!
+  // category -> 1, 2, 3, 4 == 3 hits, 4 hits, 5 hits, 6 hits in pixel!
   //
   
   Float_t tk_eta;      outputTree->Branch("tk_eta", &tk_eta);
@@ -179,6 +182,9 @@ int main(int argc, char** argv) {
       tk_dedxl2 = -1;
       tk_dedxl3 = -1;
       tk_dedxl4 = -1;
+      tk_dedxl5 = -1;
+      tk_dedxl6 = -1;
+      tk_dedxl7 = -1;
       
       //
       //   sizeXbyLayer is 0 for strips
@@ -190,13 +196,19 @@ int main(int argc, char** argv) {
       if (IsoTrack_sizeXbyLayer2[best_track] != 0)  tk_dedxl2 = IsoTrack_dedxByLayer2[best_track];
       if (IsoTrack_sizeXbyLayer3[best_track] != 0)  tk_dedxl3 = IsoTrack_dedxByLayer3[best_track];
       if (IsoTrack_sizeXbyLayer4[best_track] != 0)  tk_dedxl4 = IsoTrack_dedxByLayer4[best_track];
+      if (IsoTrack_sizeXbyLayer5[best_track] != 0)  tk_dedxl5 = IsoTrack_dedxByLayer5[best_track];
+      if (IsoTrack_sizeXbyLayer6[best_track] != 0)  tk_dedxl6 = IsoTrack_dedxByLayer6[best_track];
+      if (IsoTrack_sizeXbyLayer7[best_track] != 0)  tk_dedxl7 = IsoTrack_dedxByLayer7[best_track];
       
       tk_eta = IsoTrack_eta[best_track];
       
       tk_category = -1;
-      if ( (tk_dedxl0!= -1) && (tk_dedxl1!= -1) && (tk_dedxl2!= -1) && (tk_dedxl3!= -1) )  tk_category = 3;
-      if ( (tk_dedxl0!= -1) && (tk_dedxl1!= -1) && (tk_dedxl2!= -1) && (tk_dedxl3== -1) )  tk_category = 2;
-      if ( (tk_dedxl0!= -1) && (tk_dedxl1!= -1) && (tk_dedxl2== -1) && (tk_dedxl3== -1) )  tk_category = 1;
+      if ( (tk_dedxl0!= -1) && (tk_dedxl1!= -1) && (tk_dedxl2!= -1) && (tk_dedxl3!= -1) && (tk_dedxl4!= -1) && (tk_dedxl5!= -1) && (tk_dedxl6!= -1) && (tk_dedxl7!= -1) )  tk_category = 6;
+      if ( (tk_dedxl0!= -1) && (tk_dedxl1!= -1) && (tk_dedxl2!= -1) && (tk_dedxl3!= -1) && (tk_dedxl4!= -1) && (tk_dedxl5!= -1) && (tk_dedxl6!= -1) && (tk_dedxl7== -1) )  tk_category = 5;
+      if ( (tk_dedxl0!= -1) && (tk_dedxl1!= -1) && (tk_dedxl2!= -1) && (tk_dedxl3!= -1) && (tk_dedxl4!= -1) && (tk_dedxl5!= -1) && (tk_dedxl6== -1) && (tk_dedxl7== -1) )  tk_category = 4;
+      if ( (tk_dedxl0!= -1) && (tk_dedxl1!= -1) && (tk_dedxl2!= -1) && (tk_dedxl3!= -1) && (tk_dedxl4!= -1) && (tk_dedxl5== -1) && (tk_dedxl6== -1) && (tk_dedxl7== -1) )  tk_category = 3;
+      if ( (tk_dedxl0!= -1) && (tk_dedxl1!= -1) && (tk_dedxl2!= -1) && (tk_dedxl3!= -1) && (tk_dedxl4== -1) && (tk_dedxl5== -1) && (tk_dedxl6== -1) && (tk_dedxl7== -1) )  tk_category = 2;
+      if ( (tk_dedxl0!= -1) && (tk_dedxl1!= -1) && (tk_dedxl2!= -1) && (tk_dedxl3== -1) && (tk_dedxl4== -1) && (tk_dedxl5== -1) && (tk_dedxl6== -1) && (tk_dedxl7== -1) )  tk_category = 1;
       
       outputTree->Fill();     
     
