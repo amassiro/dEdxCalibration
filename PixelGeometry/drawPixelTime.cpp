@@ -161,6 +161,107 @@ int main(int argc, char** argv) {
   
   
   
+  
+
+  
+  
+  
+  //----     layer                   eta   det      run     calibration
+  std::map < int, std::map< std::pair<int, int> , std::vector<float> > > map_calibration;
+  
+  for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+    std::map< std::pair<int, int> , std::vector<float> > mini_map_calibration;
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+      for (int idet = 0; idet<detId.size(); idet++) {     
+        std::pair<int, int> edge_det;
+        edge_det.first = iEdge;
+        edge_det.second = idet;
+        std::vector < float > v_scale;
+        for (int iRun =0; iRun < num_run_intervals; iRun++) {
+          v_scale.push_back(1.0);
+        }
+        
+        mini_map_calibration[edge_det] = v_scale;
+      }
+    }  
+    map_calibration[ilayer] = mini_map_calibration;
+  }
+  
+  
+  
+  
+  
+  //---- read calibration values
+  int apply_calibration = 0;
+  std::string fileCalibration = "scale_pixels_run_ranges_reduced.txt";
+  if (argc>=5) {
+    apply_calibration = 1;
+    fileCalibration = argv[4];
+    
+    std::ifstream file (fileCalibration); 
+    std::string buffer;
+    float value;
+    
+    if(!file.is_open()) {
+      std::cerr << "** ERROR: Can't open '" << fileCalibration << "' for input" << std::endl;
+      return false;
+    }
+    
+    int num_layer = 0;
+    while(!file.eof()) {
+      getline(file,buffer);
+      if (buffer != "" && buffer.at(0) != '#'){ ///---> save from empty line at the end!
+        std::stringstream line( buffer );  
+        
+        int ilayer;
+        int idet;
+        int iEdge;
+        
+        line >> iEdge;
+        line >> ilayer;
+        line >> idet;
+        
+        float calibration_factor = 1.0;
+        for (int iRun = 0; iRun < num_run_intervals; iRun++) {
+          line >> calibration_factor;
+          (map_calibration[ilayer][std::pair<int, int>(iEdge,idet)])[iRun] = calibration_factor;
+        }
+        
+      } 
+    }
+  }
+  
+  
+  
+  
+  
+  
+  //---- print calibration map
+  for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+    std::cout << " [ " << ilayer << ", ";
+    std::cout << std::endl;
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+      std::cout << "         " << iEdge << "] = ";
+      for (int idet = 0; idet<detId.size(); idet++) {  
+        for (int iRun = 0; iRun < num_run_intervals; iRun++) {
+           std::cout << " :: " << map_calibration[ilayer][std::pair<int, int>(iEdge,idet)][iRun];
+        }
+        std::cout << std::endl;
+      }
+    }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   std::cout << " eta_edges :: " << eta_edges.size() << std::endl;
   
   for (int iEdge = 0; iEdge<eta_edges.size(); iEdge++) {
@@ -601,7 +702,9 @@ int main(int argc, char** argv) {
   
   
   //---- output file
-  TFile* fileOut = new TFile ("tocalibrate_complete_eta_edges_idet_timeRanges.root", "RECREATE");
+  TFile* fileOut;
+  
+  fileOut = new TFile ("tocalibrate_complete_eta_edges_idet_timeRanges.root", "RECREATE");
   
   
   
@@ -1065,6 +1168,9 @@ int main(int argc, char** argv) {
     }
   }
   
+  std::cout << " minRun = " << minRun << std::endl;
+  std::cout << " maxRun = " << maxRun << std::endl;
+  std::cout << " deltaRun = " << deltaRun << std::endl;
   
   
 }

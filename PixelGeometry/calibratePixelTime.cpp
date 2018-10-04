@@ -636,6 +636,8 @@ int main(int argc, char** argv) {
         std::pair<int, int> edge_det;
         edge_det.first = iEdge;
         edge_det.second = idet;      
+        myfile_reduced << iEdge << " " << ilayer << " " << idet << "               ";
+
         for (int iRun =0; iRun < num_run_intervals; iRun++) {
           //----      |     eta             layer            det            iRun     |
           myfile << " |" << iEdge << " " << ilayer << " " << idet << " " << iRun << "|";
@@ -649,7 +651,6 @@ int main(int argc, char** argv) {
           
           
           
-          myfile_reduced << iEdge << " " << ilayer << " " << idet << "               ";
           float best_value = 1.;
           
           float value_1;
@@ -670,7 +671,7 @@ int main(int argc, char** argv) {
             best_value = value_1;
           }
           
-          myfile_reduced << best_value << std::endl;
+          myfile_reduced << "  " << best_value; 
          
           std::pair<int, int> layer_det;
           layer_det.first = ilayer;
@@ -679,6 +680,9 @@ int main(int argc, char** argv) {
           map_scale[iRun][iEdge][layer_det] = best_value;
            
         }
+        
+        myfile_reduced << std::endl;
+        
       }
     }
     
