@@ -35,25 +35,29 @@ def getDataFromFile(fileinfo, branchlist) :
 #
 # Start here
 #
+import collections
 
 zllfile = 'Data/flat_tree_Z.root'
-sigfiles = {}
+sigfiles = collections.OrderedDict()
+# {}
 
 sigfiles['Wino_M_1000_cTau_10'] = 'Data/MoreData/Wino_M_1000_cTau_10/treeProducerXtracks/flat_tree.root'
 sigfiles['Wino_M_1000_cTau_20'] = 'Data/MoreData/Wino_M_1000_cTau_20/treeProducerXtracks/flat_tree.root'
 sigfiles['Wino_M_300_cTau_10' ] = 'Data/MoreData/Wino_M_300_cTau_10/treeProducerXtracks/flat_tree.root'
-sigfiles['Wino_M_300_cTau_3'  ] = 'Data/MoreData/Wino_M_300_cTau_3/treeProducerXtracks/flat_tree.root'
+#sigfiles['Wino_M_300_cTau_3'  ] = 'Data/MoreData/Wino_M_300_cTau_3/treeProducerXtracks/flat_tree.root'
 sigfiles['Wino_M_300_cTau_30' ] = 'Data/MoreData/Wino_M_300_cTau_30/treeProducerXtracks/flat_tree.root'
-sigfiles['Wino_M_500_cTau_10' ] = 'Data/MoreData/Wino_M_500_cTau_10/treeProducerXtracks/flat_tree.root'
-sigfiles['Wino_M_500_cTau_20' ] = 'Data/MoreData/Wino_M_500_cTau_20/treeProducerXtracks/flat_tree.root'
+#sigfiles['Wino_M_500_cTau_10' ] = 'Data/MoreData/Wino_M_500_cTau_10/treeProducerXtracks/flat_tree.root'
+#sigfiles['Wino_M_500_cTau_20' ] = 'Data/MoreData/Wino_M_500_cTau_20/treeProducerXtracks/flat_tree.root'
 sigfiles['Wino_M_650_cTau_10' ] = 'Data/MoreData/Wino_M_650_cTau_10/treeProducerXtracks/flat_tree.root'
 sigfiles['Wino_M_650_cTau_20' ] = 'Data/MoreData/Wino_M_650_cTau_20/treeProducerXtracks/flat_tree.root'
-sigfiles['Wino_M_800_cTau_10' ] = 'Data/MoreData/Wino_M_800_cTau_10/treeProducerXtracks/flat_tree.root'
-sigfiles['Wino_M_800_cTau_20' ] = 'Data/MoreData/Wino_M_800_cTau_20/treeProducerXtracks/flat_tree.root'
+#sigfiles['Wino_M_800_cTau_10' ] = 'Data/MoreData/Wino_M_800_cTau_10/treeProducerXtracks/flat_tree.root'
+#sigfiles['Wino_M_800_cTau_20' ] = 'Data/MoreData/Wino_M_800_cTau_20/treeProducerXtracks/flat_tree.root'
 
 
  
-brlist  = ['tk_dedxl0', 'tk_dedxl1', 'tk_dedxl2', 'tk_dedxl3']
+#brlist  = ['tk_dedxl0', 'tk_dedxl1', 'tk_dedxl2', 'tk_dedxl3']
+brlist  = ['tk_dedxl0', 'tk_dedxl1', 'tk_dedxl2', 'tk_dedxl3', 'tk_dedxl4', 'tk_dedxl5', 'tk_dedxl6', 'tk_category']
+
 numvars = len(brlist)
 
 #print " files = ", files
@@ -127,6 +131,34 @@ plt.ylabel('Background rejection')
 plt.title('ROC curve')
 plt.legend(loc='best')
   
+
+
+
+##########################################################
+#### histograms inputs
+
+
+ivar = 0
+for name_var in brlist:
+  print name_var
+  fig = plt.figure(ivar+2)
+  
+  if ivar < numvars :
+    #                bkg                    all signals                                                                                                                              range           normalized
+    plt.hist(  [(data_bkg)[:,ivar]] + [(data_sigs[name])[:,ivar] for name, name_file in sigfiles.items() ], label= ["bkg"] + [name  for name, name_file in sigfiles.items() ]  , range = (-1, 10) , normed = 1,   bins = 20 )
+  else :
+    #                bkg                    all signals                                                                                                                              range           normalized
+    plt.hist(  [(data_bkg)[:,ivar]] + [(data_sigs[name])[:,ivar] for name, name_file in sigfiles.items() ], label= ["bkg"] + [name  for name, name_file in sigfiles.items() ]  , range = (-1, 10) , normed = 1 )
+    
+    
+  plt.title(name_var)
+  plt.xlabel(name_var)
+  plt.ylabel("Frequency")
+  plt.legend(loc='upper right')
+  
+  ivar += 1
+ 
+   
 
 #########################################################
 ## plots only at the end
