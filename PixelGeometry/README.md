@@ -97,7 +97,56 @@ Calibrate:
     
     
     
- 
+Draw phi modulation:
+====
+
+    r99t data/tree_filtered_data.root
+    
+    tree = (TTree*)  _file0 -> Get ("tree");
+    tree->Draw("IsoTrack_dedxByLayer0[best_track]:IsoTrack_phi[best_track]", "IsoTrack_dedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
+
+    tree->Draw("IsoTrack_dedxByLayer0[best_track]:IsoTrack_phi[best_track]", "IsoTrack_dedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])>1.3", "colz")    
+
+    tree->Draw("IsoTrack_dedxByLayer0[best_track]:IsoTrack_eta[best_track]", "IsoTrack_dedxByLayer0[best_track]<10", "colz")    
+
+     
+    r99t data/tree_filtered_DY.root
+    
+    tree = (TTree*)  _file0 -> Get ("tree");
+    tree->Draw("IsoTrack_dedxByLayer0[best_track]:IsoTrack_phi[best_track]", "IsoTrack_dedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
+    
+
+
+    
+    
+    r99t data/tree_filtered_data.root
+    tree = (TTree*)  _file0 -> Get ("tree");
+    
+    tree->Draw("IsoTrack_ladderPixelByLayer0[best_track]:IsoTrack_phi[best_track]", "IsoTrack_dedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
+    tree->Draw("IsoTrack_modulePixelByLayer0[best_track]:IsoTrack_phi[best_track]", "IsoTrack_dedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
+
+    tree->Draw("IsoTrack_modulePixelByLayer0[best_track]:IsoTrack_ladderPixelByLayer0[best_track]", "IsoTrack_sizeXbyLayer0[best_track] != 0 && IsoTrack_dedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3 && IsoTrack_layerPixelByLayer0[best_track]==0", "colz")    
+    tree->Draw("IsoTrack_ladderPixelByLayer0[best_track]", "IsoTrack_sizeXbyLayer0[best_track] != 0 && IsoTrack_dedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3 && IsoTrack_layerPixelByLayer0[best_track]==0", "colz")    
+    
+    tree->Draw("IsoTrack_ladderPixelByLayer0[best_track]", "IsoTrack_sizeXbyLayer0[best_track] != 0 && IsoTrack_dedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3 && IsoTrack_layerPixelByLayer0[best_track]==0 && IsoTrack_diskPixelByLayer0[best_track]==-99", "colz")    
+    
+    
+    tree->Draw("IsoTrack_ladderPixelByLayer1[best_track]", "IsoTrack_sizeXbyLayer1[best_track] != 0 && IsoTrack_dedxByLayer1[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3 && IsoTrack_layerPixelByLayer1[best_track]==1 && IsoTrack_diskPixelByLayer1[best_track]==-99", "colz")    
+    
+    
+    tree->Draw("IsoTrack_ladderPixelByLayer1[best_track]", "IsoTrack_sizeXbyLayer1[best_track] != 0 && IsoTrack_dedxByLayer1[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3 && IsoTrack_layerPixelByLayer1[best_track]==0 && IsoTrack_diskPixelByLayer1[best_track]==-99", "colz")    
+    
+    tree->Draw("IsoTrack_ladderPixelByLayer1[best_track]", "IsoTrack_sizeXbyLayer1[best_track] != 0 && IsoTrack_dedxByLayer1[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3 && IsoTrack_layerPixelByLayer1[best_track]==2 && IsoTrack_diskPixelByLayer1[best_track]==-99", "colz")    
+    
+    
+    
+    
+    tree->Draw("IsoTrack_modulePixelByLayer0[best_track]:IsoTrack_ladderPixelByLayer0[best_track]", "IsoTrack_sizeXbyLayer0[best_track] != 0 && IsoTrack_dedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
+    tree->Draw("IsoTrack_modulePixelByLayer1[best_track]:IsoTrack_ladderPixelByLayer1[best_track]", "IsoTrack_sizeXbyLayer1[best_track] != 0 && IsoTrack_dedxByLayer1[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
+    tree->Draw("IsoTrack_modulePixelByLayer2[best_track]:IsoTrack_ladderPixelByLayer2[best_track]", "IsoTrack_sizeXbyLayer2[best_track] != 0 && IsoTrack_dedxByLayer2[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
+    tree->Draw("IsoTrack_modulePixelByLayer3[best_track]:IsoTrack_ladderPixelByLayer3[best_track]", "IsoTrack_sizeXbyLayer3[best_track] != 0 && IsoTrack_dedxByLayer3[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
+
+    
  
 Draw geometry:
 ====
@@ -136,7 +185,7 @@ Draw geometry:
     
     
     
-    
+
     # FPIX
     
     modulePixel
