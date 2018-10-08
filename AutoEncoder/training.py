@@ -40,6 +40,7 @@ def getDataFromFile(fileinfo, branchlist) :
 zllfile = 'Data/flat_tree_Z.root'
 #sigfile = 'Data/flat_tree_Sig.root'
 sigfile = 'Data/flat_tree_Sig_all.root'
+#sigfile = 'Data/MoreData/Wino_M_650_cTau_20/treeProducerXtracks/flat_tree.root'
 #sigfile = 'Data/flat_tree_Sig_Wino_M_300_cTau_10.root'
 
  
@@ -89,6 +90,8 @@ print " labels_train = ", labels_train
 
 model = Sequential()
 
+model.add(Dense(200, input_dim = numvars, kernel_initializer='normal', activation='relu'))
+#model.add(Dropout(0.3))
 model.add(Dense(100, input_dim = numvars, kernel_initializer='normal', activation='relu'))
 #model.add(Dropout(0.3))
 model.add(Dense(50, kernel_initializer='normal', activation='relu'))
@@ -99,6 +102,18 @@ model.add(Dense(30, kernel_initializer='normal', activation='relu'))
 #model.add(Dropout(0.2))
 model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
 
+
+
+#model.add(Dense(100, input_dim = numvars, kernel_initializer='normal', activation='relu'))
+##model.add(Dropout(0.3))
+#model.add(Dense(50, kernel_initializer='normal', activation='relu'))
+##model.add(Dropout(0.2))
+#model.add(Dense(50, kernel_initializer='normal', activation='relu'))
+##model.add(Dropout(0.2))
+#model.add(Dense(30, kernel_initializer='normal', activation='relu'))
+##model.add(Dropout(0.2))
+#model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
+
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 model.summary()
@@ -106,7 +121,8 @@ model.summary()
 # train model
 history= model.fit(    data_train, labels_train, 
                        batch_size=len(data_train)/8,
-                       epochs=200,
+                       epochs=100,
+                       #epochs=200,
                        shuffle=True, 
                        validation_data = (data_test, labels_test) 
                    )
