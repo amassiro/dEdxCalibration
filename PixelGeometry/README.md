@@ -109,6 +109,21 @@ Draw phi modulation:
 
     tree->Draw("IsoTrack_dedxByLayer0[best_track]:IsoTrack_eta[best_track]", "IsoTrack_dedxByLayer0[best_track]<10", "colz")    
 
+    tree->Draw("IsoTrack_dedxByLayer1[best_track]:IsoTrack_phi[best_track]", "IsoTrack_dedxByLayer1[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
+     
+     
+    tree->Draw("IsoTrack_dedxByLayer0[best_track]:IsoTrack_phi[best_track]", "IsoTrack_layerPixelByLayer0[best_track]==0 && IsoTrack_dedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
+
+    tree->Draw("IsoTrack_dedxByLayer1[best_track]:IsoTrack_phi[best_track]", "IsoTrack_layerPixelByLayer1[best_track]==1 && IsoTrack_dedxByLayer1[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
+
+    tree->Draw("IsoTrack_dedxByLayer2[best_track]:IsoTrack_phi[best_track]", "IsoTrack_layerPixelByLayer2[best_track]==2 && IsoTrack_dedxByLayer2[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
+    
+    
+    
+    tree->Draw("IsoTrack_layerPixelByLayer2[best_track]:IsoTrack_phi[best_track]", "IsoTrack_layerPixelByLayer2[best_track]>-10 && IsoTrack_dedxByLayer2[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
+    tree->Draw("IsoTrack_layerPixelByLayer0[best_track]:IsoTrack_phi[best_track]", "IsoTrack_layerPixelByLayer0[best_track]>-10 && IsoTrack_dedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
+    
+     
      
     r99t data/tree_filtered_DY.root
     
