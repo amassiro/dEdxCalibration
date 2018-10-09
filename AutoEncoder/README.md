@@ -59,12 +59,16 @@ Simple NN train
 
     python training.py
     
+    python trainingCategory.py
+    
 
     
 Simple NN check train
 ====
 
     python check.py
+    
+    python checkCategory.py
     
     
     

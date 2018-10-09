@@ -32,6 +32,72 @@ def getDataFromFile(fileinfo, branchlist) :
 
 
 
+
+def getDataFromFileWithCut(fileinfo, branchlist, cut_variable, cut_value) :
+
+  tfil = root.TFile(fileinfo)
+  tree = tfil.Get('flatTree')
+  
+  datasize = tree.GetEntries(cut_variable + " == " +  str(cut_value))
+  
+  print "Reading NN inputs from " + fileinfo
+  data = np.empty([datasize, len(branchlist)])
+  counter = 0
+  for entry in tree :
+    bridx = 0
+    
+    # check cut
+    if getattr(entry, cut_variable) == cut_value :
+    
+      for branch in branchlist :
+        data[counter][bridx] = getattr(entry, branch)
+          
+        bridx = bridx + 1
+     
+      counter = counter + 1
+  
+  tfil.Close()
+
+  print " counter = ", counter 
+  
+  return data
+
+
+
+
+
+
+def getDataFromFileWithCutGreater(fileinfo, branchlist, cut_variable, cut_value) :
+
+  tfil = root.TFile(fileinfo)
+  tree = tfil.Get('flatTree')
+
+  datasize = tree.GetEntries(cut_variable + " >= " +  str(cut_value))
+ 
+  print "Reading NN inputs from " + fileinfo
+  data = np.empty([datasize, len(branchlist)])
+  counter = 0
+  for entry in tree :
+    bridx = 0
+    
+    # check cut
+    if getattr(entry, cut_variable) >= cut_value :
+    
+      for branch in branchlist :
+        data[counter][bridx] = getattr(entry, branch)
+        bridx = bridx + 1
+     
+      counter = counter + 1
+  
+  tfil.Close()
+
+  print " counter = ", counter 
+  
+  return data
+
+
+
+
 #######################################
 #
 # Start here
@@ -44,15 +110,18 @@ sigfile = 'Data/flat_tree_Sig_all.root'
 #sigfile = 'Data/flat_tree_Sig_Wino_M_300_cTau_10.root'
 
  
-brlist  = ['tk_dedxl0', 'tk_dedxl1', 'tk_dedxl2', 'tk_dedxl3', 'tk_dedxl4', 'tk_dedxl5', 'tk_dedxl6', 'tk_category']
+#brlist  = ['tk_dedxl0', 'tk_dedxl1', 'tk_dedxl2', 'tk_dedxl3', 'tk_dedxl4', 'tk_dedxl5', 'tk_dedxl6', 'tk_category']
+#brlist  = ['tk_dedxl0', 'tk_dedxl1', 'tk_dedxl2', 'tk_dedxl3', 'tk_dedxl4', 'tk_dedxl5', 'tk_dedxl6']
+brlist  = ['tk_dedxl0', 'tk_dedxl1', 'tk_dedxl2']
 numvars = len(brlist)
 ntrain  =  0.50   # 80% for train
 ntest   =  1 - ntrain
 
 #print " files = ", files
 print " brlist = ", brlist
-data_sig = getDataFromFile(sigfile, brlist)
-data_bkg = getDataFromFile(zllfile, brlist)
+data_sig = getDataFromFileWithCut        (sigfile, brlist, 'tk_category', 1)
+data_bkg = getDataFromFileWithCutGreater (zllfile, brlist, 'tk_category', 1 )
+
 
 print " sig data.size = " , data_sig.size , " ---> ", data_sig.size/numvars
 print " bkg data.size = " , data_bkg.size , " ---> ", data_bkg.size/numvars
@@ -90,13 +159,13 @@ print " labels_train = ", labels_train
 
 model = Sequential()
 
-model.add(Dense(200, input_dim = numvars, kernel_initializer='normal', activation='relu'))
+#model.add(Dense(200, input_dim = numvars, kernel_initializer='normal', activation='relu'))
 #model.add(Dropout(0.3))
-model.add(Dense(100, input_dim = numvars, kernel_initializer='normal', activation='relu'))
+#model.add(Dense(100, input_dim = numvars, kernel_initializer='normal', activation='relu'))
 #model.add(Dropout(0.3))
-model.add(Dense(50, kernel_initializer='normal', activation='relu'))
+#model.add(Dense(50, kernel_initializer='normal', activation='relu'))
 #model.add(Dropout(0.2))
-model.add(Dense(50, kernel_initializer='normal', activation='relu'))
+model.add(Dense(50, input_dim = numvars, kernel_initializer='normal', activation='relu'))
 #model.add(Dropout(0.2))
 model.add(Dense(30, kernel_initializer='normal', activation='relu'))
 #model.add(Dropout(0.2))
@@ -128,7 +197,7 @@ history= model.fit(    data_train, labels_train,
                    )
 
 # save model
-model.save("xtracks_NN.h5")
+model.save("xtracks_NN_category.h5")
 
 
 
@@ -162,17 +231,17 @@ plt.hist2d(np.array(data_bkg_train)[:,0], np.array(data_bkg_train)[:,1], range=r
 plt.xlabel("layer 0")
 plt.ylabel("layer 1")
 
-plt.subplot(2,2,3)
-plt.title("Signal")
-plt.xlabel("layer 2")
-plt.ylabel("layer 3")
-plt.hist2d(np.array(data_sig_train)[:,2], np.array(data_sig_train)[:,3], range=range_, bins=20, cmap=cm.coolwarm)
+#plt.subplot(2,2,3)
+#plt.title("Signal")
+#plt.xlabel("layer 2")
+#plt.ylabel("layer 3")
+#plt.hist2d(np.array(data_sig_train)[:,2], np.array(data_sig_train)[:,3], range=range_, bins=20, cmap=cm.coolwarm)
 
-plt.subplot(2,2,4)
-plt.title("Background")
-plt.hist2d(np.array(data_bkg_train)[:,2], np.array(data_bkg_train)[:,3], range=range_, bins=20, cmap=cm.coolwarm)
-plt.xlabel("layer 2")
-plt.ylabel("layer 3")
+#plt.subplot(2,2,4)
+#plt.title("Background")
+#plt.hist2d(np.array(data_bkg_train)[:,2], np.array(data_bkg_train)[:,3], range=range_, bins=20, cmap=cm.coolwarm)
+#plt.xlabel("layer 2")
+#plt.ylabel("layer 3")
 
 
 
