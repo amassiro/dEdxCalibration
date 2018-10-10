@@ -70,6 +70,22 @@ Simple NN check train
     
     python checkCategory.py
     
+Draw
+====
+
+    r99t Draw.cxx\(\"tk_dedxl0\",100,0,10,\"\"\)
+    r99t Draw.cxx\(\"tk_dedxl1\",100,0,10,\"\"\)
+    r99t Draw.cxx\(\"tk_dedxl2\",100,0,10,\"\"\)
+    
+    r99t Draw.cxx\(\"tk_dedxl0\",100,0,10,\"tk_category\=\=1\"\)
+    r99t Draw.cxx\(\"tk_dedxl1\",100,0,10,\"tk_category\=\=1\"\)
+    r99t Draw.cxx\(\"tk_dedxl2\",100,0,10,\"tk_category\=\=1\"\)
+
+    
+    r99t Draw.cxx\(\"tk_dedxl0\",100,0,10,\"tk_category\=\=2\"\)
+    r99t Draw.cxx\(\"tk_dedxl1\",100,0,10,\"tk_category\=\=2\"\)
+    r99t Draw.cxx\(\"tk_dedxl2\",100,0,10,\"tk_category\=\=2\"\)
+
     
     
     
