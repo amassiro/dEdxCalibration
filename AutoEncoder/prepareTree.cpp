@@ -36,6 +36,13 @@ int main(int argc, char** argv) {
     name_output_file = argv[2];
   }
   
+  int isSignal = 0;
+  if (argc>=4) {
+    isSignal = atoi(argv[3]);
+  }
+  
+  std::cout << " isSignal = " << isSignal << std::endl;
+  
   
   TFile* inputFile = new TFile (name_input_file.c_str(), "READ");   
   TTree* inputTree = (TTree*) ((TTree*) inputFile -> Get ("tree")) -> Clone ("tree");
@@ -88,6 +95,10 @@ int main(int argc, char** argv) {
   Int_t IsoTrack_sizeXbyLayer13[kMaxTracks];
   
   
+  Int_t IsoTrack_mcMatchAnyId[kMaxTracks];
+  
+  
+  
   inputTree->SetBranchAddress("IsoTrack_pt",  IsoTrack_pt);
   inputTree->SetBranchAddress("IsoTrack_eta",  IsoTrack_eta);
   inputTree->SetBranchAddress("IsoTrack_phi",  IsoTrack_phi);
@@ -125,7 +136,10 @@ int main(int argc, char** argv) {
   inputTree->SetBranchAddress("IsoTrack_sizeXbyLayer11",  IsoTrack_sizeXbyLayer11);
   inputTree->SetBranchAddress("IsoTrack_sizeXbyLayer12",  IsoTrack_sizeXbyLayer12);
   inputTree->SetBranchAddress("IsoTrack_sizeXbyLayer13",  IsoTrack_sizeXbyLayer13);
-  
+
+  if (isSignal) {
+    inputTree->SetBranchAddress("IsoTrack_mcMatchAnyId",    IsoTrack_mcMatchAnyId);
+  }
   
   TFile* outputFile = new TFile (name_output_file.c_str(), "RECREATE");   
   TTree *outputTree = new TTree("flatTree", "flatTree");
@@ -160,18 +174,26 @@ int main(int argc, char** argv) {
     max_pt = -1;
     int best_track = -1;
     for (int iTrack = 0; iTrack < std::min(kMaxTracks, nIsoTrack); iTrack++) {
-      if (
-        IsoTrack_pt[iTrack] > min_pt &&
-        IsoTrack_pt[iTrack] > max_pt &&
-        IsoTrack_highPurity[iTrack] == 1 && 
-        fabs(IsoTrack_dxy[iTrack]) < 0.02 &&
-        fabs(IsoTrack_dz[iTrack]) < 0.5
-      ) {
-        
-        best_track = iTrack;
-        max_pt = IsoTrack_pt[iTrack] ;
-        
-        
+      if (isSignal) {
+        if (IsoTrack_mcMatchAnyId[iTrack] == 1000037) {  //---- 1000037 = chargino
+          best_track = iTrack;
+          max_pt = IsoTrack_pt[iTrack] ;
+          break; //---- if match then exit from the loop
+        }  
+      }
+      else {
+        if (
+          IsoTrack_pt[iTrack] > min_pt &&
+          IsoTrack_pt[iTrack] > max_pt &&
+          IsoTrack_highPurity[iTrack] == 1 && 
+          fabs(IsoTrack_dxy[iTrack]) < 0.02 &&
+          fabs(IsoTrack_dz[iTrack]) < 0.5
+        ) {
+          
+          best_track = iTrack;
+          max_pt = IsoTrack_pt[iTrack] ;
+          
+        }
       }
     }
     
