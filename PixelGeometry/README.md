@@ -216,6 +216,16 @@ Draw geometry:
     
     tree->Draw("IsoTrack_sizeXbyLayer0", "", "")    
     
+    tree->Draw("IsoTrack_pixByLayer0", "", "")    
+    
+    bpix
+    tree->Draw("IsoTrack_layerOrSideByLayer0", "IsoTrack_pixByLayer0==1")    
+    tree->Draw("IsoTrack_layerOrSideByLayer1", "IsoTrack_pixByLayer1==1")    
+    
+    tree->Draw("IsoTrack_ladderOrBladeByLayer0", "IsoTrack_pixByLayer0==1 && IsoTrack_layerOrSideByLayer0==1")    
+    
+    tree->Draw("IsoTrack_moduleByLayer0", "IsoTrack_pixByLayer0==1 && IsoTrack_layerOrSideByLayer0==1")    
+    tree->Draw("IsoTrack_moduleByLayer1", "IsoTrack_pixByLayer1==1 && IsoTrack_layerOrSideByLayer1==1")    
     
     
     
