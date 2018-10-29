@@ -169,7 +169,8 @@ Draw phi modulation:
     tree->Draw("IsoTrack_modulePixelByLayer2[best_track]:IsoTrack_ladderPixelByLayer2[best_track]", "IsoTrack_sizeXbyLayer2[best_track] != 0 && IsoTrack_dedxByLayer2[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
     tree->Draw("IsoTrack_modulePixelByLayer3[best_track]:IsoTrack_ladderPixelByLayer3[best_track]", "IsoTrack_sizeXbyLayer3[best_track] != 0 && IsoTrack_dedxByLayer3[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
 
-    
+     
+ 
  
 Draw geometry:
 ====
@@ -205,6 +206,16 @@ Draw geometry:
     
     
     tree->Draw("IsoTrack_layerPixelByLayer0[best_track]:IsoTrack_modulePixelByLayer0[best_track]", "IsoTrack_layerPixelByLayer0[best_track]>-10", "colz")    
+
+
+
+
+    tree->Draw("IsoTrack_layerOrSideByLayer0", "", "")    
+    
+    tree->Draw("IsoTrack_ladderOrBladeByLayer0", "", "")    
+    
+    tree->Draw("IsoTrack_sizeXbyLayer0", "", "")    
+    
     
     
     

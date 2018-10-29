@@ -70,6 +70,7 @@ Simple NN check train
     
     python checkCategory.py
     
+    
 Draw
 ====
 
