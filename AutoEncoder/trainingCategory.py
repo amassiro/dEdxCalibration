@@ -139,10 +139,10 @@ print "data_sig =", data_sig
 print "Splitting data between " + str(int(len(data_sig)*ntrain)) + " training and " + str(int(len(data_sig)*ntest)) + " testing samples sig ..."
 print "Splitting data between " + str(int(len(data_bkg)*ntrain)) + " training and " + str(int(len(data_bkg)*ntest)) + " testing samples bkg ..."
 
-data_sig_train = data_sig[ : int(len(data_sig)*ntrain)]
-data_sig_test  = data_sig[ : int(len(data_sig)*ntrain)]
+data_sig_train = data_sig[ : int(len(data_sig)*ntrain) ]
+data_sig_test  = data_sig[ int(len(data_sig)*ntrain) : ]
 
-data_bkg_train = data_bkg[ int(len(data_bkg)*ntrain) : ]
+data_bkg_train = data_bkg[ : int(len(data_bkg)*ntrain) ]
 data_bkg_test  = data_bkg[ int(len(data_bkg)*ntrain) : ]
 
 data_train = np.vstack( [data_sig_train, data_bkg_train] )
