@@ -7,6 +7,27 @@ Copy files:
     scp amassiro@lxplus.cern.ch:/afs/cern.ch/work/a/amassiro/CMG/DisappearingTracks/CMSSW_9_4_6_patch1/src/CMGTools/TTHAnalysis/cfg/tree_DY_new.root data/
     scp amassiro@lxplus.cern.ch:/afs/cern.ch/work/a/amassiro/CMG/DisappearingTracks/CMSSW_9_4_6_patch1/src/CMGTools/TTHAnalysis/cfg/tree_data.root data/
     
+    cd /afs/cern.ch/user/a/amassiro/work/CMG/DisappearingTracks/test_geometry/CMSSW_9_4_6_patch1/src/CMGTools/TTHAnalysis/cfg/
+    hadd /tmp/amassiro/tree_data.root MYBATCH/SingleMuon_Run201*/treeProducerXtracksSUPER/tree.root 
+    scp amassiro@lxplus.cern.ch:/tmp/amassiro/tree_data.root Data/
+
+
+
+Filter:
+====
+
+    g++ -o filterTree.exe filterTree.cpp `root-config --cflags --glibs`
+     
+    ./filterTree.exe data/tree.root   data/tree_out.root  
+    ./filterTree.exe ../../XTracks/CR_MC/DYJetsToLL_M50/treeProducerXtracks/tree.root   data/tree_mc.root  
+    ./filterTree.exe data/tree_DY.root   data/tree_filtered_DY.root  
+    ./filterTree.exe data/tree_DY_new.root   data/tree_filtered_DY.root  
+    ./filterTree.exe data/tree_data.root   data/tree_filtered_data.root  
+ 
+    ./filterTree.exe Data/tree_data.root   Data/tree_filtered_data.root  
+    ./filterTree.exe Data/tree_dy.root     Data/tree_filtered_mc.root  
+ 
+
     
 Draw:
 ====
@@ -60,18 +81,6 @@ Split:
     ./splitTree.exe  data/tree_filtered_data.root_after_300850.root      301500
     
     
-    
-Filter:
-====
-
-    g++ -o filterTree.exe filterTree.cpp `root-config --cflags --glibs`
-     
-    ./filterTree.exe data/tree.root   data/tree_out.root  
-    ./filterTree.exe ../../XTracks/CR_MC/DYJetsToLL_M50/treeProducerXtracks/tree.root   data/tree_mc.root  
-    ./filterTree.exe data/tree_DY.root   data/tree_filtered_DY.root  
-    ./filterTree.exe data/tree_DY_new.root   data/tree_filtered_DY.root  
-    ./filterTree.exe data/tree_data.root   data/tree_filtered_data.root  
- 
  
 Calibrate:
 ====
