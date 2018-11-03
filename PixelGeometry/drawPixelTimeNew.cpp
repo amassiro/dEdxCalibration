@@ -52,8 +52,10 @@ void setupHisto(TH1F* histo, int icolor) {
   color[8] = kBlack ;
   color[9] = kYellow + 4 ;
   color[10]= kRed ;
+  color[11]= kRed + 2 ;
+  color[12]= kRed + 4;
   for (int i=0; i<30; i++) {
-    color[i+11] = kBlue + i;
+    color[i+13] = kBlue + i;
   }
   
   
@@ -1153,14 +1155,16 @@ int main(int argc, char** argv) {
           if (IsoTrack_pixByLayer0[best_track] != 0) {  
             ilayer = IsoTrack_layerOrSideByLayer0[best_track];
             iladderblade = IsoTrack_ladderOrBladeByLayer0[best_track];   
-            if (IsoTrack_pixByLayer0[best_track] == 1) {
-              //---- BPIX
-              map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer0 [best_track]); 
-//               std::cout << "  map_h_BPIX_mc[" << iRun << "][" << ilayer << "][" << iEdge << "][" << iladderblade << "] entries = " << map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
-            }
-            else {
-              //---- FPIX
-              map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer0 [best_track]); 
+            if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
+              if (IsoTrack_pixByLayer0[best_track] == 1) {
+                //---- BPIX
+                map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer0 [best_track]); 
+                //               std::cout << "  map_h_BPIX_mc[" << iRun << "][" << ilayer << "][" << iEdge << "][" << iladderblade << "] entries = " << map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
+              }
+              else {
+                //---- FPIX
+                map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer0 [best_track]); 
+              }
             }
           }
           
@@ -1168,55 +1172,60 @@ int main(int argc, char** argv) {
           if (IsoTrack_pixByLayer1[best_track] != 0) {  
             ilayer = IsoTrack_layerOrSideByLayer1[best_track];
             iladderblade = IsoTrack_ladderOrBladeByLayer1[best_track];   
-            if (IsoTrack_pixByLayer1[best_track] == 1) {
-              //---- BPIX
-              map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer1 [best_track]); 
-            }
-            else {
-              //---- FPIX
-              map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer1 [best_track]); 
+            if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
+              if (IsoTrack_pixByLayer1[best_track] == 1) {
+                //---- BPIX
+                map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer1 [best_track]); 
+              }
+              else {
+                //---- FPIX
+                map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer1 [best_track]); 
+              }
             }
           }
-          
           
           if (IsoTrack_pixByLayer2[best_track] != 0) {  
             ilayer = IsoTrack_layerOrSideByLayer2[best_track];
             iladderblade = IsoTrack_ladderOrBladeByLayer2[best_track];   
-            if (IsoTrack_pixByLayer2[best_track] == 1) {
-              //---- BPIX
-              map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer2 [best_track]); 
-            }
-            else {
-              //---- FPIX
-              map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer2 [best_track]); 
+            if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
+              if (IsoTrack_pixByLayer2[best_track] == 1) {
+                //---- BPIX
+                map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer2 [best_track]); 
+              }
+              else {
+                //---- FPIX
+                map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer2 [best_track]); 
+              }
             }
           }
-          
           
           if (IsoTrack_pixByLayer3[best_track] != 0) {  
             ilayer = IsoTrack_layerOrSideByLayer3[best_track];
             iladderblade = IsoTrack_ladderOrBladeByLayer3[best_track];   
-            if (IsoTrack_pixByLayer3[best_track] == 1) {
-              //---- BPIX
-              map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer3 [best_track]); 
-            }
-            else {
-              //---- FPIX
-              map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer3 [best_track]); 
+            if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
+              if (IsoTrack_pixByLayer3[best_track] == 1) {
+                //---- BPIX
+                map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer3 [best_track]); 
+              }
+              else {
+                //---- FPIX
+                map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer3 [best_track]); 
+              }
             }
           }
-          
           
           if (IsoTrack_pixByLayer4[best_track] != 0) {  
             ilayer = IsoTrack_layerOrSideByLayer4[best_track];
             iladderblade = IsoTrack_ladderOrBladeByLayer4[best_track];   
-            if (IsoTrack_pixByLayer4[best_track] == 1) {
-              //---- BPIX
-              map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer4 [best_track]); 
-            }
-            else {
-              //---- FPIX
-              map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer4 [best_track]); 
+            if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
+              if (IsoTrack_pixByLayer4[best_track] == 1) {
+                //---- BPIX
+                map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer4 [best_track]); 
+              }
+              else {
+                //---- FPIX
+                map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer4 [best_track]); 
+              }
             }
           }
           
@@ -1224,27 +1233,30 @@ int main(int argc, char** argv) {
           if (IsoTrack_pixByLayer5[best_track] != 0) {  
             ilayer = IsoTrack_layerOrSideByLayer5[best_track];
             iladderblade = IsoTrack_ladderOrBladeByLayer5[best_track];   
-            if (IsoTrack_pixByLayer5[best_track] == 1) {
-              //---- BPIX
-              map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer5 [best_track]); 
-            }
-            else {
-              //---- FPIX
-              map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer5 [best_track]); 
+            if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
+              if (IsoTrack_pixByLayer5[best_track] == 1) {
+                //---- BPIX
+                map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer5 [best_track]); 
+              }
+              else {
+                //---- FPIX
+                map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer5 [best_track]); 
+              }
             }
           }
-          
           
           if (IsoTrack_pixByLayer6[best_track] != 0) {  
             ilayer = IsoTrack_layerOrSideByLayer6[best_track];
             iladderblade = IsoTrack_ladderOrBladeByLayer6[best_track];   
-            if (IsoTrack_pixByLayer6[best_track] == 1) {
-              //---- BPIX
-              map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer6 [best_track]); 
-            }
-            else {
-              //---- FPIX
-              map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer6 [best_track]); 
+            if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
+              if (IsoTrack_pixByLayer6[best_track] == 1) {
+                //---- BPIX
+                map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer6 [best_track]); 
+              }
+              else {
+                //---- FPIX
+                map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer6 [best_track]); 
+              }
             }
           }
           
@@ -1263,7 +1275,7 @@ int main(int argc, char** argv) {
   for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
     for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
       for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
-        for (int iRun = 0; iRun<1; iRun++) {
+        for (int iRun = 0; iRun<num_run_intervals; iRun++) {
           map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] -> Write();
           map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] -> Write();
         }
@@ -1281,7 +1293,7 @@ int main(int argc, char** argv) {
   for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
     for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
       for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
-        for (int iRun = 0; iRun<1; iRun++) {
+        for (int iRun = 0; iRun<num_run_intervals; iRun++) {
           Normalize( map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] );
           Normalize( map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] );
         }
