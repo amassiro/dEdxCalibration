@@ -230,69 +230,182 @@ int main(int argc, char** argv) {
   
   
   //---- a vector for the different run-ranges
-  //---- run             layer                   eta   det   
-  std::vector< std::map < int, std::map< std::pair<int, int> , TH1F*> > >  vector_map_h_dedxById_data;
-  std::vector< std::map < int, std::map< std::pair<int, int> , float> > >  vector_map_scale_data;
-  std::vector< std::map < int, std::map< std::pair<int, int> , float> > >  vector_map_gaus_data;
-  std::vector< std::map < int, std::map< std::pair<int, int> , float> > >  vector_map_land_data;
-  std::vector< std::map < int, std::map< std::pair<int, int> , float> > >  vector_map_like_data;
   
-  for (int iRun =0; iRun < num_run_intervals; iRun++) {
-    
-    //----     layer                   eta   det
-    std::map < int, std::map< std::pair<int, int> , TH1F*> > map_h_dedxById_data;
-    std::map < int, std::map< std::pair<int, int> , float> > map_scale_data;
-    
+  //---- iRun       layer         eta        ladderblade     
+  std::vector < std::vector < std::vector  < std::vector < TH1F* > > > >  map_h_BPIX_data;
+  std::vector < std::vector < std::vector  < std::vector < TH1F* > > > >  map_h_FPIX_data;
+  
+  
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_BPIX_scale_data;
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_FPIX_scale_data;
+
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_BPIX_gaus_data;
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_FPIX_gaus_data;
+
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_BPIX_land_data;
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_FPIX_land_data;
+
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_BPIX_like_data;
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_FPIX_like_data;
+  
+  
+  
+  for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+    std::vector < std::vector < std::vector  < float > > > v_1;
     for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+      std::vector < std::vector  < float > > v_2;
       for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
-        for (int idet = 0; idet<detId.size(); idet++) {     
-          std::pair<int, int> edge_det;
-          edge_det.first = iEdge;
-          edge_det.second = idet;
-          
-          TString name;      
-          name = Form ("h_irun_%d__ilayer_%d__ieta_%d__bpixfpix_%d__dedxById_data" , iRun, ilayer, edge_det.first , edge_det.second);   
-          map_h_dedxById_data[ilayer][edge_det] = (TH1F*) fileIn->Get(name.Data());
-          setupHisto(map_h_dedxById_data[ilayer][edge_det], iRun);
-          
-          map_scale_data[ilayer][edge_det] = 1.0;
+        std::vector < float > v_scale;
+        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+          v_scale.push_back(1.0);
         }
+        v_2.push_back(v_scale);
       }
+      v_1.push_back(v_2);
     }
+    map_calibration_BPIX_scale_data.push_back(v_1);
+    map_calibration_FPIX_scale_data.push_back(v_1);
     
-    vector_map_h_dedxById_data.push_back (map_h_dedxById_data);
-    vector_map_scale_data.push_back (map_scale_data);
-    vector_map_gaus_data.push_back (map_scale_data);
-    vector_map_land_data.push_back (map_scale_data);
-    vector_map_like_data.push_back (map_scale_data);
+    map_calibration_BPIX_gaus_data.push_back(v_1);
+    map_calibration_FPIX_gaus_data.push_back(v_1);
+    
+    map_calibration_BPIX_land_data.push_back(v_1);
+    map_calibration_FPIX_land_data.push_back(v_1);
+    
+    map_calibration_BPIX_like_data.push_back(v_1);
+    map_calibration_FPIX_like_data.push_back(v_1);
+    
   }
   
   
   
-  //----     layer                   eta   det   
-  std::map < int, std::map< std::pair<int, int> , TH1F*> > map_h_dedxById_mc;
-  //----         layer                   eta   det   
-  std::map < int, std::map< std::pair<int, int> , float> > map_gaus_mc;
-  std::map < int, std::map< std::pair<int, int> , float> > map_land_mc;
   
   
-  for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
-    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
-      for (int idet = 0; idet<detId.size(); idet++) {     
-        std::pair<int, int> edge_det;
-        edge_det.first = iEdge;
-        edge_det.second = idet;
-        
-        TString name;      
-        name = Form ("h_ilayer_%d__ieta_%d__bpixfpix_%d__dedxById_mc" , ilayer, edge_det.first , edge_det.second);   
-        map_h_dedxById_mc  [ilayer][edge_det] = (TH1F*) fileIn->Get(name.Data());
-        setupHisto(map_h_dedxById_mc[ilayer][edge_det], 20); //---- kRed
-        
-        map_gaus_mc[ilayer][edge_det] = -1.0;
-        map_land_mc[ilayer][edge_det] = -1.0;
-        
+  for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+    std::vector < std::vector < std::vector  < TH1F* > > > v_1_BPIX;
+    std::vector < std::vector < std::vector  < TH1F* > > > v_1_FPIX;
+    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+      std::vector < std::vector  < TH1F* > > v_2_BPIX;
+      std::vector < std::vector  < TH1F* > > v_2_FPIX;
+      for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+        std::vector < TH1F* > v_BPIX;
+        std::vector < TH1F* > v_FPIX;
+        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+          
+          TString name;      
+          name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_data", iRun, ilayer, iEdge, iladderblade);   
+          TH1F* temp = (TH1F*) fileIn->Get(name.Data());
+          setupHisto(temp, iRun);
+          v_BPIX.push_back ( temp );
+          
+          name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX_data", iRun, ilayer, iEdge, iladderblade);   
+          TH1F* temp2 = (TH1F*) fileIn->Get(name.Data());
+          setupHisto(temp2, iRun);
+          v_FPIX.push_back ( temp2 );
+ 
+          
+        }
+        v_2_BPIX.push_back(v_BPIX);
+        v_2_FPIX.push_back(v_FPIX);
       }
+      v_1_BPIX.push_back(v_2_BPIX);
+      v_1_FPIX.push_back(v_2_FPIX);
     }
+    map_h_BPIX_data.push_back(v_1_BPIX);
+    map_h_FPIX_data.push_back(v_1_FPIX);  
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  //---- iRun       layer         eta        ladderblade     
+  std::vector < std::vector < std::vector  < std::vector < TH1F* > > > >  map_h_BPIX_mc;
+  std::vector < std::vector < std::vector  < std::vector < TH1F* > > > >  map_h_FPIX_mc;
+  
+  
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_BPIX_scale_mc;
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_FPIX_scale_mc;
+  
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_BPIX_gaus_mc;
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_FPIX_gaus_mc;
+  
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_BPIX_land_mc;
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_FPIX_land_mc;
+  
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_BPIX_like_mc;
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_FPIX_like_mc;
+  
+  
+  //----                mc only 1 run range
+  for (int iRun = 0; iRun<1; iRun++) {
+    std::vector < std::vector < std::vector  < float > > > v_1;
+    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+      std::vector < std::vector  < float > > v_2;
+      for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+        std::vector < float > v_scale;
+        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+          v_scale.push_back(1.0);
+        }
+        v_2.push_back(v_scale);
+      }
+      v_1.push_back(v_2);
+    }
+    map_calibration_BPIX_scale_mc.push_back(v_1);
+    map_calibration_FPIX_scale_mc.push_back(v_1);
+    
+    map_calibration_BPIX_gaus_mc.push_back(v_1);
+    map_calibration_FPIX_gaus_mc.push_back(v_1);
+    
+    map_calibration_BPIX_land_mc.push_back(v_1);
+    map_calibration_FPIX_land_mc.push_back(v_1);
+    
+    map_calibration_BPIX_like_mc.push_back(v_1);
+    map_calibration_FPIX_like_mc.push_back(v_1);
+    
+  }
+  
+  
+  
+  
+  //----                mc only 1 run range
+  for (int iRun = 0; iRun<1; iRun++) {
+    std::vector < std::vector < std::vector  < TH1F* > > > v_1_BPIX;
+    std::vector < std::vector < std::vector  < TH1F* > > > v_1_FPIX;
+    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+      std::vector < std::vector  < TH1F* > > v_2_BPIX;
+      std::vector < std::vector  < TH1F* > > v_2_FPIX;
+      for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+        std::vector < TH1F* > v_BPIX;
+        std::vector < TH1F* > v_FPIX;
+        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+          
+          TString name;      
+          name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_mc", iRun, ilayer, iEdge, iladderblade);   
+          TH1F* temp = (TH1F*) fileIn->Get(name.Data());
+          setupHisto(temp, iRun);
+          v_BPIX.push_back ( temp );
+          
+          name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX_mc", iRun, ilayer, iEdge, iladderblade);   
+          TH1F* temp2 = (TH1F*) fileIn->Get(name.Data());
+          setupHisto(temp2, iRun);
+          v_FPIX.push_back ( temp2 );
+          
+          
+        }
+        v_2_BPIX.push_back(v_BPIX);
+        v_2_FPIX.push_back(v_FPIX);
+      }
+      v_1_BPIX.push_back(v_2_BPIX);
+      v_1_FPIX.push_back(v_2_FPIX);
+    }
+    map_h_BPIX_mc.push_back(v_1_BPIX);
+    map_h_FPIX_mc.push_back(v_1_FPIX);  
   }
   
   
@@ -305,66 +418,49 @@ int main(int argc, char** argv) {
   
   outputCanvas.mkdir ("test/");
   
-//   TCanvas* cc_summary_result = new TCanvas ("cc_summary_result","",1000,1000);
-//   cc_summary_result->Divide(2, eta_edges.size());
-//   
-//   TCanvas* cc_summary_data = new TCanvas ("cc_summary_data","",1000,1000);
-//   cc_summary_data->Divide(2, eta_edges.size());
-//   
-//   TCanvas* cc_summary_mc = new TCanvas ("cc_summary_mc","",1000,1000);
-//   cc_summary_mc->Divide(2, eta_edges.size());
-//   
- 
   
-  //----  run                     layer   det   
-  std::vector< std::map < std::pair<int, int> , TCanvas*> >  vector_map_canvas_entries;
-  std::vector< std::map < std::pair<int, int> , TCanvas*> >  vector_map_canvas_like_closure;
-  std::vector< std::map < std::pair<int, int> , TCanvas*> >  vector_map_canvas_like_scan;
-  std::vector< std::map < std::pair<int, int> , TCanvas*> >  vector_map_canvas_histo;
+  //---- iRun       layer         eta        ladderblade     
+  std::vector < std::vector < std::vector  < std::vector < TCanvas* > > > >  vector_map_canvas_all_BPIX;
+  std::vector < std::vector < std::vector  < std::vector < TCanvas* > > > >  vector_map_canvas_all_FPIX;
+  //   canvas with:   |  data/mc    |      entries    |     likelihood scan  |    closure likelihood   | 
   
-  for (int iRun =0; iRun < num_run_intervals; iRun++) {
-    std::pair<int, int> layer_det;
-    //----            layer   det   
-    std::map< std::pair<int, int> , TCanvas*> mini_map_canvas_entries;
-    std::map< std::pair<int, int> , TCanvas*> mini_map_canvas_like_closure;
-    std::map< std::pair<int, int> , TCanvas*> mini_map_canvas_like_scan;
-    std::map< std::pair<int, int> , TCanvas*> mini_map_canvas_histo;
-    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {  
-      for (int idet = 0; idet<detId.size(); idet++) { 
-        layer_det.first = ilayer;
-        layer_det.second = idet;
-      
-        TString name;  
-        
-        name = Form ("cc_entries__iRun_%d__idet_%d__ilayer_%d" , iRun, idet, ilayer); 
-        mini_map_canvas_entries[layer_det] = new TCanvas (name.Data(),"",800,1800);
-        mini_map_canvas_entries[layer_det]->Divide(2, eta_edges.size());
-
-        name = Form ("cc_like_closure__iRun_%d__idet_%d__ilayer_%d" , iRun, idet, ilayer); 
-        mini_map_canvas_like_closure[layer_det] = new TCanvas (name.Data(),"",800,1800);
-        mini_map_canvas_like_closure[layer_det]->Divide(2, eta_edges.size());
-
-        name = Form ("cc_like_scan__iRun_%d__idet_%d__ilayer_%d" , iRun, idet, ilayer); 
-        mini_map_canvas_like_scan[layer_det] = new TCanvas (name.Data(),"",800,1800);
-        mini_map_canvas_like_scan[layer_det]->Divide(2, eta_edges.size());
-        
-        name = Form ("cc_histo__iRun_%d__idet_%d__ilayer_%d" , iRun, idet, ilayer); 
-        mini_map_canvas_histo[layer_det] = new TCanvas (name.Data(),"",800,1800);
-        mini_map_canvas_histo[layer_det]->Divide(2, eta_edges.size());
-        
+  
+  for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+    std::vector < std::vector < std::vector  < TCanvas* > > > v_1_BPIX;
+    std::vector < std::vector < std::vector  < TCanvas* > > > v_1_FPIX;
+    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+      std::vector < std::vector  < TCanvas* > > v_2_BPIX;
+      std::vector < std::vector  < TCanvas* > > v_2_FPIX;
+      for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+        std::vector < TCanvas* > v_BPIX;
+        std::vector < TCanvas* > v_FPIX;
+        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+          
+          TString name;      
+          name = Form ("canvas_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX", iRun, ilayer, iEdge, iladderblade);   
+          TCanvas* temp = new TCanvas (name.Data(),"",800,800);
+          temp -> Divide (2, 2);
+          v_BPIX.push_back ( temp );
+          
+          name = Form ("canvas_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX", iRun, ilayer, iEdge, iladderblade);   
+          TCanvas* temp2 = new TCanvas (name.Data(),"",800,800);
+          temp2 -> Divide (2, 2);
+          v_FPIX.push_back ( temp2 );
+          
+          
+        }
+        v_2_BPIX.push_back(v_BPIX);
+        v_2_FPIX.push_back(v_FPIX);
       }
+      v_1_BPIX.push_back(v_2_BPIX);
+      v_1_FPIX.push_back(v_2_FPIX);
     }
-    vector_map_canvas_entries.push_back(mini_map_canvas_entries);
-    vector_map_canvas_like_closure.push_back(mini_map_canvas_like_closure);
-    vector_map_canvas_like_scan.push_back(mini_map_canvas_like_scan);
-    vector_map_canvas_histo.push_back(mini_map_canvas_histo);
+    vector_map_canvas_all_BPIX.push_back(v_1_BPIX);
+    vector_map_canvas_all_FPIX.push_back(v_1_FPIX);  
   }
   
   
   
-  
-  //   float min_landau = 2.15;
-  //   float max_landau = 4.4;
   float min_landau = 2.0;
   float max_landau = 6.5;
   
@@ -392,109 +488,210 @@ int main(int argc, char** argv) {
     outputCanvas.cd();
     outputCanvas.mkdir (name.Data());
     outputCanvas.cd(name.Data());
-    
-    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {  
-      
-      for (int idet = 0; idet<detId.size(); idet++) { 
-        
-//         std::cout << " iEdge = " << iEdge << " ilayer = " << ilayer << " idet = " << idet << std::endl;
-        
-        
-        std::pair<int, int> edge_det;
-        edge_det.first = iEdge;
-        edge_det.second = idet;
-        
-        
-        f_gauss->SetParameter(0, 0);
-        f_gauss->SetParameter(2, 2);
-        
-        f_landau->SetParameter(0, 0);
-        f_landau->SetParameter(2, 1);
-        
-        
-        std::pair<int, int> layer_det;
-        layer_det.first = ilayer;
-        layer_det.second = idet;
-        
-        //---- plot and fit data
-        for (int iRun =0; iRun < num_run_intervals; iRun++) {
-//           std::cout << "   -> iRun = " << iRun << std::endl;
+   
+    for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+      for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+        //---- BPIX
+        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
           
-          //---- canvas histo:   (ieta *2) + idet + 1
-          vector_map_canvas_histo[iRun][layer_det] -> cd (iEdge*2 + idet + 1);
+          f_gauss->SetParameter(0, 0);
+          f_gauss->SetParameter(2, 2);
           
-          if (iRun==0) vector_map_h_dedxById_data[iRun][ilayer][edge_det]->Draw("hist");
-          else  vector_map_h_dedxById_data[iRun][ilayer][edge_det]->Draw("hist same");
+          f_landau->SetParameter(0, 0);
+          f_landau->SetParameter(2, 1);
+          
+          vector_map_canvas_all_BPIX[iRun][ilayer][iEdge][iladderblade] -> cd (1);
+          
+          map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Draw("hist");
           
           //---- save time if empty
-          if (vector_map_h_dedxById_data[iRun][ilayer][edge_det]->Integral() == 0) continue;
+          if (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Integral() == 0) continue;
           
-          f_gauss->SetParameter(1, sqrt(vector_map_h_dedxById_data[iRun][ilayer][edge_det]->Integral()));
+          f_gauss->SetParameter(1, sqrt(map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Integral()));
           f_gauss->SetParameter(3, 3.0);  
           f_gauss->SetParameter(2, 2.0);  
-          f_landau->SetParameter(1, sqrt(vector_map_h_dedxById_data[iRun][ilayer][edge_det]->Integral()));
+          f_landau->SetParameter(1, sqrt(map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Integral()));
           f_landau->SetParameter(3, 3);  
           f_landau->SetParameter(2, 2.0);  
-          vector_map_h_dedxById_data[iRun][ilayer][edge_det]->Fit("f_gauss", "RMIQ", "", 2.5, 3.4); //---- gauss
+          map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Fit("f_gauss", "RMIQ", "", 2.5, 3.4); //---- gauss
           
-          vector_map_gaus_data[iRun][ilayer][edge_det] = f_gauss->GetParameter(3);
+          map_calibration_BPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] = f_gauss->GetParameter(3);
           
-          vector_map_h_dedxById_data[iRun][ilayer][edge_det]->Fit("f_landau", "RMIQ", "", min_landau, max_landau); //---- landau
-          vector_map_land_data[iRun][ilayer][edge_det] = f_landau->GetParameter(3);
+          map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Fit("f_landau", "RMIQ", "", min_landau, max_landau); //---- landau
+          map_calibration_BPIX_land_data[iRun][ilayer][iEdge][iladderblade] = f_landau->GetParameter(3);
           
           f_landau->DrawClone("same");
           f_gauss->DrawClone("same");
+          
+        }
+
+        
+        //---- FPIX
+        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+          
+          f_gauss->SetParameter(0, 0);
+          f_gauss->SetParameter(2, 2);
+          
+          f_landau->SetParameter(0, 0);
+          f_landau->SetParameter(2, 1);
+          
+          vector_map_canvas_all_FPIX[iRun][ilayer][iEdge][iladderblade] -> cd (1);
+          
+          map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->Draw("hist");
+          
+          //---- save time if empty
+          if (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->Integral() == 0) continue;
+          
+          f_gauss->SetParameter(1, sqrt(map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->Integral()));
+          f_gauss->SetParameter(3, 3.0);  
+          f_gauss->SetParameter(2, 2.0);  
+          f_landau->SetParameter(1, sqrt(map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->Integral()));
+          f_landau->SetParameter(3, 3);  
+          f_landau->SetParameter(2, 2.0);  
+          map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->Fit("f_gauss", "RMIQ", "", 2.5, 3.4); //---- gauss
+          
+          map_calibration_FPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] = f_gauss->GetParameter(3);
+          
+          map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->Fit("f_landau", "RMIQ", "", min_landau, max_landau); //---- landau
+          map_calibration_FPIX_land_data[iRun][ilayer][iEdge][iladderblade] = f_landau->GetParameter(3);
+          
+          f_landau->DrawClone("same");
+          f_gauss->DrawClone("same");
+          
         }
         
-        //---- plot and fit also MC
-        for (int iRun =0; iRun < num_run_intervals; iRun++) {
-          vector_map_canvas_histo[iRun][layer_det] -> cd(iEdge*2 + idet + 1);
-          map_h_dedxById_mc[ilayer][edge_det]->Draw("hist same");
-       
-          if (iRun == 0) {
-            f_gauss->SetParameter(1, sqrt(map_h_dedxById_mc[ilayer][edge_det]->Integral()));
-            f_gauss->SetParameter(3, 3.0);  
-            f_gauss->SetParameter(2, 2.0);  
-            f_landau->SetParameter(1, sqrt(map_h_dedxById_mc[ilayer][edge_det]->Integral()));
-            f_landau->SetParameter(3, 3);  
-            f_landau->SetParameter(2, 2.0);  
-            
-            //---- save time if empty
-            if (map_h_dedxById_mc[ilayer][edge_det]->Integral() == 0) continue;
-            
-            map_h_dedxById_mc[ilayer][edge_det]->Fit("f_gauss", "RMIQ", "", 2.5, 3.4); //---- gauss
-            map_gaus_mc[ilayer][edge_det] = f_gauss->GetParameter(3);
-            
-            map_h_dedxById_mc[ilayer][edge_det]->Fit("f_landau", "RMIQ", "", min_landau, max_landau); //---- landau
-            map_land_mc[ilayer][edge_det] = f_landau->GetParameter(3);
-            
-            f_landau->DrawClone("same");
-            f_gauss->DrawClone("same");
-          }
+        
+      }
+    }
+  }
+  
+  
+  
+  
+  
+  
+  //---- mc 
+  
+  for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+    TString name;  
+    name = Form ("eta_%d" , iEdge); 
+    
+    outputCanvas.cd();
+    outputCanvas.cd(name.Data());
+    
+    for (int iRun = 0; iRun<1; iRun++) {
+      for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+        //---- BPIX
+        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+          
+          f_gauss->SetParameter(0, 0);
+          f_gauss->SetParameter(2, 2);
+          
+          f_landau->SetParameter(0, 0);
+          f_landau->SetParameter(2, 1);
+          
+          vector_map_canvas_all_BPIX[iRun][ilayer][iEdge][iladderblade] -> cd (1);
+          
+          map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->Draw("hist same");
+          
+          //---- save time if empty
+          if (map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->Integral() == 0) continue;
+          
+          f_gauss->SetParameter(1, sqrt(map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->Integral()));
+          f_gauss->SetParameter(3, 3.0);  
+          f_gauss->SetParameter(2, 2.0);  
+          f_landau->SetParameter(1, sqrt(map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->Integral()));
+          f_landau->SetParameter(3, 3);  
+          f_landau->SetParameter(2, 2.0);  
+          map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->Fit("f_gauss", "RMIQ", "", 2.5, 3.4); //---- gauss
+          
+          map_calibration_BPIX_gaus_mc[iRun][ilayer][iEdge][iladderblade] = f_gauss->GetParameter(3);
+          
+          map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->Fit("f_landau", "RMIQ", "", min_landau, max_landau); //---- landau
+          map_calibration_BPIX_land_mc[iRun][ilayer][iEdge][iladderblade] = f_landau->GetParameter(3);
+          
+          f_landau->DrawClone("same");
+          f_gauss->DrawClone("same");
+          
         }
         
         
+        //---- FPIX
+        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+          
+          f_gauss->SetParameter(0, 0);
+          f_gauss->SetParameter(2, 2);
+          
+          f_landau->SetParameter(0, 0);
+          f_landau->SetParameter(2, 1);
+          
+          vector_map_canvas_all_FPIX[iRun][ilayer][iEdge][iladderblade] -> cd (1);
+          
+          map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade]->Draw("hist");
+          
+          //---- save time if empty
+          if (map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade]->Integral() == 0) continue;
+          
+          f_gauss->SetParameter(1, sqrt(map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade]->Integral()));
+          f_gauss->SetParameter(3, 3.0);  
+          f_gauss->SetParameter(2, 2.0);  
+          f_landau->SetParameter(1, sqrt(map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade]->Integral()));
+          f_landau->SetParameter(3, 3);  
+          f_landau->SetParameter(2, 2.0);  
+          map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade]->Fit("f_gauss", "RMIQ", "", 2.5, 3.4); //---- gauss
+          
+          map_calibration_FPIX_gaus_mc[iRun][ilayer][iEdge][iladderblade] = f_gauss->GetParameter(3);
+          
+          map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade]->Fit("f_landau", "RMIQ", "", min_landau, max_landau); //---- landau
+          map_calibration_FPIX_land_mc[iRun][ilayer][iEdge][iladderblade] = f_landau->GetParameter(3);
+          
+          f_landau->DrawClone("same");
+          f_gauss->DrawClone("same");
+          
+        }
         
         
-        int npoint = 100;
-        
-        for (int iRun =0; iRun < num_run_intervals; iRun++) {
+      }
+    }
+  }
+  
+  
+  
+  
+  
+  //---- now likelihood scan
+  
+  
+  for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+    TString name;  
+    name = Form ("eta_%d" , iEdge); 
+    
+    outputCanvas.cd();
+    outputCanvas.cd(name.Data());
+    
+    for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+      for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+        //---- BPIX
+        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+          
+          
+          int npoint = 100;
           
           //---- template fit
           TemplateFit myFit;
           //---- define the reference histogram 
           //---> first check bias in data vs data
-          myFit.set_reference_histogram(vector_map_h_dedxById_data[iRun][ilayer][edge_det]);
+          myFit.set_reference_histogram(map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]);
           myFit.set_min_max( 0.0,    8.0 );
           
           
-          //---- canvas closure:   (ieta *2) + idet + 1
-          vector_map_canvas_like_closure[iRun][layer_det] -> cd (iEdge*2 + idet + 1);
+          //   canvas with:   |  data/mc    |      entries    |     likelihood scan  |    closure likelihood   | 
+          vector_map_canvas_all_BPIX[iRun][ilayer][iEdge][iladderblade] -> cd (4);
           
           TGraph* likelihoodScan = new TGraph();
           TGraph* entriesScan = new TGraph();
           
-          if (vector_map_h_dedxById_data[iRun][ilayer][edge_det]->Integral() > 500 ) {  
+          if (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Integral() > 500 ) {  
             for (int ipoint=0; ipoint<npoint; ipoint++) {
               float likelihood = 1;
               float loglikelihood = 0;
@@ -503,15 +700,15 @@ int main(int argc, char** argv) {
               float scale_value = 0.95 + 0.10/npoint * ipoint;
               myFit.set_scale( scale_value );
               
-              for (int ibin=0; ibin<vector_map_h_dedxById_data[iRun][ilayer][edge_det]->GetNbinsX(); ibin++) {
-                if ( (vector_map_h_dedxById_data[iRun][ilayer][edge_det] -> GetBinCenter (ibin+1)) >= min_histo && (vector_map_h_dedxById_data[iRun][ilayer][edge_det] -> GetBinCenter (ibin+1)) <= max_histo) {
-                  if (vector_map_h_dedxById_data[iRun][ilayer][edge_det] -> GetBinContent(ibin+1) > 0) {
+              for (int ibin=0; ibin<map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->GetNbinsX(); ibin++) {
+                if ( (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinCenter (ibin+1)) >= min_histo && (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinCenter (ibin+1)) <= max_histo) {
+                  if (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinContent(ibin+1) > 0) {
                     
-                    float value = myFit.evaluate (vector_map_h_dedxById_data[iRun][ilayer][edge_det] -> GetBinCenter (ibin+1));
+                    float value = myFit.evaluate (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinCenter (ibin+1));
                     if (value != 0) {
-                      likelihood *= ( pow( value , (vector_map_h_dedxById_data[iRun][ilayer][edge_det] -> GetBinContent(ibin+1))) ) ;
-                      loglikelihood += ( (log ( value )) * (vector_map_h_dedxById_data[iRun][ilayer][edge_det] -> GetBinContent(ibin+1)) ) ;
-                      entries += (vector_map_h_dedxById_data[iRun][ilayer][edge_det] -> GetBinContent(ibin+1));
+                      likelihood *= ( pow( value , (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinContent(ibin+1))) ) ;
+                      loglikelihood += ( (log ( value )) * (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinContent(ibin+1)) ) ;
+                      entries += (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinContent(ibin+1));
                     }
                   }
                 }
@@ -522,6 +719,8 @@ int main(int argc, char** argv) {
               
             }
           }
+          
+          vector_map_canvas_all_BPIX[iRun][ilayer][iEdge][iladderblade] -> cd (4);
           
           likelihoodScan->SetLineColor (kBlue);
           likelihoodScan->SetLineWidth (2);
@@ -535,29 +734,29 @@ int main(int argc, char** argv) {
           likelihoodScan->Fit("parabola", "Q");
           parabola.DrawClone ("same");
           float bias_min_value = - parabola.GetParameter (1) / (2. *  parabola.GetParameter (0) );
-//           std::cout << " min = " << bias_min_value << std::endl;
+          //           std::cout << " min = " << bias_min_value << std::endl;
           bias_min_value = (1. - bias_min_value);
           
-        
+          
           
           
           //---- FIX bias deactivated
           //       bias_min_value = 0;
           //----
           
-          //---- canvas counting:   (ieta *2) + idet + 1
-          vector_map_canvas_entries[iRun][layer_det] -> cd (iEdge*2 + idet + 1);
+          //---- canvas counting: 
+          vector_map_canvas_all_BPIX[iRun][ilayer][iEdge][iladderblade] -> cd (2);
           entriesScan->DrawClone("APL");
           
           
           //---- now do the mc to data fit
-          myFit.set_reference_histogram(map_h_dedxById_mc[ilayer][edge_det]);
+          myFit.set_reference_histogram(map_h_BPIX_data[0][ilayer][iEdge][iladderblade]);
           
-          //---- canvas likelihood:   (ieta *2) + idet + 1
-          vector_map_canvas_like_scan[iRun][layer_det] -> cd (iEdge*2 + idet + 1);
+          //---- canvas likelihood
+          vector_map_canvas_all_BPIX[iRun][ilayer][iEdge][iladderblade] -> cd (3);
           TGraph* likelihoodScan_mc_data = new TGraph();
           
-          if (map_h_dedxById_mc[ilayer][edge_det]->Integral() > 500 ) {
+          if (map_h_BPIX_data[0][ilayer][iEdge][iladderblade]->Integral() > 500 ) {
             for (int ipoint=0; ipoint<npoint; ipoint++) {
               float likelihood = 1;
               float loglikelihood = 0;
@@ -566,15 +765,15 @@ int main(int argc, char** argv) {
               float scale_value = 0.95 + 0.10/npoint * ipoint;
               myFit.set_scale( scale_value );
               
-              for (int ibin=0; ibin<vector_map_h_dedxById_data[iRun][ilayer][edge_det]->GetNbinsX(); ibin++) {
-                if ( (vector_map_h_dedxById_data[iRun][ilayer][edge_det] -> GetBinCenter (ibin+1)) >= min_histo && (vector_map_h_dedxById_data[iRun][ilayer][edge_det] -> GetBinCenter (ibin+1)) <= max_histo) {
-                  if (vector_map_h_dedxById_data[iRun][ilayer][edge_det] -> GetBinContent(ibin+1) > 0) {
+              for (int ibin=0; ibin<map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->GetNbinsX(); ibin++) {
+                if ( (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinCenter (ibin+1)) >= min_histo && (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinCenter (ibin+1)) <= max_histo) {
+                  if (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinContent(ibin+1) > 0) {
                     
-                    float value = myFit.evaluate (vector_map_h_dedxById_data[iRun][ilayer][edge_det] -> GetBinCenter (ibin+1));
+                    float value = myFit.evaluate (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinCenter (ibin+1));
                     if (value != 0) {
-                      likelihood *= ( pow( value , (vector_map_h_dedxById_data[iRun][ilayer][edge_det] -> GetBinContent(ibin+1))) ) ;
-                      loglikelihood += ( (log ( value )) * (vector_map_h_dedxById_data[iRun][ilayer][edge_det] -> GetBinContent(ibin+1)) ) ;
-                      entries += (vector_map_h_dedxById_data[iRun][ilayer][edge_det] -> GetBinContent(ibin+1));
+                      likelihood *= ( pow( value , (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinContent(ibin+1))) ) ;
+                      loglikelihood += ( (log ( value )) * (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinContent(ibin+1)) ) ;
+                      entries += (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinContent(ibin+1));
                     }
                   }
                 }
@@ -593,20 +792,168 @@ int main(int argc, char** argv) {
           
           likelihoodScan_mc_data->DrawClone("APL");
           
+          likelihoodScan_mc_data->Fit("parabola_result", "Q");
+          parabola_result.SetLineColor (kRed);
+          parabola_result.DrawClone ("same");
+          float final_scale = - parabola_result.GetParameter (1) / (2. *  parabola_result.GetParameter (0) );
+          map_calibration_BPIX_like_data[iRun][ilayer][iEdge][iladderblade] = final_scale;
           
+        }
+      }
+    }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+    TString name;  
+    name = Form ("eta_%d" , iEdge); 
+    
+    outputCanvas.cd();
+    outputCanvas.cd(name.Data());
+    
+    for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+      for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+        //---- FPIX
+        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+          
+          
+          int npoint = 100;
+          
+          //---- template fit
+          TemplateFit myFit;
+          //---- define the reference histogram 
+          //---> first check bias in data vs data
+          myFit.set_reference_histogram(map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]);
+          myFit.set_min_max( 0.0,    8.0 );
+          
+          
+          //   canvas with:   |  data/mc    |      entries    |     likelihood scan  |    closure likelihood   | 
+          vector_map_canvas_all_FPIX[iRun][ilayer][iEdge][iladderblade] -> cd (4);
+          
+          TGraph* likelihoodScan = new TGraph();
+          TGraph* entriesScan = new TGraph();
+          
+          if (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->Integral() > 500 ) {  
+            for (int ipoint=0; ipoint<npoint; ipoint++) {
+              float likelihood = 1;
+              float loglikelihood = 0;
+              float entries = 0;
+              
+              float scale_value = 0.95 + 0.10/npoint * ipoint;
+              myFit.set_scale( scale_value );
+              
+              for (int ibin=0; ibin<map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->GetNbinsX(); ibin++) {
+                if ( (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinCenter (ibin+1)) >= min_histo && (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinCenter (ibin+1)) <= max_histo) {
+                  if (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinContent(ibin+1) > 0) {
+                    
+                    float value = myFit.evaluate (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinCenter (ibin+1));
+                    if (value != 0) {
+                      likelihood *= ( pow( value , (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinContent(ibin+1))) ) ;
+                      loglikelihood += ( (log ( value )) * (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinContent(ibin+1)) ) ;
+                      entries += (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinContent(ibin+1));
+                    }
+                  }
+                }
+              }
+              
+              likelihoodScan -> SetPoint ( ipoint, scale_value, -2 * loglikelihood  ); 
+              entriesScan -> SetPoint ( ipoint, scale_value, entries ); 
+              
+            }
+          }
+          
+          vector_map_canvas_all_FPIX[iRun][ilayer][iEdge][iladderblade] -> cd (4);
+          
+          likelihoodScan->SetLineColor (kBlue);
+          likelihoodScan->SetLineWidth (2);
+          likelihoodScan->SetMarkerSize (0.5);
+          likelihoodScan->SetMarkerStyle (20);
+          
+          likelihoodScan->DrawClone("APL");
+          
+          
+          parabola.SetLineColor (kRed);
+          likelihoodScan->Fit("parabola", "Q");
+          parabola.DrawClone ("same");
+          float bias_min_value = - parabola.GetParameter (1) / (2. *  parabola.GetParameter (0) );
+          //           std::cout << " min = " << bias_min_value << std::endl;
+          bias_min_value = (1. - bias_min_value);
+          
+          
+          
+          
+          //---- FIX bias deactivated
+          //       bias_min_value = 0;
+          //----
+          
+          //---- canvas counting: 
+          vector_map_canvas_all_FPIX[iRun][ilayer][iEdge][iladderblade] -> cd (2);
+          entriesScan->DrawClone("APL");
+          
+          
+          //---- now do the mc to data fit
+          myFit.set_reference_histogram(map_h_FPIX_data[0][ilayer][iEdge][iladderblade]);
+          
+          //---- canvas likelihood
+          vector_map_canvas_all_FPIX[iRun][ilayer][iEdge][iladderblade] -> cd (3);
+          TGraph* likelihoodScan_mc_data = new TGraph();
+          
+          if (map_h_FPIX_data[0][ilayer][iEdge][iladderblade]->Integral() > 500 ) {
+            for (int ipoint=0; ipoint<npoint; ipoint++) {
+              float likelihood = 1;
+              float loglikelihood = 0;
+              float entries = 0;
+              
+              float scale_value = 0.95 + 0.10/npoint * ipoint;
+              myFit.set_scale( scale_value );
+              
+              for (int ibin=0; ibin<map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->GetNbinsX(); ibin++) {
+                if ( (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinCenter (ibin+1)) >= min_histo && (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinCenter (ibin+1)) <= max_histo) {
+                  if (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinContent(ibin+1) > 0) {
+                    
+                    float value = myFit.evaluate (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinCenter (ibin+1));
+                    if (value != 0) {
+                      likelihood *= ( pow( value , (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinContent(ibin+1))) ) ;
+                      loglikelihood += ( (log ( value )) * (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinContent(ibin+1)) ) ;
+                      entries += (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] -> GetBinContent(ibin+1));
+                    }
+                  }
+                }
+              }
+              
+              //---                                               add the bias obtained in the data 2 data
+              likelihoodScan_mc_data -> SetPoint ( ipoint, scale_value + bias_min_value, -2 * loglikelihood  ); 
+              
+            }
+          }
+          
+          likelihoodScan_mc_data->SetLineColor (kBlue);
+          likelihoodScan_mc_data->SetLineWidth (2);
+          likelihoodScan_mc_data->SetMarkerSize (0.5);
+          likelihoodScan_mc_data->SetMarkerStyle (20);
+          
+          likelihoodScan_mc_data->DrawClone("APL");
           
           likelihoodScan_mc_data->Fit("parabola_result", "Q");
           parabola_result.SetLineColor (kRed);
           parabola_result.DrawClone ("same");
           float final_scale = - parabola_result.GetParameter (1) / (2. *  parabola_result.GetParameter (0) );
-          std::cout << " Scale [ " << iRun << ", " << ilayer << ", " << iEdge << ", " << idet << "] = " << final_scale << std::endl;
-          vector_map_like_data[iRun][ilayer][edge_det] = final_scale;
+          map_calibration_FPIX_like_data[iRun][ilayer][iEdge][iladderblade] = final_scale;
           
         }
-        
       }
     }
   }
+  
+  
+  
+  
   
   
   //---- save output 
@@ -617,37 +964,30 @@ int main(int argc, char** argv) {
   outputCanvas.mkdir ("all");
   outputCanvas.cd("all");
   
-  for (int iRun =0; iRun < num_run_intervals; iRun++) {
-    std::pair<int, int> layer_det;
-    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {  
-      for (int idet = 0; idet<detId.size(); idet++) {
-        layer_det.first = ilayer;
-        layer_det.second = idet;
-        vector_map_canvas_entries      [iRun][layer_det]->Write();
-        vector_map_canvas_histo        [iRun][layer_det]->Write();
-        vector_map_canvas_like_closure [iRun][layer_det]->Write();
-        vector_map_canvas_like_scan    [iRun][layer_det]->Write();
-        
-        TString name;
-        
-        name = Form ("plot_calibration_run/cc_entries__iRun_%d__idet_%d__ilayer_%d.png" , iRun, idet, ilayer); 
-        vector_map_canvas_entries      [iRun][layer_det]->SaveAs( name.Data() );
-        
-        name = Form ("plot_calibration_run/cc_like_closure__iRun_%d__idet_%d__ilayer_%d.png" , iRun, idet, ilayer); 
-        vector_map_canvas_like_closure [iRun][layer_det]->SaveAs( name.Data() );
-        
-        name = Form ("plot_calibration_run/cc_like_scan__iRun_%d__idet_%d__ilayer_%d.png" , iRun, idet, ilayer); 
-        vector_map_canvas_like_scan    [iRun][layer_det]->SaveAs( name.Data() );
-        
-        name = Form ("plot_calibration_run/cc_histo__iRun_%d__idet_%d__ilayer_%d.png" , iRun, idet, ilayer); 
-        vector_map_canvas_histo        [iRun][layer_det]->SaveAs( name.Data() );
-                
+  
+  
+  for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+      for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+
+          vector_map_canvas_all_BPIX[iRun][ilayer][iEdge][iladderblade] -> Write();
+          vector_map_canvas_all_FPIX[iRun][ilayer][iEdge][iladderblade] -> Write();
+          
+          TString name;      
+          name = Form ("plot_calibration_run/canvas_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX.png", iRun, ilayer, iEdge, iladderblade);   
+          vector_map_canvas_all_BPIX[iRun][ilayer][iEdge][iladderblade] -> SaveAs( name.Data() );
+          name = Form ("plot_calibration_run/canvas_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX.png", iRun, ilayer, iEdge, iladderblade);   
+          vector_map_canvas_all_FPIX[iRun][ilayer][iEdge][iladderblade] -> SaveAs( name.Data() );
+          
+        }
       }
     }
   }
   
   
   
+  /*
   //---- now get the values and transform into historical dependence
       
   //----     iRun           eta                      layer  det   
@@ -743,7 +1083,7 @@ int main(int argc, char** argv) {
         
       }
     }
-  }
+  }*/
   
   
   

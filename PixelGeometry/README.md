@@ -113,6 +113,13 @@ Calibrate:
     
     
     
+    g++ -o calibratePixelTimeNew.exe calibratePixelTimeNew.cpp `root-config --cflags --glibs`
+
+                                                                                               num_run_intervals
+    ./calibratePixelTimeNew.exe    tocalibrate_complete_eta_edges_iladderblade_timeRanges.root      10
+
+        
+    
 Draw phi modulation:
 ====
 
