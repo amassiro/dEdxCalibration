@@ -300,7 +300,7 @@ int main(int argc, char** argv) {
           
           name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX_data", iRun, ilayer, iEdge, iladderblade);   
           TH1F* temp2 = (TH1F*) fileIn->Get(name.Data());
-          setupHisto(temp2, iRun);
+          setupHisto(temp2, iRun+10);
           v_FPIX.push_back ( temp2 );
  
           
@@ -502,7 +502,7 @@ int main(int argc, char** argv) {
           
           vector_map_canvas_all_BPIX[iRun][ilayer][iEdge][iladderblade] -> cd (1);
           
-          map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Draw("hist");
+          map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->DrawNormalized("hist");
           
           //---- save time if empty
           if (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Integral() == 0) continue;
@@ -537,7 +537,7 @@ int main(int argc, char** argv) {
           
           vector_map_canvas_all_FPIX[iRun][ilayer][iEdge][iladderblade] -> cd (1);
           
-          map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->Draw("hist");
+          map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->DrawNormalized("hist");
           
           //---- save time if empty
           if (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->Integral() == 0) continue;
@@ -592,7 +592,7 @@ int main(int argc, char** argv) {
           
           vector_map_canvas_all_BPIX[iRun][ilayer][iEdge][iladderblade] -> cd (1);
           
-          map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->Draw("hist same");
+          map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->DrawNormalized("hist same");
           
           //---- save time if empty
           if (map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->Integral() == 0) continue;
@@ -627,7 +627,7 @@ int main(int argc, char** argv) {
           
           vector_map_canvas_all_FPIX[iRun][ilayer][iEdge][iladderblade] -> cd (1);
           
-          map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade]->Draw("hist");
+          map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade]->DrawNormalized("hist same");
           
           //---- save time if empty
           if (map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade]->Integral() == 0) continue;
@@ -673,6 +673,10 @@ int main(int argc, char** argv) {
       for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
         //---- BPIX
         for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+          
+          
+          //---- save time if empty
+          if (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Integral() == 0) continue;
           
           
           int npoint = 100;
@@ -750,7 +754,7 @@ int main(int argc, char** argv) {
           
           
           //---- now do the mc to data fit
-          myFit.set_reference_histogram(map_h_BPIX_data[0][ilayer][iEdge][iladderblade]);
+          myFit.set_reference_histogram(map_h_BPIX_mc[0][ilayer][iEdge][iladderblade]);
           
           //---- canvas likelihood
           vector_map_canvas_all_BPIX[iRun][ilayer][iEdge][iladderblade] -> cd (3);
@@ -822,6 +826,8 @@ int main(int argc, char** argv) {
         //---- FPIX
         for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
           
+          //---- save time if empty
+          if (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->Integral() == 0) continue;
           
           int npoint = 100;
           
@@ -898,7 +904,7 @@ int main(int argc, char** argv) {
           
           
           //---- now do the mc to data fit
-          myFit.set_reference_histogram(map_h_FPIX_data[0][ilayer][iEdge][iladderblade]);
+          myFit.set_reference_histogram(map_h_FPIX_mc[0][ilayer][iEdge][iladderblade]);
           
           //---- canvas likelihood
           vector_map_canvas_all_FPIX[iRun][ilayer][iEdge][iladderblade] -> cd (3);
@@ -987,70 +993,138 @@ int main(int argc, char** argv) {
   
   
   
-  /*
+  
   //---- now get the values and transform into historical dependence
-      
-  //----     iRun           eta                      layer  det   
-  std::map < int, std::map< int, std::map < std::pair<int, int> , float> > > map_scale;
-    
-  for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {  
-    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
-      for (int idet = 0; idet<detId.size(); idet++) {
-        std::pair<int, int> edge_det;
-        edge_det.first = iEdge;
-        edge_det.second = idet;      
-        myfile_reduced << iEdge << " " << ilayer << " " << idet << "               ";
-
-        for (int iRun =0; iRun < num_run_intervals; iRun++) {
-          //----      |     eta             layer            det            iRun     |
-          myfile << " |" << iEdge << " " << ilayer << " " << idet << " " << iRun << "|";
-          myfile << "    " << map_land_mc[ilayer][edge_det] / vector_map_land_data[iRun][ilayer][edge_det];
-          myfile  << " [ " << map_land_mc[ilayer][edge_det] << " / " << vector_map_land_data[iRun][ilayer][edge_det] << " ]" ;
-          
-          myfile << "    " << map_gaus_mc[ilayer][edge_det] / vector_map_gaus_data[iRun][ilayer][edge_det];
-          myfile  << " [ " << map_gaus_mc[ilayer][edge_det] << " / " << vector_map_gaus_data[iRun][ilayer][edge_det] << " ]" ;
-          
-          myfile << "    " << vector_map_like_data[iRun][ilayer][edge_det]  << std::endl;
-          
-          
-          
-          float best_value = 1.;
-          
-          float value_1;
-          if (vector_map_land_data[iRun][ilayer][edge_det] != 0 ) value_1 = map_land_mc[ilayer][edge_det] / vector_map_land_data[iRun][ilayer][edge_det];
-          float value_2;
-          if (vector_map_gaus_data[iRun][ilayer][edge_det] != 0 ) value_2 = map_gaus_mc[ilayer][edge_det] / vector_map_gaus_data[iRun][ilayer][edge_det];
-          float value_3 =  vector_map_like_data[iRun][ilayer][edge_det];
-          
-          if (fabs(value_1-1.0) > 2) {
-            if (fabs(value_2-1.0) > 2) {
-              best_value = value_3;
-            }
-            else {
-              best_value = value_2;
-            }
-          }
-          else {
-            best_value = value_1;
-          }
-          
-          myfile_reduced << "  " << best_value; 
-         
-          std::pair<int, int> layer_det;
-          layer_det.first = ilayer;
-          layer_det.second = idet; 
-          
-          map_scale[iRun][iEdge][layer_det] = best_value;
-           
+   
+   
+  //---- iRun       layer         eta        ladderblade     
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_scale_BPIX;
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_scale_FPIX;
+   
+ 
+  
+  
+  for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+    std::vector < std::vector < std::vector  < float > > > v_1;
+    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+      std::vector < std::vector  < float > > v_2;
+      for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+        std::vector < float > v_scale;
+        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+          v_scale.push_back(1.0);
         }
-        
-        myfile_reduced << std::endl;
-        
+        v_2.push_back(v_scale);
       }
+      v_1.push_back(v_2);
     }
-    
+    map_scale_BPIX.push_back(v_1);
+    map_scale_FPIX.push_back(v_1);
   }
   
+ 
+ 
+ for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+   for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+     for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+       for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+       
+         myfile << " |" << iEdge << " " << ilayer << " " << iladderblade << " " << iRun << "|";
+         myfile << "    " << map_calibration_BPIX_like_data[iRun][ilayer][iEdge][iladderblade];
+         
+         myfile << "    " << map_calibration_BPIX_gaus_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_gaus_data[iRun][ilayer][iEdge][iladderblade];
+         myfile  << " [ " << map_calibration_BPIX_gaus_mc[0][ilayer][iEdge][iladderblade] << " / " << map_calibration_BPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] << " ]" ;
+         
+         myfile << "    " << map_calibration_BPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_land_data[iRun][ilayer][iEdge][iladderblade];
+         myfile  << " [ " << map_calibration_BPIX_land_mc[0][ilayer][iEdge][iladderblade] << " / " << map_calibration_BPIX_land_data[iRun][ilayer][iEdge][iladderblade] << " ]" ;
+
+
+
+         myfile << "    " << map_calibration_FPIX_like_data[iRun][ilayer][iEdge][iladderblade];
+         
+         myfile << "    " << map_calibration_FPIX_gaus_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_gaus_data[iRun][ilayer][iEdge][iladderblade];
+         myfile  << " [ " << map_calibration_FPIX_gaus_mc[0][ilayer][iEdge][iladderblade] << " / " << map_calibration_FPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] << " ]" ;
+         
+         myfile << "    " << map_calibration_FPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_land_data[iRun][ilayer][iEdge][iladderblade];
+         myfile  << " [ " << map_calibration_FPIX_land_mc[0][ilayer][iEdge][iladderblade] << " / " << map_calibration_FPIX_land_data[iRun][ilayer][iEdge][iladderblade] << " ]" ;
+
+
+
+         myfile << "    "  << std::endl;
+         
+         
+       }
+     }
+   }
+ }
+ 
+ 
+ 
+ for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+   for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+     for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+       for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+         
+         float best_value = 1.;
+         
+         float value_1;
+         if (map_calibration_BPIX_like_data[iRun][ilayer][iEdge][iladderblade] != 0 ) value_1 =  map_calibration_BPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_land_data[iRun][ilayer][iEdge][iladderblade];
+         float value_2;
+         if (map_calibration_BPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] != 0 ) value_2 = map_calibration_BPIX_gaus_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_gaus_data[iRun][ilayer][iEdge][iladderblade];
+         float value_3 =  map_calibration_BPIX_like_data[iRun][ilayer][iEdge][iladderblade];
+         
+         if (fabs(value_1-1.0) > 2) {
+           if (fabs(value_2-1.0) > 2) {
+             best_value = value_3;
+           }
+           else {
+             best_value = value_2;
+           }
+         }
+         else {
+           best_value = value_1;
+         }
+         
+         myfile_reduced << " |" << iEdge << " " << ilayer << " " << iladderblade << " " << iRun << "|";
+         myfile_reduced << "    " << best_value;
+        
+         
+         
+         
+         
+         best_value = 1.;
+         
+         value_1 = 0;
+         if (map_calibration_FPIX_like_data[iRun][ilayer][iEdge][iladderblade] != 0 ) value_1 =  map_calibration_FPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_land_data[iRun][ilayer][iEdge][iladderblade];
+         value_2 = 0;
+         if (map_calibration_FPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] != 0 ) value_2 = map_calibration_FPIX_gaus_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_gaus_data[iRun][ilayer][iEdge][iladderblade];
+         value_3 =  map_calibration_FPIX_like_data[iRun][ilayer][iEdge][iladderblade];
+         
+         if (fabs(value_1-1.0) > 2) {
+           if (fabs(value_2-1.0) > 2) {
+             best_value = value_3;
+           }
+           else {
+             best_value = value_2;
+           }
+         }
+         else {
+           best_value = value_1;
+         }
+         
+         
+         myfile_reduced << "    " << best_value;
+         myfile_reduced << "    "  << std::endl;
+         
+         
+       }
+     }
+   }
+ }
+ 
+ 
+ 
+ 
+ /*
   
   //---- now plot
 
@@ -1083,10 +1157,10 @@ int main(int argc, char** argv) {
         
       }
     }
-  }*/
+  }
   
   
-  
+  */
   
   outputCanvas.Close();
   
