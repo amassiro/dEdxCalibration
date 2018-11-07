@@ -250,6 +250,15 @@ int main(int argc, char** argv) {
   
   
   
+  
+  //---- iRun       layer         eta        ladderblade     
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_BPIX_best;
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_FPIX_best;
+  
+  
+  
+  
+  
   for (int iRun = 0; iRun<num_run_intervals; iRun++) {
     std::vector < std::vector < std::vector  < float > > > v_1;
     for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
@@ -274,6 +283,9 @@ int main(int argc, char** argv) {
     
     map_calibration_BPIX_like_data.push_back(v_1);
     map_calibration_FPIX_like_data.push_back(v_1);
+
+    map_calibration_BPIX_best.push_back(v_1);
+    map_calibration_FPIX_best.push_back(v_1);
     
   }
   
@@ -1021,107 +1033,143 @@ int main(int argc, char** argv) {
     map_scale_FPIX.push_back(v_1);
   }
   
- 
- 
- for (int iRun = 0; iRun<num_run_intervals; iRun++) {
-   for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
-     for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
-       for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
-       
-         myfile << " |" << iEdge << " " << ilayer << " " << iladderblade << " " << iRun << "|";
-         myfile << "    " << map_calibration_BPIX_like_data[iRun][ilayer][iEdge][iladderblade];
-         
-         myfile << "    " << map_calibration_BPIX_gaus_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_gaus_data[iRun][ilayer][iEdge][iladderblade];
-         myfile  << " [ " << map_calibration_BPIX_gaus_mc[0][ilayer][iEdge][iladderblade] << " / " << map_calibration_BPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] << " ]" ;
-         
-         myfile << "    " << map_calibration_BPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_land_data[iRun][ilayer][iEdge][iladderblade];
-         myfile  << " [ " << map_calibration_BPIX_land_mc[0][ilayer][iEdge][iladderblade] << " / " << map_calibration_BPIX_land_data[iRun][ilayer][iEdge][iladderblade] << " ]" ;
-
-
-
-         myfile << "    " << map_calibration_FPIX_like_data[iRun][ilayer][iEdge][iladderblade];
-         
-         myfile << "    " << map_calibration_FPIX_gaus_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_gaus_data[iRun][ilayer][iEdge][iladderblade];
-         myfile  << " [ " << map_calibration_FPIX_gaus_mc[0][ilayer][iEdge][iladderblade] << " / " << map_calibration_FPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] << " ]" ;
-         
-         myfile << "    " << map_calibration_FPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_land_data[iRun][ilayer][iEdge][iladderblade];
-         myfile  << " [ " << map_calibration_FPIX_land_mc[0][ilayer][iEdge][iladderblade] << " / " << map_calibration_FPIX_land_data[iRun][ilayer][iEdge][iladderblade] << " ]" ;
-
-
-
-         myfile << "    "  << std::endl;
-         
-         
-       }
-     }
-   }
- }
- 
- 
- 
- for (int iRun = 0; iRun<num_run_intervals; iRun++) {
-   for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
-     for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
-       for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
-         
-         float best_value = 1.;
-         
-         float value_1;
-         if (map_calibration_BPIX_like_data[iRun][ilayer][iEdge][iladderblade] != 0 ) value_1 =  map_calibration_BPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_land_data[iRun][ilayer][iEdge][iladderblade];
-         float value_2;
-         if (map_calibration_BPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] != 0 ) value_2 = map_calibration_BPIX_gaus_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_gaus_data[iRun][ilayer][iEdge][iladderblade];
-         float value_3 =  map_calibration_BPIX_like_data[iRun][ilayer][iEdge][iladderblade];
-         
-         if (fabs(value_1-1.0) > 2) {
-           if (fabs(value_2-1.0) > 2) {
-             best_value = value_3;
-           }
-           else {
-             best_value = value_2;
-           }
-         }
-         else {
-           best_value = value_1;
-         }
-         
-         myfile_reduced << " |" << iEdge << " " << ilayer << " " << iladderblade << " " << iRun << "|";
-         myfile_reduced << "    " << best_value;
+  
+  
+  for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+      for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+          
+          myfile << " |" << iEdge << " " << ilayer << " " << iladderblade << " " << iRun << "|";
+          myfile << "    " << map_calibration_BPIX_like_data[iRun][ilayer][iEdge][iladderblade];
+          
+          myfile << "    " << map_calibration_BPIX_gaus_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_gaus_data[iRun][ilayer][iEdge][iladderblade];
+          myfile  << " [ " << map_calibration_BPIX_gaus_mc[0][ilayer][iEdge][iladderblade] << " / " << map_calibration_BPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] << " ]" ;
+          
+          myfile << "    " << map_calibration_BPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_land_data[iRun][ilayer][iEdge][iladderblade];
+          myfile  << " [ " << map_calibration_BPIX_land_mc[0][ilayer][iEdge][iladderblade] << " / " << map_calibration_BPIX_land_data[iRun][ilayer][iEdge][iladderblade] << " ]" ;
+          
+          
+          
+          myfile << "    " << map_calibration_FPIX_like_data[iRun][ilayer][iEdge][iladderblade];
+          
+          myfile << "    " << map_calibration_FPIX_gaus_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_gaus_data[iRun][ilayer][iEdge][iladderblade];
+          myfile  << " [ " << map_calibration_FPIX_gaus_mc[0][ilayer][iEdge][iladderblade] << " / " << map_calibration_FPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] << " ]" ;
+          
+          myfile << "    " << map_calibration_FPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_land_data[iRun][ilayer][iEdge][iladderblade];
+          myfile  << " [ " << map_calibration_FPIX_land_mc[0][ilayer][iEdge][iladderblade] << " / " << map_calibration_FPIX_land_data[iRun][ilayer][iEdge][iladderblade] << " ]" ;
+          
+          
+          
+          myfile << "    "  << std::endl;
+          
+          
+        }
+      }
+    }
+  }
+  
+  
+  
+  for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+      for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+          
+          float best_value = 1.;
+          
+          float value_1;
+          if (map_calibration_BPIX_like_data[iRun][ilayer][iEdge][iladderblade] != 0 ) value_1 =  map_calibration_BPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_land_data[iRun][ilayer][iEdge][iladderblade];
+          float value_2;
+          if (map_calibration_BPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] != 0 ) value_2 = map_calibration_BPIX_gaus_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_gaus_data[iRun][ilayer][iEdge][iladderblade];
+          float value_3 =  map_calibration_BPIX_like_data[iRun][ilayer][iEdge][iladderblade];
+          
+          if (fabs(value_1-1.0) > 2) {
+            if (fabs(value_2-1.0) > 2) {
+              best_value = value_3;
+            }
+            else {
+              best_value = value_2;
+            }
+          }
+          else {
+            best_value = value_1;
+          }
+          
+          myfile_reduced << " |" << iEdge << " " << ilayer << " " << iladderblade << " " << iRun << "|";
+          myfile_reduced << "    " << best_value;
+          
+          map_calibration_BPIX_best[iRun][ilayer][iEdge][iladderblade] = best_value;
+          
+          
+          
+          best_value = 1.;
+          
+          value_1 = 0;
+          if (map_calibration_FPIX_like_data[iRun][ilayer][iEdge][iladderblade] != 0 ) value_1 =  map_calibration_FPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_land_data[iRun][ilayer][iEdge][iladderblade];
+          value_2 = 0;
+          if (map_calibration_FPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] != 0 ) value_2 = map_calibration_FPIX_gaus_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_gaus_data[iRun][ilayer][iEdge][iladderblade];
+          value_3 =  map_calibration_FPIX_like_data[iRun][ilayer][iEdge][iladderblade];
+          
+          if (fabs(value_1-1.0) > 2) {
+            if (fabs(value_2-1.0) > 2) {
+              best_value = value_3;
+            }
+            else {
+              best_value = value_2;
+            }
+          }
+          else {
+            best_value = value_1;
+          }
+          
+          
+          myfile_reduced << "    " << best_value;
+          myfile_reduced << "    "  << std::endl;
+          
+          map_calibration_FPIX_best[iRun][ilayer][iEdge][iladderblade] = best_value;
+          
+          
+        }
+      }
+    }
+  }
+  
+  
+  
+  
+  
+  
+  for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+      for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
         
-         
-         
-         
-         
-         best_value = 1.;
-         
-         value_1 = 0;
-         if (map_calibration_FPIX_like_data[iRun][ilayer][iEdge][iladderblade] != 0 ) value_1 =  map_calibration_FPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_land_data[iRun][ilayer][iEdge][iladderblade];
-         value_2 = 0;
-         if (map_calibration_FPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] != 0 ) value_2 = map_calibration_FPIX_gaus_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_gaus_data[iRun][ilayer][iEdge][iladderblade];
-         value_3 =  map_calibration_FPIX_like_data[iRun][ilayer][iEdge][iladderblade];
-         
-         if (fabs(value_1-1.0) > 2) {
-           if (fabs(value_2-1.0) > 2) {
-             best_value = value_3;
-           }
-           else {
-             best_value = value_2;
-           }
-         }
-         else {
-           best_value = value_1;
-         }
-         
-         
-         myfile_reduced << "    " << best_value;
-         myfile_reduced << "    "  << std::endl;
-         
-         
-       }
-     }
-   }
- }
- 
- 
+        TString name;
+        name = Form ("cc_scale__eta_%d__iladderblade_%d__ilayer_%d" , iEdge, iladderblade, ilayer); 
+        TCanvas* temp_canvas = new TCanvas (name.Data(), "", 800, 600);
+        
+        TGraph* evolution_scale = new TGraph();
+        
+        for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+          evolution_scale->SetPoint(iRun, iRun,  map_calibration_BPIX_best[iRun][ilayer][iEdge][iladderblade]);
+        }
+        
+        evolution_scale->SetMarkerSize(2);
+        evolution_scale->SetMarkerStyle(21);
+        evolution_scale->SetMarkerColor(kRed);
+        evolution_scale->SetLineColor(kRed);
+        
+        evolution_scale->Draw("APL");
+        
+        name = Form ("plot_calibration_run/cc_scale__eta_%d__iladderblade_%d__ilayer_%d.png" , iEdge, iladderblade, ilayer); 
+        temp_canvas -> SaveAs (name.Data());
+        
+        
+        
+      }
+    }
+  }
+
  
  
  /*
