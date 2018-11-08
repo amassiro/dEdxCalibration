@@ -119,11 +119,13 @@ int main(int argc, char** argv) {
   if (argc>=4) {
     num_run_intervals = atoi(argv[3]);
   }
+  std::cout << " num_run_intervals = " << num_run_intervals << std::endl;
   
   int num_max_layer = 5; // 20
   if (argc>=5) {
     num_max_layer = atoi(argv[4]);
   }
+  std::cout << " num_max_layer = " << num_max_layer << std::endl;
   
   
   

@@ -16,6 +16,7 @@
 #include "TCanvas.h"
 #include "TGraph.h"
 #include "TMultiGraph.h"
+#include "TLegend.h"
 
 
 
@@ -152,7 +153,6 @@ int main(int argc, char** argv) {
   if (argc>=3) {
     num_run_intervals = atoi(argv[2]);
   }
-  
   std::cout << " num_run_intervals = " << num_run_intervals << std::endl;
   
   
@@ -185,16 +185,24 @@ int main(int argc, char** argv) {
   //   eta_edges.push_back(0.6);
   //   eta_edges.push_back(1.0);
   eta_edges.push_back(1.3);
-  eta_edges.push_back(1.6);
+  //   eta_edges.push_back(1.6);
   eta_edges.push_back(2.1);
   eta_edges.push_back(2.5);
+  
+  
+  
+  int num_max_layer = 5; // 20
+  if (argc>=4) {
+    num_max_layer = atoi(argv[3]);
+  }
+  std::cout << " num_max_layer = " << num_max_layer << std::endl;
   
   
   //---- 
   //---- layer 
   //----
   std::vector<int> layerId;
-  for (int ilayer = 0; ilayer<20; ilayer++) {
+  for (int ilayer = 0; ilayer<num_max_layer; ilayer++) {
     layerId.push_back(ilayer);
   }
   
@@ -247,6 +255,9 @@ int main(int argc, char** argv) {
 
   std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_BPIX_like_data;
   std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_FPIX_like_data;
+ 
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_BPIX_mean_data;
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_FPIX_mean_data;
   
   
   
@@ -283,7 +294,10 @@ int main(int argc, char** argv) {
     
     map_calibration_BPIX_like_data.push_back(v_1);
     map_calibration_FPIX_like_data.push_back(v_1);
-
+    
+    map_calibration_BPIX_mean_data.push_back(v_1);
+    map_calibration_FPIX_mean_data.push_back(v_1);
+    
     map_calibration_BPIX_best.push_back(v_1);
     map_calibration_FPIX_best.push_back(v_1);
     
@@ -353,6 +367,9 @@ int main(int argc, char** argv) {
   std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_BPIX_like_mc;
   std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_FPIX_like_mc;
   
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_BPIX_mean_mc;
+  std::vector < std::vector < std::vector  < std::vector < float > > > >  map_calibration_FPIX_mean_mc;
+ 
   
   //----                mc only 1 run range
   for (int iRun = 0; iRun<1; iRun++) {
@@ -380,6 +397,9 @@ int main(int argc, char** argv) {
     map_calibration_BPIX_like_mc.push_back(v_1);
     map_calibration_FPIX_like_mc.push_back(v_1);
     
+    map_calibration_BPIX_mean_mc.push_back(v_1);
+    map_calibration_FPIX_mean_mc.push_back(v_1);
+
   }
   
   
@@ -534,6 +554,8 @@ int main(int argc, char** argv) {
           
           f_landau->DrawClone("same");
           f_gauss->DrawClone("same");
+
+          map_calibration_BPIX_mean_data[iRun][ilayer][iEdge][iladderblade] = map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->GetMean();
           
         }
 
@@ -569,6 +591,8 @@ int main(int argc, char** argv) {
           
           f_landau->DrawClone("same");
           f_gauss->DrawClone("same");
+         
+          map_calibration_FPIX_mean_data[iRun][ilayer][iEdge][iladderblade] = map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->GetMean();
           
         }
         
@@ -625,6 +649,8 @@ int main(int argc, char** argv) {
           f_landau->DrawClone("same");
           f_gauss->DrawClone("same");
           
+          map_calibration_BPIX_mean_mc[iRun][ilayer][iEdge][iladderblade] = map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->GetMean();
+          
         }
         
         
@@ -659,6 +685,8 @@ int main(int argc, char** argv) {
           
           f_landau->DrawClone("same");
           f_gauss->DrawClone("same");
+          
+          map_calibration_FPIX_mean_mc[iRun][ilayer][iEdge][iladderblade] = map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade]->GetMean();
           
         }
         
@@ -1048,6 +1076,9 @@ int main(int argc, char** argv) {
           
           myfile << "    " << map_calibration_BPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_land_data[iRun][ilayer][iEdge][iladderblade];
           myfile  << " [ " << map_calibration_BPIX_land_mc[0][ilayer][iEdge][iladderblade] << " / " << map_calibration_BPIX_land_data[iRun][ilayer][iEdge][iladderblade] << " ]" ;
+
+          myfile << "    " << map_calibration_BPIX_mean_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_mean_data[iRun][ilayer][iEdge][iladderblade];
+          myfile  << " [ " << map_calibration_BPIX_mean_mc[0][ilayer][iEdge][iladderblade] << " / " << map_calibration_BPIX_mean_data[iRun][ilayer][iEdge][iladderblade] << " ]" ;
           
           
           
@@ -1058,6 +1089,9 @@ int main(int argc, char** argv) {
           
           myfile << "    " << map_calibration_FPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_land_data[iRun][ilayer][iEdge][iladderblade];
           myfile  << " [ " << map_calibration_FPIX_land_mc[0][ilayer][iEdge][iladderblade] << " / " << map_calibration_FPIX_land_data[iRun][ilayer][iEdge][iladderblade] << " ]" ;
+     
+          myfile << "    " << map_calibration_FPIX_mean_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_mean_data[iRun][ilayer][iEdge][iladderblade];
+          myfile  << " [ " << map_calibration_FPIX_mean_mc[0][ilayer][iEdge][iladderblade] << " / " << map_calibration_FPIX_mean_data[iRun][ilayer][iEdge][iladderblade] << " ]" ;
           
           
           
@@ -1078,9 +1112,9 @@ int main(int argc, char** argv) {
           
           float best_value = 1.;
           
-          float value_1;
+          float value_1 = -2.;
           if (map_calibration_BPIX_like_data[iRun][ilayer][iEdge][iladderblade] != 0 ) value_1 =  map_calibration_BPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_land_data[iRun][ilayer][iEdge][iladderblade];
-          float value_2;
+          float value_2 = -2.;
           if (map_calibration_BPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] != 0 ) value_2 = map_calibration_BPIX_gaus_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_gaus_data[iRun][ilayer][iEdge][iladderblade];
           float value_3 =  map_calibration_BPIX_like_data[iRun][ilayer][iEdge][iladderblade];
           
@@ -1105,9 +1139,9 @@ int main(int argc, char** argv) {
           
           best_value = 1.;
           
-          value_1 = 0;
+          value_1 = -2.;
           if (map_calibration_FPIX_like_data[iRun][ilayer][iEdge][iladderblade] != 0 ) value_1 =  map_calibration_FPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_land_data[iRun][ilayer][iEdge][iladderblade];
-          value_2 = 0;
+          value_2 = -2.;
           if (map_calibration_FPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] != 0 ) value_2 = map_calibration_FPIX_gaus_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_gaus_data[iRun][ilayer][iEdge][iladderblade];
           value_3 =  map_calibration_FPIX_like_data[iRun][ilayer][iEdge][iladderblade];
           
@@ -1144,29 +1178,178 @@ int main(int argc, char** argv) {
     for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
       for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
         
+        
+        //---- BPIX
+
         TString name;
-        name = Form ("cc_scale__eta_%d__iladderblade_%d__ilayer_%d" , iEdge, iladderblade, ilayer); 
+        name = Form ("cc_scale__BPIX__eta_%d__iladderblade_%d__ilayer_%d" , iEdge, iladderblade, ilayer); 
         TCanvas* temp_canvas = new TCanvas (name.Data(), "", 800, 600);
         
-        TGraph* evolution_scale = new TGraph();
+        TGraph* evolution_BPIX_scale = new TGraph();
         
         for (int iRun = 0; iRun<num_run_intervals; iRun++) {
-          evolution_scale->SetPoint(iRun, iRun,  map_calibration_BPIX_best[iRun][ilayer][iEdge][iladderblade]);
+          evolution_BPIX_scale->SetPoint(iRun, iRun,  map_calibration_BPIX_best[iRun][ilayer][iEdge][iladderblade]);
         }
         
-        evolution_scale->SetMarkerSize(2);
-        evolution_scale->SetMarkerStyle(21);
-        evolution_scale->SetMarkerColor(kRed);
-        evolution_scale->SetLineColor(kRed);
+        evolution_BPIX_scale->SetMarkerSize(2);
+        evolution_BPIX_scale->SetMarkerStyle(21);
+        evolution_BPIX_scale->SetMarkerColor(kRed);
+        evolution_BPIX_scale->SetLineColor(kRed);
         
-        evolution_scale->Draw("APL");
+        evolution_BPIX_scale->Draw("APL");
         
-        name = Form ("plot_calibration_run/cc_scale__eta_%d__iladderblade_%d__ilayer_%d.png" , iEdge, iladderblade, ilayer); 
+        name = Form ("plot_calibration_run/cc_scale__BPIX__eta_%d__iladderblade_%d__ilayer_%d.png" , iEdge, iladderblade, ilayer); 
         temp_canvas -> SaveAs (name.Data());
     
-        name = Form ("plot_calibration_run/cc_scale__eta_%d__iladderblade_%d__ilayer_%d.root" , iEdge, iladderblade, ilayer); 
+        name = Form ("plot_calibration_run/cc_scale__BPIX__eta_%d__iladderblade_%d__ilayer_%d.root" , iEdge, iladderblade, ilayer); 
+        temp_canvas -> SaveAs (name.Data());
+
+
+
+        TCanvas* temp_canvas_all = new TCanvas (name.Data(), "", 800, 600);
+        
+        temp_canvas_all->SetRightMargin(0.2);
+        
+        TGraph* evolution_BPIX_scale_like = new TGraph();
+        TGraph* evolution_BPIX_scale_land = new TGraph();
+        TGraph* evolution_BPIX_scale_gaus = new TGraph();
+        TGraph* evolution_BPIX_scale_mean = new TGraph();
+        
+        for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+          evolution_BPIX_scale_like->SetPoint(iRun, iRun,  map_calibration_BPIX_like_data[iRun][ilayer][iEdge][iladderblade]);
+          evolution_BPIX_scale_land->SetPoint(iRun, iRun,  map_calibration_BPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_land_data[iRun][ilayer][iEdge][iladderblade]);
+          evolution_BPIX_scale_gaus->SetPoint(iRun, iRun,  map_calibration_BPIX_gaus_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_gaus_data[iRun][ilayer][iEdge][iladderblade]);
+          evolution_BPIX_scale_mean->SetPoint(iRun, iRun,  map_calibration_BPIX_mean_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_mean_data[iRun][ilayer][iEdge][iladderblade]);
+        }
+        
+        
+        evolution_BPIX_scale_like->SetMarkerSize(2);
+        evolution_BPIX_scale_like->SetMarkerStyle(22);
+        evolution_BPIX_scale_like->SetMarkerColor(kRed+3);
+        evolution_BPIX_scale_like->SetLineColor(kRed+3);
+        
+        evolution_BPIX_scale_land->SetMarkerSize(2);
+        evolution_BPIX_scale_land->SetMarkerStyle(23);
+        evolution_BPIX_scale_land->SetMarkerColor(kBlue);
+        evolution_BPIX_scale_land->SetLineColor(kBlue);
+        
+        evolution_BPIX_scale_gaus->SetMarkerSize(2);
+        evolution_BPIX_scale_gaus->SetMarkerStyle(24);
+        evolution_BPIX_scale_gaus->SetMarkerColor(kGreen+2);
+        evolution_BPIX_scale_gaus->SetLineColor(kGreen+2);
+        
+        evolution_BPIX_scale_mean->SetMarkerSize(2);
+        evolution_BPIX_scale_mean->SetMarkerStyle(25);
+        evolution_BPIX_scale_mean->SetMarkerColor(kYellow+4);
+        evolution_BPIX_scale_mean->SetLineColor(kYellow+4);
+  
+        TMultiGraph* mg_BPIX = new TMultiGraph();
+        mg_BPIX->Add (evolution_BPIX_scale);
+        mg_BPIX->Add (evolution_BPIX_scale_like);
+        mg_BPIX->Add (evolution_BPIX_scale_land);
+        mg_BPIX->Add (evolution_BPIX_scale_gaus);
+        mg_BPIX->Add (evolution_BPIX_scale_mean);
+        
+        mg_BPIX->Draw ("APL");
+        
+        mg_BPIX->GetYaxis()->SetRangeUser(0.0, 2.0);
+        
+        TLegend* leg = new TLegend(0.80, 0.70, 0.99, 0.90);
+        leg->AddEntry(evolution_BPIX_scale,      "best",       "pl");
+        leg->AddEntry(evolution_BPIX_scale_like, "likelihood", "pl");
+        leg->AddEntry(evolution_BPIX_scale_land, "landau",     "pl");
+        leg->AddEntry(evolution_BPIX_scale_gaus, "gauss",      "pl");
+        leg->AddEntry(evolution_BPIX_scale_mean, "mean",       "pl");
+        leg->Draw();
+        
+        
+        name = Form ("plot_calibration_run/cc_scale_all__BPIX__eta_%d__iladderblade_%d__ilayer_%d.png" , iEdge, iladderblade, ilayer); 
+        temp_canvas_all -> SaveAs (name.Data());
+        
+        name = Form ("plot_calibration_run/cc_scale_all__BPIX__eta_%d__iladderblade_%d__ilayer_%d.root" , iEdge, iladderblade, ilayer); 
+        temp_canvas_all -> SaveAs (name.Data());
+        
+        
+        
+        //---- FPIX
+        
+        name = Form ("cc_scale__FPIX__eta_%d__iladderblade_%d__ilayer_%d" , iEdge, iladderblade, ilayer); 
+        temp_canvas->cd();
+        
+        TGraph* evolution_FPIX_scale = new TGraph();
+        
+        for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+          evolution_FPIX_scale->SetPoint(iRun, iRun,  map_calibration_FPIX_best[iRun][ilayer][iEdge][iladderblade]);
+        }
+        
+        evolution_FPIX_scale->SetMarkerSize(2);
+        evolution_FPIX_scale->SetMarkerStyle(21);
+        evolution_FPIX_scale->SetMarkerColor(kRed);
+        evolution_FPIX_scale->SetLineColor(kRed);
+        
+        evolution_FPIX_scale->Draw("APL");
+        
+        name = Form ("plot_calibration_run/cc_scale__FPIX__eta_%d__iladderblade_%d__ilayer_%d.png" , iEdge, iladderblade, ilayer); 
         temp_canvas -> SaveAs (name.Data());
         
+        name = Form ("plot_calibration_run/cc_scale__FPIX__eta_%d__iladderblade_%d__ilayer_%d.root" , iEdge, iladderblade, ilayer); 
+        temp_canvas -> SaveAs (name.Data());
+        
+
+        temp_canvas_all->cd();
+        temp_canvas_all->SetRightMargin(0.2);
+        
+        TGraph* evolution_FPIX_scale_like = new TGraph();
+        TGraph* evolution_FPIX_scale_land = new TGraph();
+        TGraph* evolution_FPIX_scale_gaus = new TGraph();
+        TGraph* evolution_FPIX_scale_mean = new TGraph();
+        
+        for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+          evolution_FPIX_scale_like->SetPoint(iRun, iRun,  map_calibration_FPIX_like_data[iRun][ilayer][iEdge][iladderblade]);
+          evolution_FPIX_scale_land->SetPoint(iRun, iRun,  map_calibration_FPIX_land_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_land_data[iRun][ilayer][iEdge][iladderblade]);
+          evolution_FPIX_scale_gaus->SetPoint(iRun, iRun,  map_calibration_FPIX_gaus_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_gaus_data[iRun][ilayer][iEdge][iladderblade]);
+          evolution_FPIX_scale_mean->SetPoint(iRun, iRun,  map_calibration_FPIX_mean_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_mean_data[iRun][ilayer][iEdge][iladderblade]);
+        }
+        
+        
+        evolution_FPIX_scale_like->SetMarkerSize(2);
+        evolution_FPIX_scale_like->SetMarkerStyle(22);
+        evolution_FPIX_scale_like->SetMarkerColor(kRed+3);
+        evolution_FPIX_scale_like->SetLineColor(kRed+3);
+        
+        evolution_FPIX_scale_land->SetMarkerSize(2);
+        evolution_FPIX_scale_land->SetMarkerStyle(23);
+        evolution_FPIX_scale_land->SetMarkerColor(kBlue);
+        evolution_FPIX_scale_land->SetLineColor(kBlue);
+        
+        evolution_FPIX_scale_gaus->SetMarkerSize(2);
+        evolution_FPIX_scale_gaus->SetMarkerStyle(24);
+        evolution_FPIX_scale_gaus->SetMarkerColor(kGreen+2);
+        evolution_FPIX_scale_gaus->SetLineColor(kGreen+2);
+        
+        evolution_FPIX_scale_mean->SetMarkerSize(2);
+        evolution_FPIX_scale_mean->SetMarkerStyle(25);
+        evolution_FPIX_scale_mean->SetMarkerColor(kYellow+4);
+        evolution_FPIX_scale_mean->SetLineColor(kYellow+4);
+        
+        TMultiGraph* mg_FPIX = new TMultiGraph();
+        mg_FPIX->Add (evolution_FPIX_scale);
+        mg_FPIX->Add (evolution_FPIX_scale_like);
+        mg_FPIX->Add (evolution_FPIX_scale_land);
+        mg_FPIX->Add (evolution_FPIX_scale_gaus);
+        mg_FPIX->Add (evolution_FPIX_scale_mean);
+        
+        mg_FPIX->Draw ("APL");
+        
+        mg_FPIX->GetYaxis()->SetRangeUser(0.0, 2.0);
+        
+        leg->Draw();
+        
+        name = Form ("plot_calibration_run/cc_scale_all__FPIX__eta_%d__iladderblade_%d__ilayer_%d.png" , iEdge, iladderblade, ilayer); 
+        temp_canvas_all -> SaveAs (name.Data());
+        
+        name = Form ("plot_calibration_run/cc_scale_all__FPIX__eta_%d__iladderblade_%d__ilayer_%d.root" , iEdge, iladderblade, ilayer); 
+        temp_canvas_all -> SaveAs (name.Data());
         
       }
     }
