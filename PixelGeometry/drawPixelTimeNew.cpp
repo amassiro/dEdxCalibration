@@ -120,6 +120,11 @@ int main(int argc, char** argv) {
     num_run_intervals = atoi(argv[3]);
   }
   
+  int num_max_layer = 5; // 20
+  if (argc>=5) {
+    num_max_layer = atoi(argv[4]);
+  }
+  
   
   
   
@@ -138,7 +143,7 @@ int main(int argc, char** argv) {
 //   eta_edges.push_back(0.6);
 //   eta_edges.push_back(1.0);
   eta_edges.push_back(1.3);
-  eta_edges.push_back(1.6);
+//   eta_edges.push_back(1.6);
   eta_edges.push_back(2.1);
   eta_edges.push_back(2.5);
   
@@ -147,7 +152,8 @@ int main(int argc, char** argv) {
   //---- layer 
   //----
   std::vector<int> layerId;
-  for (int ilayer = 0; ilayer<20; ilayer++) {
+  for (int ilayer = 0; ilayer<num_max_layer; ilayer++) {
+//     for (int ilayer = 0; ilayer<20; ilayer++) {
     layerId.push_back(ilayer);
   }
   
@@ -198,9 +204,9 @@ int main(int argc, char** argv) {
   //---- read calibration values
   int apply_calibration = 0;
   std::string fileCalibration = "scale_pixels_run_ranges_reduced_BPIX.txt";
-  if (argc>=5) {
+  if (argc>=6) {
     apply_calibration = 1;
-    fileCalibration = argv[4];
+    fileCalibration = argv[5];
     
     std::cout << " fileCalibration BPIX = " << fileCalibration << std::endl;
     
@@ -239,9 +245,9 @@ int main(int argc, char** argv) {
   }
   
   
-  if (argc>=6) {
+  if (argc>=7) {
     apply_calibration = 1;
-    fileCalibration = argv[5];
+    fileCalibration = argv[6];
   
     std::cout << " fileCalibration FPIX = " << fileCalibration << std::endl;
     

@@ -1163,53 +1163,15 @@ int main(int argc, char** argv) {
         
         name = Form ("plot_calibration_run/cc_scale__eta_%d__iladderblade_%d__ilayer_%d.png" , iEdge, iladderblade, ilayer); 
         temp_canvas -> SaveAs (name.Data());
-        
-        
-        
-      }
-    }
-  }
-
- 
- 
- /*
-  
-  //---- now plot
-
-  for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {  
-    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
-      for (int idet = 0; idet<detId.size(); idet++) {
-        std::pair<int, int> layer_det;
-        layer_det.first = ilayer;
-        layer_det.second = idet; 
-        
-        TString name;
-        name = Form ("cc_scale__eta_%d__idet_%d__ilayer_%d" , iEdge, idet, ilayer); 
-        TCanvas* temp_canvas = new TCanvas (name.Data(), "", 800, 600);
-        
-        TGraph* evolution_scale = new TGraph();
-        
-        for (int iRun =0; iRun < num_run_intervals; iRun++) {
-          evolution_scale->SetPoint(iRun, iRun, map_scale[iRun][iEdge][layer_det]);
-        }
-        
-        evolution_scale->SetMarkerSize(2);
-        evolution_scale->SetMarkerStyle(21);
-        evolution_scale->SetMarkerColor(kRed);
-        evolution_scale->SetLineColor(kRed);
-        
-        evolution_scale->Draw("APL");
-        
-        name = Form ("plot_calibration_run/cc_scale__eta_%d__idet_%d__ilayer_%d.png" , iEdge, idet, ilayer); 
+    
+        name = Form ("plot_calibration_run/cc_scale__eta_%d__iladderblade_%d__ilayer_%d.root" , iEdge, iladderblade, ilayer); 
         temp_canvas -> SaveAs (name.Data());
         
+        
       }
     }
   }
-  
-  
-  */
-  
+
   outputCanvas.Close();
   
   myfile.close(); 

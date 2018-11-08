@@ -65,7 +65,10 @@ Draw:
     g++ -o drawPixelTimeNew.exe drawPixelTimeNew.cpp `root-config --cflags --glibs`
     
     ./drawPixelTimeNew.exe Data/tree_filtered_data.root    Data/tree_filtered_mc.root    10   
+
     
+    ./drawPixelTimeNew.exe Data/tree_filtered_data.root    Data/tree_filtered_mc.root    10       5
+
     
     
     
