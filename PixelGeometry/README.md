@@ -69,7 +69,8 @@ Draw:
                                                                                num_run_intervals   num_max_layer
     ./drawPixelTimeNew.exe Data/tree_filtered_data.root    Data/tree_filtered_mc.root    10       5
 
-    
+    ./drawPixelTimeNew.exe Data/tree_filtered_data.root    Data/tree_filtered_mc.root    30       5
+
     
     
     
@@ -121,7 +122,10 @@ Calibrate:
                                                                                                num_run_intervals   num_max_layer
     ./calibratePixelTimeNew.exe    tocalibrate_complete_eta_edges_iladderblade_timeRanges.root      10              5 
 
-        
+    ./calibratePixelTimeNew.exe    tocalibrate_complete_eta_edges_iladderblade_timeRanges.root      30              5 
+
+    
+    
     
 Draw phi modulation:
 ====
