@@ -167,6 +167,9 @@ int main(int argc, char** argv) {
   std::ofstream myfile_reduced;
   myfile_reduced.open ("scale_pixels_run_ranges_reduced.txt");
   
+  std::ofstream myfile_fit;
+  myfile_fit.open ("scale_pixels_run_ranges_fit.txt");
+  
   
   
   
@@ -499,7 +502,7 @@ int main(int argc, char** argv) {
   float min_histo = 0.1; //---- remove peak at 0
   float max_histo = 10.0;
   
-  
+  TF1 f_line("f_line", "[0] + [1] * x", 0, num_run_intervals);
   TF1* f_gauss = new TF1 ("f_gauss", "[0] + [1] * [1] *TMath::Gaus(x,[3],[2],1)", 2.2, 4.0);
   TF1* f_landau = new TF1 ("f_landau", "[0] + [1] * [1] * TMath::Landau(x,[3],[2],1)", min_landau, max_landau);
   
@@ -1271,6 +1274,13 @@ int main(int argc, char** argv) {
         
         
         
+        
+        evolution_BPIX_scale_mean -> Fit ("f_line", "RMIQ", 0, num_run_intervals);
+        myfile_fit << " BPIX" << iEdge << " " << ilayer << " " << iladderblade << " ";
+        myfile_fit << "    " << f_line.GetParameter(0) << "    " << f_line.GetParameter(1);
+        myfile_fit << std::endl;
+        
+        
         //---- FPIX
         
         name = Form ("cc_scale__FPIX__eta_%d__iladderblade_%d__ilayer_%d" , iEdge, iladderblade, ilayer); 
@@ -1350,6 +1360,11 @@ int main(int argc, char** argv) {
         
         name = Form ("plot_calibration_run/cc_scale_all__FPIX__eta_%d__iladderblade_%d__ilayer_%d.root" , iEdge, iladderblade, ilayer); 
         temp_canvas_all -> SaveAs (name.Data());
+       
+        evolution_FPIX_scale_mean -> Fit ("f_line", "RMIQ", 0, num_run_intervals);
+        myfile_fit << " FPIX" << iEdge << " " << ilayer << " " << iladderblade << " ";
+        myfile_fit << "    " << f_line.GetParameter(0) << "    " << f_line.GetParameter(1);
+        myfile_fit << std::endl;
         
       }
     }
@@ -1359,6 +1374,7 @@ int main(int argc, char** argv) {
   
   myfile.close(); 
   myfile_reduced.close();
+  myfile_fit.close(); 
   
 }
 
