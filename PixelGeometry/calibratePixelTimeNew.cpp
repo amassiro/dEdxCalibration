@@ -1268,10 +1268,11 @@ int main(int argc, char** argv) {
         
         
         evolution_BPIX_scale_mean -> Fit ("f_line", "RMIQ", 0, num_run_intervals);
-        myfile_fit << " BPIX" << iEdge << " " << ilayer << " " << iladderblade << " ";
+        myfile_fit << " BPIX" << iEdge << "   " << ilayer << "   " << iladderblade << "   ";
         myfile_fit << "    " << f_line.GetParameter(0) << "    " << f_line.GetParameter(1);
         myfile_fit << std::endl;
         
+        f_line.Draw("L");
         
         
         name = Form ("plot_calibration_run/cc_scale_all__BPIX__eta_%d__iladderblade_%d__ilayer_%d.png" , iEdge, iladderblade, ilayer); 
@@ -1279,6 +1280,7 @@ int main(int argc, char** argv) {
         
         name = Form ("plot_calibration_run/cc_scale_all__BPIX__eta_%d__iladderblade_%d__ilayer_%d.root" , iEdge, iladderblade, ilayer); 
         temp_canvas_all -> SaveAs (name.Data());
+        
         
         
             
@@ -1357,9 +1359,11 @@ int main(int argc, char** argv) {
         leg->Draw();
   
         evolution_FPIX_scale_mean -> Fit ("f_line", "RMIQ", 0, num_run_intervals);
-        myfile_fit << " FPIX" << iEdge << " " << ilayer << " " << iladderblade << " ";
+        myfile_fit << " FPIX" << iEdge << "   " << ilayer << "   " << iladderblade << "   ";
         myfile_fit << "    " << f_line.GetParameter(0) << "    " << f_line.GetParameter(1);
         myfile_fit << std::endl;
+        
+        f_line.Draw("L");
         
         
         name = Form ("plot_calibration_run/cc_scale_all__FPIX__eta_%d__iladderblade_%d__ilayer_%d.png" , iEdge, iladderblade, ilayer); 
