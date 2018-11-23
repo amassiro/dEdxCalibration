@@ -124,6 +124,28 @@ Calibrate:
 
     ./calibratePixelTimeNew.exe    tocalibrate_complete_eta_edges_iladderblade_timeRanges.root      30              5 
 
+    //---- draw calibrated
+    ./drawPixelTimeNew.exe Data/tree_filtered_data.root    Data/tree_filtered_mc.root    30       5       scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
+
+    
+Add calibration as a weight:
+====
+
+    g++ -o addPixelCalibration.exe addPixelCalibration.cpp `root-config --cflags --glibs`
+
+    ./addPixelCalibration.exe  Data/tree_filtered_data.root   Data/tree_filtered_data_calibrated.root       30       5       scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
+
+
+    r99t  Data/tree_filtered_data.root 
+    r99t  Data/tree_filtered_data_calibrated.root    
+    
+    tree = (TTree*)  _file0 -> Get ("tree");
+    tree = (TTree*)  _file0 -> Get ("tree_data");
+    
+    tree->Draw("IsoTrack_dedxByLayer0[best_track]:IsoTrack_phi[best_track]", "IsoTrack_layerOrSideByLayer0[best_track]==1 && IsoTrack_dedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
+    
+    tree->Draw("IsoTrack_dedxByLayer0[best_track]*IsoTrack_calibrationdedxByLayer0[best_track]:IsoTrack_phi[best_track]", "IsoTrack_layerOrSideByLayer0[best_track]==1 && IsoTrack_dedxByLayer0[best_track]**IsoTrack_calibrationdedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
+    
     
     
     

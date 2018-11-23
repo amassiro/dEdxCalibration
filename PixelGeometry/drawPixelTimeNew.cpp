@@ -769,6 +769,10 @@ int main(int argc, char** argv) {
   //---- iRun       layer         eta        ladderblade     
   std::vector < std::vector < std::vector  < std::vector < TH1F* > > > >  map_h_BPIX_data;
   std::vector < std::vector < std::vector  < std::vector < TH1F* > > > >  map_h_FPIX_data;
+
+  //---- layer         eta     
+  std::vector  < std::vector < TH1F* > > map_h_BPIX_reduced_data;
+  std::vector  < std::vector < TH1F* > > map_h_FPIX_reduced_data;
   
   
   for (int iRun = 0; iRun<num_run_intervals; iRun++) {
@@ -805,7 +809,31 @@ int main(int argc, char** argv) {
     
   }
   
+  
+  for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+    std::vector < TH1F* > v_h_BPIX;
+    std::vector < TH1F* > v_h_FPIX;
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+      
+      TString name;      
+      name = Form ("h_ilayer_%d__iEdge_%d__dedxById_BPIX_data", ilayer, iEdge);   
+      TH1F* temp = new TH1F (name.Data(), "data", 100, 0, 10);  
+      setupHisto(temp, iEdge);
+      v_h_BPIX.push_back ( temp );
+      
+      name = Form ("h_ilayer_%d__iEdge_%d__dedxById_FPIX_data", ilayer, iEdge);   
+      TH1F* temp2 = new TH1F (name.Data(), "data", 100, 0, 10);  
+      setupHisto(temp2, iEdge);
+      v_h_FPIX.push_back ( temp2 );
+      
+    }
+    map_h_BPIX_reduced_data.push_back( v_h_BPIX );
+    map_h_FPIX_reduced_data.push_back( v_h_FPIX );
+  }
+  
 
+  
+  
 
   std::cout << " now MC ..." << std::endl;
   
@@ -813,6 +841,10 @@ int main(int argc, char** argv) {
   //---- iRun       layer         eta        ladderblade     
   std::vector < std::vector < std::vector  < std::vector < TH1F* > > > >  map_h_BPIX_mc;
   std::vector < std::vector < std::vector  < std::vector < TH1F* > > > >  map_h_FPIX_mc;
+  
+  //---- layer         eta     
+  std::vector  < std::vector < TH1F* > > map_h_BPIX_reduced_mc;
+  std::vector  < std::vector < TH1F* > > map_h_FPIX_reduced_mc;
   
   
   //                      1 -> just one run for MC
@@ -851,7 +883,28 @@ int main(int argc, char** argv) {
     
   }
   
-       
+  
+  for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+    std::vector < TH1F* > v_h_BPIX;
+    std::vector < TH1F* > v_h_FPIX;
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+      
+      TString name;      
+      name = Form ("h_ilayer_%d__iEdge_%d__dedxById_BPIX_mc", ilayer, iEdge);   
+      TH1F* temp = new TH1F (name.Data(), "mc", 100, 0, 10);  
+      setupHisto(temp, iEdge +1 );
+      v_h_BPIX.push_back ( temp );
+      
+      name = Form ("h_ilayer_%d__iEdge_%d__dedxById_FPIX_mc", ilayer, iEdge);   
+      TH1F* temp2 = new TH1F (name.Data(), "mc", 100, 0, 10);  
+      setupHisto(temp2, iEdge +1 );
+      v_h_FPIX.push_back ( temp2 );
+      
+    }
+    map_h_BPIX_reduced_mc.push_back( v_h_BPIX );
+    map_h_FPIX_reduced_mc.push_back( v_h_FPIX );
+  }
+  
        
        
        
@@ -1293,6 +1346,32 @@ int main(int argc, char** argv) {
     }
   }
   
+  //---- merge the histograms
+  for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {    
+      for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+        for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+          map_h_BPIX_reduced_data[ilayer][iEdge] -> Add( map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] , 1.0 );
+          map_h_FPIX_reduced_data[ilayer][iEdge] -> Add( map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] , 1.0 );
+        }
+        map_h_BPIX_reduced_mc[ilayer][iEdge] -> Add( map_h_BPIX_mc[0][ilayer][iEdge][iladderblade] , 1.0 );
+        map_h_FPIX_reduced_mc[ilayer][iEdge] -> Add( map_h_FPIX_mc[0][ilayer][iEdge][iladderblade] , 1.0 );
+      }
+    }
+  }
+  
+  for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {    
+      map_h_BPIX_reduced_data[ilayer][iEdge] -> Write ();
+      map_h_FPIX_reduced_data[ilayer][iEdge] -> Write ();
+      map_h_BPIX_reduced_mc[ilayer][iEdge]   -> Write ();
+      map_h_FPIX_reduced_mc[ilayer][iEdge]   -> Write ();
+    }
+  }
+  
+  
+  
+  
   
   
   
@@ -1311,6 +1390,14 @@ int main(int argc, char** argv) {
     }
   }
   
+  for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {    
+      Normalize( map_h_BPIX_reduced_data[ilayer][iEdge] );
+      Normalize( map_h_FPIX_reduced_data[ilayer][iEdge] );
+      Normalize( map_h_BPIX_reduced_mc[ilayer][iEdge]   );
+      Normalize( map_h_FPIX_reduced_mc[ilayer][iEdge]   );
+    }
+  }
   
   
   //---- ... and draw.
@@ -1417,6 +1504,28 @@ int main(int argc, char** argv) {
 //       cc_summary_iEdge->Write();
       name = Form ("plots_run/cc_summary_layer_%d_eta_%d.png" , ilayer, iEdge); 
       cc_summary_iEdge->SaveAs(name.Data());
+      
+    }
+  }
+  
+  
+  for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {    
+  
+      TString name;
+      name = Form ("cc_add_layer_%d_eta_%d_BPIX" , ilayer, iEdge); 
+      TCanvas* cc_add_iEdge_iladder_BPIX = new TCanvas (name.Data(),"",800,600);
+      map_h_BPIX_reduced_mc[ilayer][iEdge]   -> Draw();
+      map_h_BPIX_reduced_data[ilayer][iEdge] -> Draw("same");
+      name = Form ("plots_run/cc_add_layer_%d_eta_%d_BPIX.png" , ilayer, iEdge); 
+      cc_add_iEdge_iladder_BPIX->SaveAs(name.Data());
+      
+      name = Form ("cc_add_layer_%d_eta_%d_FPIX" , ilayer, iEdge); 
+      TCanvas* cc_add_iEdge_iladder_FPIX = new TCanvas (name.Data(),"",800,600);
+      map_h_FPIX_reduced_mc[ilayer][iEdge]   -> Draw();
+      map_h_FPIX_reduced_data[ilayer][iEdge] -> Draw("same");
+      name = Form ("plots_run/cc_add_layer_%d_eta_%d_FPIX.png" , ilayer, iEdge); 
+      cc_add_iEdge_iladder_FPIX->SaveAs(name.Data());
       
     }
   }

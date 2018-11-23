@@ -163,7 +163,13 @@ int main(int argc, char** argv) {
   
   std::ofstream myfile;
   myfile.open ("scale_pixels_run_ranges.txt");
- 
+  
+  std::ofstream myfile_BPIX;
+  myfile_BPIX.open ("scale_BPIX_pixels_run_ranges.txt");
+  std::ofstream myfile_FPIX;
+  myfile_FPIX.open ("scale_FPIX_pixels_run_ranges.txt");
+  
+  
   std::ofstream myfile_reduced;
   myfile_reduced.open ("scale_pixels_run_ranges_reduced.txt");
   
@@ -1066,10 +1072,13 @@ int main(int argc, char** argv) {
   
   
   
-  for (int iRun = 0; iRun<num_run_intervals; iRun++) {
-    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
-      for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
-        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+  for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+    for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+      for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+        myfile_BPIX << " " << iEdge << " " << ilayer << " " << iladderblade << "     " ;
+        myfile_FPIX << " " << iEdge << " " << ilayer << " " << iladderblade << "     " ;
+        
+        for (int iRun = 0; iRun<num_run_intervals; iRun++) {
           
           myfile << " |" << iEdge << " " << ilayer << " " << iladderblade << " " << iRun << "|";
           
@@ -1102,7 +1111,14 @@ int main(int argc, char** argv) {
           myfile << "    "  << std::endl;
           
           
+          
+          //---- save only the mean
+          myfile_BPIX << "     " <<     map_calibration_BPIX_mean_mc[0][ilayer][iEdge][iladderblade] / map_calibration_BPIX_mean_data[iRun][ilayer][iEdge][iladderblade];
+          myfile_FPIX << "     " <<     map_calibration_FPIX_mean_mc[0][ilayer][iEdge][iladderblade] / map_calibration_FPIX_mean_data[iRun][ilayer][iEdge][iladderblade];
+          
         }
+        myfile_BPIX << "    "  << std::endl;
+        myfile_FPIX << "    "  << std::endl;
       }
     }
   }
@@ -1383,6 +1399,10 @@ int main(int argc, char** argv) {
   myfile.close(); 
   myfile_reduced.close();
   myfile_fit.close(); 
+  
+  myfile_BPIX.close();
+  myfile_FPIX.close();
+  
   
 }
 
