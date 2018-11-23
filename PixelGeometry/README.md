@@ -147,6 +147,13 @@ Add calibration as a weight:
     tree->Draw("IsoTrack_dedxByLayer0[best_track]*IsoTrack_calibrationdedxByLayer0[best_track]:IsoTrack_phi[best_track]", "IsoTrack_layerOrSideByLayer0[best_track]==1 && IsoTrack_dedxByLayer0[best_track]**IsoTrack_calibrationdedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
     
     
+    tree->Draw("IsoTrack_ladderOrBladeByLayer0[best_track]:IsoTrack_phi[best_track]", "IsoTrack_layerOrSideByLayer0[best_track]==1 && IsoTrack_dedxByLayer0[best_track]**IsoTrack_calibrationdedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
+    
+    //---- ladder 12 was not calibrated (by mistake)
+    tree->Draw("IsoTrack_dedxByLayer0[best_track]*IsoTrack_calibrationdedxByLayer0[best_track]:IsoTrack_phi[best_track]", "IsoTrack_layerOrSideByLayer0[best_track]==1 && IsoTrack_dedxByLayer0[best_track]**IsoTrack_calibrationdedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3 && IsoTrack_ladderOrBladeByLayer0[best_track]!=12", "colz")    
+    
+    
+    
     
     
 Draw phi modulation:

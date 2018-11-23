@@ -164,8 +164,9 @@ int main(int argc, char** argv) {
   //---- ladderblade 
   //----
   std::vector<int> ladderbladeId;
-  for (int iladderblade = 0; iladderblade<12; iladderblade++) {
-//     for (int iladderblade = 0; iladderblade<40; iladderblade++) {
+  for (int iladderblade = 0; iladderblade<40; iladderblade++) {
+//     for (int iladderblade = 0; iladderblade<12; iladderblade++) {
+      //     for (int iladderblade = 0; iladderblade<40; iladderblade++) {
     ladderbladeId.push_back(iladderblade);
   }
   
@@ -912,7 +913,7 @@ int main(int argc, char** argv) {
   
   int minRun = inputTree_data->GetMinimum ("run");
   int maxRun = inputTree_data->GetMaximum ("run") + 1;
-  int deltaRun = (maxRun-minRun) / num_run_intervals;
+  int deltaRun = ceil( 1. * (maxRun-minRun) / num_run_intervals );
   
   std::cout << " minRun = " << minRun << std::endl;
   std::cout << " maxRun = " << maxRun << std::endl;
@@ -932,6 +933,7 @@ int main(int argc, char** argv) {
     //---- safe check
     if (iRun >= num_run_intervals) {
       std::cout << " iRun = " << iRun << " :: " << num_run_intervals << std::endl;
+      std::cout << "              -> " << run << ", " << minRun << ", " << deltaRun  << std::endl;
       continue;      
     }
     

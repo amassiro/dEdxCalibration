@@ -220,7 +220,8 @@ int main(int argc, char** argv) {
   //---- ladderblade 
   //----
   std::vector<int> ladderbladeId;
-  for (int iladderblade = 0; iladderblade<12; iladderblade++) {
+  for (int iladderblade = 0; iladderblade<40; iladderblade++) {
+//     for (int iladderblade = 0; iladderblade<12; iladderblade++) {
     //     for (int iladderblade = 0; iladderblade<40; iladderblade++) {
     ladderbladeId.push_back(iladderblade);
   }
