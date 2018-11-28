@@ -139,13 +139,15 @@ int main(int argc, char** argv) {
 
   eta_edges.push_back(0.0);
 
-//   eta_edges.push_back(0.3);
-//   eta_edges.push_back(0.6);
-//   eta_edges.push_back(1.0);
+  eta_edges.push_back(0.3);  //--- exclude
+  eta_edges.push_back(0.6);  //--- exclude
+  eta_edges.push_back(1.0);  //--- exclude
   eta_edges.push_back(1.3);
-//   eta_edges.push_back(1.6);
+  eta_edges.push_back(1.6);  //--- exclude
   eta_edges.push_back(2.1);
   eta_edges.push_back(2.5);
+  
+  
   
    
   //---- 

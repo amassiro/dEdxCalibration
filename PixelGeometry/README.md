@@ -135,6 +135,8 @@ Add calibration as a weight:
 
     ./addPixelCalibration.exe  Data/tree_filtered_data.root   Data/tree_filtered_data_calibrated.root       30       5       scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
 
+    ./addPixelCalibration.exe  Data/tree_filtered_data.root   Data/tree_filtered_data_calibrated_new_many_eta_regions.root       30       5       scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
+
 
     r99t  Data/tree_filtered_data.root 
     r99t  Data/tree_filtered_data_calibrated.root    
