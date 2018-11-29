@@ -142,6 +142,7 @@ Add calibration as a weight:
     r99t  Data/tree_filtered_data_calibrated.root    
     r99t  Data/tree_filtered_mc.root
     
+    r99t  Data/tree_filtered_data_calibrated_new_many_eta_regions.root 
     
     tree = (TTree*)  _file0 -> Get ("tree");
     tree = (TTree*)  _file0 -> Get ("tree_data");
