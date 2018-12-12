@@ -177,6 +177,8 @@ int main(int argc, char** argv) {
   myfile_fit.open ("scale_pixels_run_ranges_fit.txt");
   
   
+  //----
+  int do_not_fit = 1; //---- 1 = do not fit,   0 = do fit
   
   
   std::vector<float> eta_edges;
@@ -242,10 +244,7 @@ int main(int argc, char** argv) {
   
   
   
-  
-  
-  
-  
+  std::cout << " Prepare all ... " << std::endl;
   
   
   //---- a vector for the different run-ranges
@@ -280,6 +279,7 @@ int main(int argc, char** argv) {
   
   
   
+  std::cout << " Default all ... " << std::endl;
   
   for (int iRun = 0; iRun<num_run_intervals; iRun++) {
     std::vector < std::vector < std::vector  < float > > > v_1;
@@ -316,15 +316,18 @@ int main(int argc, char** argv) {
   
   
   
-  
+  std::cout << " Prepare all TH1F ... " << std::endl;
   
   for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+    std::cout << " Prepare all TH1F iRun = " << iRun << " : " << num_run_intervals << std::endl;
     std::vector < std::vector < std::vector  < TH1F* > > > v_1_BPIX;
     std::vector < std::vector < std::vector  < TH1F* > > > v_1_FPIX;
     for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+      std::cout << "     Prepare all TH1F ilayer = " << ilayer << " : " << layerId.size() << std::endl;
       std::vector < std::vector  < TH1F* > > v_2_BPIX;
       std::vector < std::vector  < TH1F* > > v_2_FPIX;
       for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+        std::cout << "          Prepare all TH1F iEdge = " << iEdge << " : " << eta_edges.size()-1 << std::endl;
         std::vector < TH1F* > v_BPIX;
         std::vector < TH1F* > v_FPIX;
         for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
@@ -415,6 +418,7 @@ int main(int argc, char** argv) {
   
   
   
+  std::cout << " Prepare all MC ... " << std::endl;
   
   //----                mc only 1 run range
   for (int iRun = 0; iRun<1; iRun++) {
@@ -522,7 +526,7 @@ int main(int argc, char** argv) {
   
   TF1 parabola_result ("parabola_result", "[0]*x*x + [1]*x + [2]", 0.90, 1.10);
   
-  
+  std::cout << " loop through eta edges ... " << std::endl;
   
   for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
     TString name;  
@@ -593,11 +597,11 @@ int main(int argc, char** argv) {
           f_landau->SetParameter(1, sqrt(map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->Integral()));
           f_landau->SetParameter(3, 3);  
           f_landau->SetParameter(2, 2.0);  
-          map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->Fit("f_gauss", "RMIQ", "", 2.5, 3.4); //---- gauss
+          if (do_not_fit == 0) map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->Fit("f_gauss", "RMIQ", "", 2.5, 3.4); //---- gauss
           
           map_calibration_FPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] = f_gauss->GetParameter(3);
           
-          map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->Fit("f_landau", "RMIQ", "", min_landau, max_landau); //---- landau
+          if (do_not_fit == 0) map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->Fit("f_landau", "RMIQ", "", min_landau, max_landau); //---- landau
           map_calibration_FPIX_land_data[iRun][ilayer][iEdge][iladderblade] = f_landau->GetParameter(3);
           
           f_landau->DrawClone("same");
@@ -650,11 +654,11 @@ int main(int argc, char** argv) {
           f_landau->SetParameter(1, sqrt(map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->Integral()));
           f_landau->SetParameter(3, 3);  
           f_landau->SetParameter(2, 2.0);  
-          map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->Fit("f_gauss", "RMIQ", "", 2.5, 3.4); //---- gauss
+          if (do_not_fit == 0) map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->Fit("f_gauss", "RMIQ", "", 2.5, 3.4); //---- gauss
           
           map_calibration_BPIX_gaus_mc[iRun][ilayer][iEdge][iladderblade] = f_gauss->GetParameter(3);
           
-          map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->Fit("f_landau", "RMIQ", "", min_landau, max_landau); //---- landau
+          if (do_not_fit == 0) map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->Fit("f_landau", "RMIQ", "", min_landau, max_landau); //---- landau
           map_calibration_BPIX_land_mc[iRun][ilayer][iEdge][iladderblade] = f_landau->GetParameter(3);
           
           f_landau->DrawClone("same");
@@ -687,11 +691,11 @@ int main(int argc, char** argv) {
           f_landau->SetParameter(1, sqrt(map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade]->Integral()));
           f_landau->SetParameter(3, 3);  
           f_landau->SetParameter(2, 2.0);  
-          map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade]->Fit("f_gauss", "RMIQ", "", 2.5, 3.4); //---- gauss
+          if (do_not_fit == 0) map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade]->Fit("f_gauss", "RMIQ", "", 2.5, 3.4); //---- gauss
           
           map_calibration_FPIX_gaus_mc[iRun][ilayer][iEdge][iladderblade] = f_gauss->GetParameter(3);
           
-          map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade]->Fit("f_landau", "RMIQ", "", min_landau, max_landau); //---- landau
+          if (do_not_fit == 0) map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade]->Fit("f_landau", "RMIQ", "", min_landau, max_landau); //---- landau
           map_calibration_FPIX_land_mc[iRun][ilayer][iEdge][iladderblade] = f_landau->GetParameter(3);
           
           f_landau->DrawClone("same");
@@ -728,6 +732,8 @@ int main(int argc, char** argv) {
           
           //---- save time if empty
           if (map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Integral() == 0) continue;
+          
+          if (do_not_fit == 1) continue;
           
           
           int npoint = 100;
@@ -879,6 +885,8 @@ int main(int argc, char** argv) {
           
           //---- save time if empty
           if (map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->Integral() == 0) continue;
+          
+          if (do_not_fit == 1) continue;
           
           int npoint = 100;
           

@@ -71,6 +71,8 @@ Draw:
 
     ./drawPixelTimeNew.exe Data/tree_filtered_data.root    Data/tree_filtered_mc.root    30       5
 
+    ./drawPixelTimeNew.exe Data/tree_filtered_data.root    Data/tree_filtered_mc.root    60       5
+
     
     
     
@@ -124,6 +126,8 @@ Calibrate:
 
     ./calibratePixelTimeNew.exe    tocalibrate_complete_eta_edges_iladderblade_timeRanges.root      30              5 
 
+    ./calibratePixelTimeNew.exe    tocalibrate_complete_eta_edges_iladderblade_timeRanges.root      60              5 
+
     //---- draw calibrated
     ./drawPixelTimeNew.exe Data/tree_filtered_data.root    Data/tree_filtered_mc.root    30       5       scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
 
@@ -136,6 +140,8 @@ Add calibration as a weight:
     ./addPixelCalibration.exe  Data/tree_filtered_data.root   Data/tree_filtered_data_calibrated.root       30       5       scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
 
     ./addPixelCalibration.exe  Data/tree_filtered_data.root   Data/tree_filtered_data_calibrated_new_many_eta_regions.root       30       5       scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
+
+    ./addPixelCalibration.exe  Data/tree_filtered_data.root   Data/tree_filtered_data_calibrated_new_many_eta_regions_30iov.root       60       5       scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
 
 
     r99t  Data/tree_filtered_data.root 
@@ -152,6 +158,14 @@ Add calibration as a weight:
     tree->Draw("IsoTrack_dedxByLayer0[best_track]*IsoTrack_calibrationdedxByLayer0[best_track]:IsoTrack_phi[best_track]", "IsoTrack_layerOrSideByLayer0[best_track]==1 && IsoTrack_dedxByLayer0[best_track]*IsoTrack_calibrationdedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3", "colz")    
     
     tree->Draw("IsoTrack_dedxByLayer0[best_track]*IsoTrack_calibrationdedxByLayer0[best_track]:IsoTrack_phi[best_track]", "IsoTrack_layerOrSideByLayer0[best_track]==1 && IsoTrack_dedxByLayer0[best_track]*IsoTrack_calibrationdedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3 && IsoTrack_ladderOrBladeByLayer0[best_track]==1", "colz")    
+    
+    tree->Draw("IsoTrack_dedxByLayer0[best_track]*IsoTrack_calibrationdedxByLayer0[best_track]:IsoTrack_eta[best_track]", "IsoTrack_layerOrSideByLayer0[best_track]==1 && IsoTrack_dedxByLayer0[best_track]*IsoTrack_calibrationdedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3 && IsoTrack_ladderOrBladeByLayer0[best_track]==1", "colz")    
+    
+    tree->Draw("IsoTrack_dedxByLayer0[best_track]*IsoTrack_calibrationdedxByLayer0[best_track]:run", "IsoTrack_layerOrSideByLayer0[best_track]==1 && IsoTrack_dedxByLayer0[best_track]*IsoTrack_calibrationdedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3 && IsoTrack_ladderOrBladeByLayer0[best_track]==1", "colz")    
+    
+    tree->Draw("IsoTrack_dedxByLayer0[best_track]:run", "IsoTrack_layerOrSideByLayer0[best_track]==1 && IsoTrack_dedxByLayer0[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3 && IsoTrack_ladderOrBladeByLayer0[best_track]==1", "colz")    
+    
+    
     
     tree->Draw("IsoTrack_dedxByLayer1[best_track]*IsoTrack_calibrationdedxByLayer1[best_track]:IsoTrack_phi[best_track]", "IsoTrack_layerOrSideByLayer1[best_track]==1 && IsoTrack_dedxByLayer1[best_track]*IsoTrack_calibrationdedxByLayer1[best_track]<10 && abs(IsoTrack_eta[best_track])<1.3 && IsoTrack_ladderOrBladeByLayer1[best_track]==1", "colz")    
     
