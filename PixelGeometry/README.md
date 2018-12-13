@@ -131,6 +131,8 @@ Calibrate:
     //---- draw calibrated
     ./drawPixelTimeNew.exe Data/tree_filtered_data.root    Data/tree_filtered_mc.root    30       5       scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
 
+    ./drawPixelTimeNew.exe Data/tree_filtered_data.root    Data/tree_filtered_mc.root    60       5       scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
+
     
 Add calibration as a weight:
 ====
@@ -149,6 +151,10 @@ Add calibration as a weight:
     r99t  Data/tree_filtered_mc.root
     
     r99t  Data/tree_filtered_data_calibrated_new_many_eta_regions.root 
+    
+    r99t  Data/tree_filtered_data_calibrated_new_many_eta_regions_30iov.root
+    
+    
     
     tree = (TTree*)  _file0 -> Get ("tree");
     tree = (TTree*)  _file0 -> Get ("tree_data");
