@@ -216,27 +216,30 @@ int main(int argc, char** argv) {
         for (int iRun = 0; iRun < num_run_intervals; iRun++) {
           
           //---- 0 = FPIX
-          myfile_output << 0;
-          myfile_output << "     " << std::fixed << std::setprecision(3) << " " << ilayer;
-          myfile_output << "     " << std::fixed << std::setprecision(3) << " " << iladderblade;
-          myfile_output << "     " << std::fixed << std::setprecision(3) << " " << eta_edges[iEdge];
-          myfile_output << "     " << std::fixed << std::setprecision(3) << " " << eta_edges[iEdge+1];
-          myfile_output << "     " << int(minRun + iRun     * deltaRun);
-          myfile_output << "     " << int(minRun + (iRun+1) * deltaRun);          
-          myfile_output << "     " << std::fixed << std::setprecision(5) << " " << map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade];
-          myfile_output << std::endl;
-          
+          if (map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] != 1) {
+            myfile_output << 0;
+            myfile_output << "     " << std::fixed << std::setprecision(3) << " " << ilayer;
+            myfile_output << "     " << std::fixed << std::setprecision(3) << " " << iladderblade;
+            myfile_output << "     " << std::fixed << std::setprecision(3) << " " << eta_edges[iEdge];
+            myfile_output << "     " << std::fixed << std::setprecision(3) << " " << eta_edges[iEdge+1];
+            myfile_output << "     " << int(minRun + iRun     * deltaRun);
+            myfile_output << "     " << int(minRun + (iRun+1) * deltaRun);          
+            myfile_output << "     " << std::fixed << std::setprecision(5) << " " << map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade];
+            myfile_output << std::endl;
+          }
           
           //---- 1 = BPIX
-          myfile_output << 1;
-          myfile_output << "     " << std::fixed << std::setprecision(3) << " " << ilayer;
-          myfile_output << "     " << std::fixed << std::setprecision(3) << " " << iladderblade;
-          myfile_output << "     " << std::fixed << std::setprecision(3) << " " << eta_edges[iEdge];
-          myfile_output << "     " << std::fixed << std::setprecision(3) << " " << eta_edges[iEdge+1];
-          myfile_output << "     " << int(minRun + iRun     * deltaRun);
-          myfile_output << "     " << int(minRun + (iRun+1) * deltaRun);          
-          myfile_output << "     " << std::fixed << std::setprecision(5) << " " << map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade];
-          myfile_output << std::endl;
+          if (map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] != 1) {
+            myfile_output << 1;
+            myfile_output << "     " << std::fixed << std::setprecision(3) << " " << ilayer;
+            myfile_output << "     " << std::fixed << std::setprecision(3) << " " << iladderblade;
+            myfile_output << "     " << std::fixed << std::setprecision(3) << " " << eta_edges[iEdge];
+            myfile_output << "     " << std::fixed << std::setprecision(3) << " " << eta_edges[iEdge+1];
+            myfile_output << "     " << int(minRun + iRun     * deltaRun);
+            myfile_output << "     " << int(minRun + (iRun+1) * deltaRun);          
+            myfile_output << "     " << std::fixed << std::setprecision(5) << " " << map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade];
+            myfile_output << std::endl;
+          }
           
         }
       }

@@ -1521,12 +1521,16 @@ int main(int argc, char** argv) {
       map_h_BPIX_reduced_data[ilayer][iEdge] -> Draw("same");
       name = Form ("plots_run/cc_add_layer_%d_eta_%d_BPIX.png" , ilayer, iEdge); 
       cc_add_iEdge_iladder_BPIX->SaveAs(name.Data());
+      name = Form ("plots_run/cc_add_layer_%d_eta_%d_BPIX.root" , ilayer, iEdge); 
+      cc_add_iEdge_iladder_BPIX->SaveAs(name.Data());
       
       name = Form ("cc_add_layer_%d_eta_%d_FPIX" , ilayer, iEdge); 
       TCanvas* cc_add_iEdge_iladder_FPIX = new TCanvas (name.Data(),"",800,600);
       map_h_FPIX_reduced_mc[ilayer][iEdge]   -> Draw();
       map_h_FPIX_reduced_data[ilayer][iEdge] -> Draw("same");
       name = Form ("plots_run/cc_add_layer_%d_eta_%d_FPIX.png" , ilayer, iEdge); 
+      cc_add_iEdge_iladder_FPIX->SaveAs(name.Data());
+      name = Form ("plots_run/cc_add_layer_%d_eta_%d_FPIX.root" , ilayer, iEdge); 
       cc_add_iEdge_iladder_FPIX->SaveAs(name.Data());
       
     }
