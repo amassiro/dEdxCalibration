@@ -73,8 +73,19 @@ Draw:
 
     ./drawPixelTimeNew.exe Data/tree_filtered_data.root    Data/tree_filtered_mc.root    60       5
 
+
+    
+Create text file for CMSSW 
+====
+
+    g++ -o prepareTextPixelTime.exe prepareTextPixelTime.cpp `root-config --cflags --glibs`
+
+    ./prepareTextPixelTime.exe    scale_for_cmssw.txt    60       5    scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
     
     
+    
+    
+ 
     
 Split:
 ====
