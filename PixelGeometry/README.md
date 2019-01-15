@@ -82,6 +82,9 @@ Draw:
     ./drawPixelTimeUncorrected.exe Data/tree_filtered_data_calibrated_cmssw.root    Data/tree_filtered_mc.root    60       5
     ./drawPixelTimeUncorrected.exe Data/tree_filtered_data_calibrated_cmssw.root    Data/tree_filtered_mc.root    30       5
 
+    ./drawPixelTimeUncorrected.exe Data/tree_filtered_data_calibrated_cmssw.root    Data/tree_filtered_mc.root    60       5         scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
+    ./drawPixelTimeUncorrected.exe Data/tree_filtered_data_calibrated_cmssw.root    Data/tree_filtered_mc.root    30       5         scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
+
     
     
 Create text file for CMSSW 
@@ -90,6 +93,8 @@ Create text file for CMSSW
     g++ -o prepareTextPixelTime.exe prepareTextPixelTime.cpp `root-config --cflags --glibs`
 
     ./prepareTextPixelTime.exe    scale_for_cmssw.txt    60       5    scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
+    
+    ./prepareTextPixelTime.exe    scale_for_cmssw.txt    30       5    scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
     
     
     ./filterTree.exe Data/tree_data_calibrated_cmssw.root   Data/tree_filtered_data_calibrated_cmssw.root  

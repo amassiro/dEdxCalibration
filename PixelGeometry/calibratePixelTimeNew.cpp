@@ -560,11 +560,11 @@ int main(int argc, char** argv) {
           f_landau->SetParameter(1, sqrt(map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Integral()));
           f_landau->SetParameter(3, 3);  
           f_landau->SetParameter(2, 2.0);  
-          map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Fit("f_gauss", "RMIQ", "", 2.5, 3.4); //---- gauss
+          if (do_not_fit == 0) map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Fit("f_gauss", "RMIQ", "", 2.5, 3.4); //---- gauss
           
           map_calibration_BPIX_gaus_data[iRun][ilayer][iEdge][iladderblade] = f_gauss->GetParameter(3);
           
-          map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Fit("f_landau", "RMIQ", "", min_landau, max_landau); //---- landau
+          if (do_not_fit == 0) map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Fit("f_landau", "RMIQ", "", min_landau, max_landau); //---- landau
           map_calibration_BPIX_land_data[iRun][ilayer][iEdge][iladderblade] = f_landau->GetParameter(3);
           
           f_landau->DrawClone("same");
