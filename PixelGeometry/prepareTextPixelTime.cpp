@@ -215,9 +215,11 @@ int main(int argc, char** argv) {
       for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
         for (int iRun = 0; iRun < num_run_intervals; iRun++) {
           
-          //---- 0 = FPIX
+          //---- 1 = bpix, 2 = fpix
+          
+          //---- 2 = FPIX
           if (map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] != 1) {
-            myfile_output << 0;
+            myfile_output << 2;
             myfile_output << "     " << std::fixed << std::setprecision(3) << " " << ilayer;
             myfile_output << "     " << std::fixed << std::setprecision(3) << " " << iladderblade;
             myfile_output << "     " << std::fixed << std::setprecision(3) << " " << eta_edges[iEdge];
