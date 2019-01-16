@@ -26,7 +26,9 @@ Filter:
  
     ./filterTree.exe Data/tree_data.root   Data/tree_filtered_data.root  
     ./filterTree.exe Data/tree_dy.root     Data/tree_filtered_mc.root  
- 
+
+    ./filterTree.exe Data/tree_data_calibrated_cmssw_firstRound.root   Data/tree_filtered_data_calibrated_cmssw_firstRound.root 
+
 
     
 Draw:
@@ -74,16 +76,50 @@ Draw:
     ./drawPixelTimeNew.exe Data/tree_filtered_data.root    Data/tree_filtered_mc.root    60       5
 
 
-    ./drawPixelTimeNew.exe Data/tree_filtered_data_calibrated_cmssw.root    Data/tree_filtered_mc.root    60       5
-
-    
-    
     g++ -o drawPixelTimeUncorrected.exe drawPixelTimeUncorrected.cpp `root-config --cflags --glibs`
     ./drawPixelTimeUncorrected.exe Data/tree_filtered_data_calibrated_cmssw.root    Data/tree_filtered_mc.root    60       5
     ./drawPixelTimeUncorrected.exe Data/tree_filtered_data_calibrated_cmssw.root    Data/tree_filtered_mc.root    30       5
 
+    ./drawPixelTimeUncorrected.exe Data/tree_filtered_data_calibrated_cmssw_firstRound.root     Data/tree_filtered_mc.root    30       5
+
+    
+    
+    
     ./drawPixelTimeUncorrected.exe Data/tree_filtered_data_calibrated_cmssw.root    Data/tree_filtered_mc.root    60       5         scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
     ./drawPixelTimeUncorrected.exe Data/tree_filtered_data_calibrated_cmssw.root    Data/tree_filtered_mc.root    30       5         scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
+
+    
+Complete procedure
+====
+
+cCpy from lxplus uncalibrated.
+
+Filter the tree
+
+    ./filterTree.exe Data/tree_data_calibrated_cmssw_firstRound.root   Data/tree_filtered_data_calibrated_cmssw_firstRound.root 
+
+then draw uncalibrated 
+    
+    ./drawPixelTimeUncorrected.exe Data/tree_filtered_data_calibrated_cmssw_firstRound.root     Data/tree_filtered_mc.root    30       5
+    
+then calibrate
+    
+    ./calibratePixelTimeNew.exe    tocalibrate_complete_eta_edges_iladderblade_timeRanges.root      30              5 
+
+then draw calibrated in local
+    
+    ./drawPixelTimeUncorrected.exe Data/tree_filtered_data_calibrated_cmssw_firstRound.root     Data/tree_filtered_mc.root    30       5     scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
+
+prepare for lxplus/cmssw
+
+    g++ -o prepareTextPixelTime.exe prepareTextPixelTime.cpp `root-config --cflags --glibs`
+    ./prepareTextPixelTime.exe    scale_for_cmssw.txt    30       5    scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
+
+copy to lxplus (in folder "data") and run again over condor
+
+    heppy_batch.py  run_susyDeDx_cfg.py       -o  /afs/cern.ch/work/a/amassiro/CMG/DisappearingTracks/test_geometry_Giovanni/CMSSW_9_4_6_patch1/src/CMGTools/TTHAnalysis/cfg/MYBATCH3/  --option region=cr1l --option run=data   \
+             -b 'run_condor_simple.sh -t 480 ./batchScript.sh' -B
+    
 
     
     
