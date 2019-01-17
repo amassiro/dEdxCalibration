@@ -77,7 +77,7 @@ for name_file in list_files:
   
     
   if rms_mc != 0 and rms_data != 0:
-    scale_rms = rms_data/rms_mc
+    scale_rms = rms_data/rms_mc - 1.0
     
     #print " name_histo = ", name_histo, " --> ", ilayer, " ; ", iedge, " : ", isBPIX
     #print " ---> " + " " + str(isBPIX) + "      " + str(ilayer) + "      " + str(eta_edges[iedge][0]) + "      " + str(eta_edges[iedge][1]) + "      " + str(scale_rms) + "      " + str(iedge) + "\n"
