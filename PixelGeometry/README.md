@@ -121,6 +121,16 @@ copy to lxplus (in folder "data") and run again over condor
              -b 'run_condor_simple.sh -t 480 ./batchScript.sh' -B
     
 
+Check that worked. Filter the tree
+    
+    ./filterTree.exe   Data/tree_data_calibrated_cmssw_it_should_be_calibrated.root  Data/tree_filtered_data_calibrated_cmssw_it_should_be_calibrated.root
+    
+Plot:
+
+    ./drawPixelTimeUncorrected.exe Data/tree_filtered_data_calibrated_cmssw_it_should_be_calibrated.root     Data/tree_filtered_mc.root    30       5
+    ./drawPixelTimeNew.exe Data/tree_filtered_data_calibrated_cmssw_it_should_be_calibrated.root     Data/tree_filtered_mc.root    30       5
+    
+    
     
     
 Create text file for CMSSW 
