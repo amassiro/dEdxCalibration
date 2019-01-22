@@ -140,7 +140,11 @@ Test smearing:
     ./drawPixelTimeUncorrected.exe Data/tree_filtered_data_calibrated_cmssw_it_should_be_calibrated.root     Data/tree_filtered_mc.root    30       5       scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt   smear_for_cmssw.txt
 
  
- 
+Add pixel calibration:
+
+    g++ -o addPixelCalibration.exe addPixelCalibration.cpp `root-config --cflags --glibs`
+
+    ./addPixelCalibration.exe  Data/tree_filtered_data_calibrated_cmssw_it_should_be_calibrated.root    Data/tree_filtered_data_calibrated_cmssw_it_should_be_calibrated_weight_added.root       30       5       scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
     
     
 Create text file for CMSSW 
