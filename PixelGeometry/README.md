@@ -98,6 +98,9 @@ Filter the tree
 
     ./filterTree.exe Data/tree_data_calibrated_cmssw_firstRound.root   Data/tree_filtered_data_calibrated_cmssw_firstRound.root 
 
+    hadd Data/25Jan2019/Data-CR1L/tree_SingleMuon_all.root Data/25Jan2019/Data-CR1L/tree_SingleMuon_Run2017*
+    ./filterTree.exe   Data/25Jan2019/Data-CR1L/tree_SingleMuon_all.root   Data/25Jan2019/Data-CR1L/tree_filtered_SingleMuon_all.root
+    
 then draw uncalibrated 
     
     ./drawPixelTimeUncorrected.exe Data/tree_filtered_data_calibrated_cmssw_firstRound.root     Data/tree_filtered_mc.root    30       5
