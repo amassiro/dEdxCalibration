@@ -27,6 +27,16 @@ Filter:
     ./filterTree.exe Data/tree_data.root   Data/tree_filtered_data.root  
     ./filterTree.exe Data/tree_dy.root     Data/tree_filtered_mc.root  
 
+    ./filterTree.exe Data/4Feb2019/tree_DYJetsM50_HT100to200.root     Data/4Feb2019/tree_filtered_mc_DYJetsM50_HT100to200.root  
+    ./filterTree.exe Data/4Feb2019/tree_SingleMuon_Run2017B_31Mar2018.root     Data/4Feb2019/tree_filtered_data_SingleMuon_Run2017B_31Mar2018.root  
+    ./filterTree.exe Data/4Feb2019/tree_SingleMuon_Run2017C_31Mar2018.root     Data/4Feb2019/tree_filtered_data_SingleMuon_Run2017C_31Mar2018.root  
+    ./filterTree.exe Data/4Feb2019/tree_SingleMuon_Run2017D_31Mar2018.root     Data/4Feb2019/tree_filtered_data_SingleMuon_Run2017D_31Mar2018.root  
+    ./filterTree.exe Data/4Feb2019/tree_SingleMuon_Run2017E_31Mar2018.root     Data/4Feb2019/tree_filtered_data_SingleMuon_Run2017E_31Mar2018.root  
+    ./filterTree.exe Data/4Feb2019/tree_SingleMuon_Run2017F_31Mar2018.root     Data/4Feb2019/tree_filtered_data_SingleMuon_Run2017F_31Mar2018.root  
+    
+    hadd Data/4Feb2019/tree_filtered_data_SingleMuon_31Mar2018.root Data/4Feb2019/tree_filtered_data_SingleMuon_Run2017*_31Mar2018.root
+    
+    
     ./filterTree.exe Data/tree_data_calibrated_cmssw_firstRound.root   Data/tree_filtered_data_calibrated_cmssw_firstRound.root 
 
 
@@ -88,6 +98,13 @@ Draw:
     ./drawPixelTimeUncorrected.exe Data/tree_filtered_data_calibrated_cmssw.root    Data/tree_filtered_mc.root    60       5         scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
     ./drawPixelTimeUncorrected.exe Data/tree_filtered_data_calibrated_cmssw.root    Data/tree_filtered_mc.root    30       5         scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
 
+    
+    
+    
+    ./drawPixelTimeUncorrected.exe Data/4Feb2019/tree_filtered_data_SingleMuon_31Mar2018.root     Data/4Feb2019/tree_filtered_mc_DYJetsM50_HT100to200.root        30       5         
+    
+    
+    
     
 Complete procedure
 ====
@@ -422,6 +439,7 @@ Draw geometry:
 
 
     tree->Draw("IsoTrack_layerOrSideByLayer0", "", "")    
+    tree->Draw("IsoTrack_sideByLayer0", "", "")    
     
     tree->Draw("IsoTrack_ladderOrBladeByLayer0", "", "")    
     
