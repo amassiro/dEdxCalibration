@@ -71,10 +71,12 @@ for name_file in list_files:
       
       isBPIX = name_histo.find("BPIX")
       if isBPIX == -1 : 
-        isBPIX = 0
+        isBPIX = 2   # FPIX = 2 !
       else :
         isBPIX = 1
   
+  
+  # pix = 1 (BPIX), 2 (FPIX)
     
   if rms_mc != 0 and rms_data != 0:
     scale_rms = rms_data/rms_mc - 1.0

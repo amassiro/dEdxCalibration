@@ -101,7 +101,20 @@ Draw:
     
     
     
+    New geometry
+    
     ./drawPixelTimeUncorrected.exe Data/4Feb2019/tree_filtered_data_SingleMuon_31Mar2018.root     Data/4Feb2019/tree_filtered_mc_DYJetsM50_HT100to200.root        30       5         
+    
+    ./drawPixelTimeUncorrected.exe Data/4Feb2019/tree_filtered_data_SingleMuon_31Mar2018.root     Data/4Feb2019/tree_filtered_mc_DYJetsM50_HT100to200.root     30       5     scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
+
+     minRun = 297050
+     maxRun = 306461
+     deltaRun = 314
+
+    ./drawPixelTimeUncorrected.exe Data/4Feb2019/tree_filtered_data_SingleMuon_31Mar2018.root     Data/4Feb2019/tree_filtered_mc_DYJetsM50_HT100to200.root     30       5       scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt   smear_for_cmssw.txt
+
+    ./prepareTextPixelTime.exe    scale_for_cmssw.txt    30       5    scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
+
     
     
     
