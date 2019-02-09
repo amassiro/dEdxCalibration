@@ -19,8 +19,8 @@
 #include "TLegend.h"
 #include "TLorentzVector.h"
 #include "TStyle.h"
-  
-  
+
+
 
 int FindInterval(int run, int minRun, int deltaRun) {
   
@@ -37,7 +37,7 @@ void Normalize(TH1F* histo) {
   }
 }
 
-  
+
 void setupHisto(TH1F* histo, int icolor) {
   
   Color_t* color = new Color_t [200];
@@ -131,16 +131,16 @@ int main(int argc, char** argv) {
   
   
   std::vector<float> eta_edges;
-//   eta_edges.push_back(-2.5);           FindEdge  -> FindEdgeAbs
-//   eta_edges.push_back(-2.1);
-//   eta_edges.push_back(-1.6);
-//   eta_edges.push_back(-1.3);
-//   eta_edges.push_back(-1.0);
-//   eta_edges.push_back(-0.6);
-//   eta_edges.push_back(-0.3);
-
+  //   eta_edges.push_back(-2.5);           FindEdge  -> FindEdgeAbs
+  //   eta_edges.push_back(-2.1);
+  //   eta_edges.push_back(-1.6);
+  //   eta_edges.push_back(-1.3);
+  //   eta_edges.push_back(-1.0);
+  //   eta_edges.push_back(-0.6);
+  //   eta_edges.push_back(-0.3);
+  
   eta_edges.push_back(0.0);
-
+  
   eta_edges.push_back(0.3);  //--- exclude
   eta_edges.push_back(0.6);  //--- exclude
   eta_edges.push_back(1.0);  //--- exclude
@@ -149,13 +149,13 @@ int main(int argc, char** argv) {
   eta_edges.push_back(2.1);
   eta_edges.push_back(2.5);
   
-   
+  
   //---- 
   //---- layer 
   //----
   std::vector<int> layerId;
   for (int ilayer = 0; ilayer<num_max_layer; ilayer++) {
-//     for (int ilayer = 0; ilayer<20; ilayer++) {
+    //     for (int ilayer = 0; ilayer<20; ilayer++) {
     layerId.push_back(ilayer);
   }
   
@@ -165,8 +165,8 @@ int main(int argc, char** argv) {
   //----
   std::vector<int> ladderbladeId;
   for (int iladderblade = 0; iladderblade<40; iladderblade++) {
-//     for (int iladderblade = 0; iladderblade<12; iladderblade++) {
-      //     for (int iladderblade = 0; iladderblade<40; iladderblade++) {
+    //     for (int iladderblade = 0; iladderblade<12; iladderblade++) {
+    //     for (int iladderblade = 0; iladderblade<40; iladderblade++) {
     ladderbladeId.push_back(iladderblade);
   }
   
@@ -190,6 +190,7 @@ int main(int argc, char** argv) {
   f_smearing->SetParameter(0,1.0); // norm
   f_smearing->SetParameter(1,1.0); // mean
   f_smearing->SetParameter(2,1.0); // sigma
+  
   
   if (argc>=8) {
     std::string fileSmearing = argv[7];
@@ -230,12 +231,18 @@ int main(int argc, char** argv) {
         line >> calibration_factor;
         line >> iEdge;
         
+        std::cout << " calibration_factor = " << calibration_factor << std::endl;
+        
         if (ipix == 1)      map_smearing_BPIX[ilayer][iEdge] = calibration_factor;
-        else if (ipix == 0) map_smearing_FPIX[ilayer][iEdge] = calibration_factor;
+        else if (ipix == 2) map_smearing_FPIX[ilayer][iEdge] = calibration_factor;
         
       }
     } 
   }
+  
+  
+  
+  
   
   
   //---- iRun       layer         eta        ladderblade     
@@ -263,8 +270,8 @@ int main(int argc, char** argv) {
     map_calibration_FPIX.push_back(v_1);
   }
   
-    
-    
+  
+  
   
   
   
@@ -315,7 +322,7 @@ int main(int argc, char** argv) {
   if (argc>=7) {
     apply_calibration = 1;
     fileCalibration = argv[6];
-  
+    
     std::cout << " fileCalibration FPIX = " << fileCalibration << std::endl;
     
     std::ifstream file (fileCalibration); 
@@ -357,37 +364,37 @@ int main(int argc, char** argv) {
   
   
   //---- print calibration map
-//  std::cout << " BPIX " << std::endl;
-//  for (int iRun = 0; iRun<num_run_intervals; iRun++) {
-//    std::cout << " [ " << iRun << ", ";
-//    std::cout << std::endl;
-//    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
-//      std::cout << "   | " << ilayer << "| ";
-//      std::cout << std::endl;
-//      for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
-//        std::cout << "      " << iEdge << "] = ";
-//        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
-//          std::cout << " :: " << map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade];
-//        }
-//      }
-//    }
-//  }
-//  
-//  std::cout << " FPIX " << std::endl;
-//  for (int iRun = 0; iRun<num_run_intervals; iRun++) {
-//    std::cout << " [ " << iRun << ", ";
-//    std::cout << std::endl;
-//    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
-//      std::cout << "   | " << ilayer << "| ";
-//      std::cout << std::endl;
-//      for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
-//        std::cout << "      " << iEdge << "] = ";
-//        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
-//          std::cout << " :: " << map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade];
-//        }
-//      }
-//    }
-//  }
+  //  std::cout << " BPIX " << std::endl;
+  //  for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+  //    std::cout << " [ " << iRun << ", ";
+  //    std::cout << std::endl;
+  //    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+  //      std::cout << "   | " << ilayer << "| ";
+  //      std::cout << std::endl;
+  //      for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+  //        std::cout << "      " << iEdge << "] = ";
+  //        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+  //          std::cout << " :: " << map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade];
+  //        }
+  //      }
+  //    }
+  //  }
+  //  
+  //  std::cout << " FPIX " << std::endl;
+  //  for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+  //    std::cout << " [ " << iRun << ", ";
+  //    std::cout << std::endl;
+  //    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+  //      std::cout << "   | " << ilayer << "| ";
+  //      std::cout << std::endl;
+  //      for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+  //        std::cout << "      " << iEdge << "] = ";
+  //        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+  //          std::cout << " :: " << map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade];
+  //        }
+  //      }
+  //    }
+  //  }
   
   
   
@@ -405,7 +412,7 @@ int main(int argc, char** argv) {
   std::cout << " mc   = " << inputTree_mc->GetEntries()   << std::endl;
   
   gStyle->SetOptStat(0);
-   
+  
   
   //---- best track
   
@@ -437,10 +444,10 @@ int main(int argc, char** argv) {
   inputTree_data->SetBranchAddress("nLepGood",    &nLepGood);
   inputTree_mc  ->SetBranchAddress("nLepGood",    &nLepGood);
   
-//   
-//   30 < pT < 50 GeV ; |η| < 2.4 
-//   Passes tight ID selection ; rel. iso (Δβ corrected) < 0.15
-//   
+  //   
+  //   30 < pT < 50 GeV ; |η| < 2.4 
+  //   Passes tight ID selection ; rel. iso (Δβ corrected) < 0.15
+  //   
   
   
   //   IsoTrack_dedxByLayer0
@@ -477,10 +484,6 @@ int main(int argc, char** argv) {
   Int_t IsoTrack_ladderOrBladeByLayer12[kMaxTracks];
   Int_t IsoTrack_ladderOrBladeByLayer13[kMaxTracks];
   
-
-
-  
-  
   
   Float_t IsoTrack_dedxByLayer0[kMaxTracks];
   Float_t IsoTrack_dedxByLayer1[kMaxTracks];
@@ -496,7 +499,8 @@ int main(int argc, char** argv) {
   Float_t IsoTrack_dedxByLayer11[kMaxTracks];
   Float_t IsoTrack_dedxByLayer12[kMaxTracks];
   Float_t IsoTrack_dedxByLayer13[kMaxTracks];
-
+  
+  
   Int_t IsoTrack_pixByLayer0[kMaxTracks];
   Int_t IsoTrack_pixByLayer1[kMaxTracks];
   Int_t IsoTrack_pixByLayer2[kMaxTracks];
@@ -538,48 +542,48 @@ int main(int argc, char** argv) {
   Float_t IsoTrack_dz[kMaxTracks];
   Int_t IsoTrack_highPurity[kMaxTracks];
   Int_t nIsoTrack;
-
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer0",  IsoTrack_dedxByLayer0);                 
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer0",  IsoTrack_dedxByLayer0);                 
   
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer1",  IsoTrack_dedxByLayer1);                 
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer1",  IsoTrack_dedxByLayer1);                 
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer0",  IsoTrack_dedxByLayer0);                                         
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer0",  IsoTrack_dedxByLayer0);                                         
   
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer2",  IsoTrack_dedxByLayer2);                 
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer2",  IsoTrack_dedxByLayer2);                 
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer1",  IsoTrack_dedxByLayer1);                                         
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer1",  IsoTrack_dedxByLayer1);                                         
   
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer3",  IsoTrack_dedxByLayer3);                 
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer3",  IsoTrack_dedxByLayer3);                 
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer2",  IsoTrack_dedxByLayer2);                                         
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer2",  IsoTrack_dedxByLayer2);                                         
   
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer4",  IsoTrack_dedxByLayer4);                 
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer4",  IsoTrack_dedxByLayer4);                 
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer3",  IsoTrack_dedxByLayer3);                                         
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer3",  IsoTrack_dedxByLayer3);                                         
   
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer5",  IsoTrack_dedxByLayer5);                 
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer5",  IsoTrack_dedxByLayer5);                 
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer4",  IsoTrack_dedxByLayer4);                                         
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer4",  IsoTrack_dedxByLayer4);                                         
   
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer6",  IsoTrack_dedxByLayer6);                 
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer6",  IsoTrack_dedxByLayer6);                 
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer5",  IsoTrack_dedxByLayer5);                                         
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer5",  IsoTrack_dedxByLayer5);                                         
   
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer7",  IsoTrack_dedxByLayer7);                 
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer7",  IsoTrack_dedxByLayer7);                 
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer6",  IsoTrack_dedxByLayer6);                                         
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer6",  IsoTrack_dedxByLayer6);                                         
   
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer8",  IsoTrack_dedxByLayer8);                 
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer8",  IsoTrack_dedxByLayer8);                 
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer7",  IsoTrack_dedxByLayer7);                                         
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer7",  IsoTrack_dedxByLayer7);                                         
   
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer9",  IsoTrack_dedxByLayer9);                 
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer9",  IsoTrack_dedxByLayer9);                 
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer8",  IsoTrack_dedxByLayer8);                                         
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer8",  IsoTrack_dedxByLayer8);                                         
   
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer10",  IsoTrack_dedxByLayer10);               
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer10",  IsoTrack_dedxByLayer10);               
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer9",  IsoTrack_dedxByLayer9);                                         
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer9",  IsoTrack_dedxByLayer9);                                         
   
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer11",  IsoTrack_dedxByLayer11);               
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer11",  IsoTrack_dedxByLayer11);               
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer10",  IsoTrack_dedxByLayer10);                                       
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer10",  IsoTrack_dedxByLayer10);                                       
   
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer12",  IsoTrack_dedxByLayer12);               
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer12",  IsoTrack_dedxByLayer12);               
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer11",  IsoTrack_dedxByLayer11);                                       
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer11",  IsoTrack_dedxByLayer11);                                       
   
-  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer13",  IsoTrack_dedxByLayer13);               
-  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer13",  IsoTrack_dedxByLayer13);               
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer12",  IsoTrack_dedxByLayer12);                                       
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer12",  IsoTrack_dedxByLayer12);                                       
+  
+  inputTree_data->SetBranchAddress("IsoTrack_dedxByLayer13",  IsoTrack_dedxByLayer13);                                       
+  inputTree_mc  ->SetBranchAddress("IsoTrack_dedxByLayer13",  IsoTrack_dedxByLayer13);                                       
   
   
   
@@ -784,7 +788,7 @@ int main(int argc, char** argv) {
   
   inputTree_data->SetBranchAddress("IsoTrack_pt",  IsoTrack_pt);
   inputTree_mc  ->SetBranchAddress("IsoTrack_pt",  IsoTrack_pt);
- 
+  
   inputTree_data->SetBranchAddress("IsoTrack_eta",  IsoTrack_eta);
   inputTree_mc  ->SetBranchAddress("IsoTrack_eta",  IsoTrack_eta);
   
@@ -793,23 +797,23 @@ int main(int argc, char** argv) {
   
   inputTree_data->SetBranchAddress("IsoTrack_highPurity",  IsoTrack_highPurity);
   inputTree_mc  ->SetBranchAddress("IsoTrack_highPurity",  IsoTrack_highPurity);
-
+  
   inputTree_data->SetBranchAddress("IsoTrack_dxy",  IsoTrack_dxy);
   inputTree_mc  ->SetBranchAddress("IsoTrack_dxy",  IsoTrack_dxy);
-
+  
   inputTree_data->SetBranchAddress("IsoTrack_dz",  IsoTrack_dz);
   inputTree_mc  ->SetBranchAddress("IsoTrack_dz",  IsoTrack_dz);
   
   inputTree_data->SetBranchAddress("nIsoTrack",  &nIsoTrack);
   inputTree_mc  ->SetBranchAddress("nIsoTrack",  &nIsoTrack);
   
-//   
-//   p T > 50 GeV ; |η| < 2.4 ; High purity track
-//   |d xy | < 0.02 ; |d z | < 0.5
-//   miniPFIsolation().chargedHadronIso() / p T < 1.0
-//   EM energy around the track < 10 GeV ; Had energy around the track < 10 GeV
-//   Mass(μ, track) between 86 and 106 GeV
-//   
+  //   
+  //   p T > 50 GeV ; |η| < 2.4 ; High purity track
+  //   |d xy | < 0.02 ; |d z | < 0.5
+  //   miniPFIsolation().chargedHadronIso() / p T < 1.0
+  //   EM energy around the track < 10 GeV ; Had energy around the track < 10 GeV
+  //   Mass(μ, track) between 86 and 106 GeV
+  //   
   
   
   UInt_t run;
@@ -834,7 +838,7 @@ int main(int argc, char** argv) {
   //---- iRun       layer         eta        ladderblade     
   std::vector < std::vector < std::vector  < std::vector < TH1F* > > > >  map_h_BPIX_data;
   std::vector < std::vector < std::vector  < std::vector < TH1F* > > > >  map_h_FPIX_data;
-
+  
   //---- layer         eta     
   std::vector  < std::vector < TH1F* > > map_h_BPIX_reduced_data;
   std::vector  < std::vector < TH1F* > > map_h_FPIX_reduced_data;
@@ -896,13 +900,13 @@ int main(int argc, char** argv) {
     map_h_FPIX_reduced_data.push_back( v_h_FPIX );
   }
   
-
   
   
-
+  
+  
   std::cout << " now MC ..." << std::endl;
   
-          
+  
   //---- iRun       layer         eta        ladderblade     
   std::vector < std::vector < std::vector  < std::vector < TH1F* > > > >  map_h_BPIX_mc;
   std::vector < std::vector < std::vector  < std::vector < TH1F* > > > >  map_h_FPIX_mc;
@@ -970,10 +974,10 @@ int main(int argc, char** argv) {
     map_h_FPIX_reduced_mc.push_back( v_h_FPIX );
   }
   
-       
-       
-       
-       
+  
+  
+  
+  
   
   int minRun = inputTree_data->GetMinimum ("run");
   int maxRun = inputTree_data->GetMaximum ("run") + 1;
@@ -984,13 +988,13 @@ int main(int argc, char** argv) {
   std::cout << " deltaRun = " << deltaRun << std::endl;
   
   
-//   for (int iEntry=0; iEntry<1000; iEntry++) {
+  //   for (int iEntry=0; iEntry<1000; iEntry++) {
   for (int iEntry=0; iEntry<inputTree_data->GetEntries(); iEntry++) {
     inputTree_data->GetEntry(iEntry);
-
+    
     if (!(iEntry%50000)) std::cout << "   " << iEntry << " ; nIsoTrack = "  << nIsoTrack << std::endl;
-  
-//     std::cout << "   " << iEntry << " ; nIsoTrack = "  << nIsoTrack << std::endl;
+    
+    //     std::cout << "   " << iEntry << " ; nIsoTrack = "  << nIsoTrack << std::endl;
     
     
     int iRun = FindInterval(run, minRun, deltaRun);
@@ -1014,17 +1018,17 @@ int main(int argc, char** argv) {
     if (best_iMuon != -1) {
       TLorentzVector muon;
       muon.SetPtEtaPhiM(LepGood_pt[best_iMuon], LepGood_eta[best_iMuon], LepGood_phi[best_iMuon], 0);
-       
+      
       //---- tracks
       //
       //       best_track read from tree
       //
       
       if (best_track != -1) {
-    
+        
         int iEdge = FindEdgeAbs (IsoTrack_eta[best_track], eta_edges);
         
-//         std::cout << " iEdge = " << iEdge << " :: " << eta_edges.size()-1 << std::endl;
+        //         std::cout << " iEdge = " << iEdge << " :: " << eta_edges.size()-1 << std::endl;
         
         if (iEdge != -1) {
           
@@ -1039,19 +1043,19 @@ int main(int argc, char** argv) {
           if (IsoTrack_pixByLayer0[best_track] != 0) {  
             ilayer = IsoTrack_layerOrSideByLayer0[best_track];
             iladderblade = IsoTrack_ladderOrBladeByLayer0[best_track];   
-     
+            
             if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
               
-//               std::cout << " iRun = " << iRun << " :: " << num_run_intervals << std::endl;
-//               std::cout << " iEdge = " << iEdge << " :: " << eta_edges.size()-1 << std::endl;
-//               std::cout << " ilayer = " << ilayer << " :: " << 20 << std::endl;
-//               std::cout << " iladderblade = " << iladderblade << " :: " << ladderbladeId.size() << std::endl;
-//               std::cout << " map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
-//               std::cout << " map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
-//               std::cout << " map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
-//               std::cout << " map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
-//               std::cout << " IsoTrack_dedxByLayer0 [" << best_track << "] = " << IsoTrack_dedxByLayer0 [best_track] << std::endl;
-//               std::cout << " IsoTrack_pixByLayer0 [" << best_track << "] = " << IsoTrack_pixByLayer0 [best_track] << std::endl;
+              //               std::cout << " iRun = " << iRun << " :: " << num_run_intervals << std::endl;
+              //               std::cout << " iEdge = " << iEdge << " :: " << eta_edges.size()-1 << std::endl;
+              //               std::cout << " ilayer = " << ilayer << " :: " << 20 << std::endl;
+              //               std::cout << " iladderblade = " << iladderblade << " :: " << ladderbladeId.size() << std::endl;
+              //               std::cout << " map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
+              //               std::cout << " map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
+              //               std::cout << " map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
+              //               std::cout << " map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
+              //               std::cout << " IsoTrack_dedxByLayer0 [" << best_track << "] = " << IsoTrack_dedxByLayer0 [best_track] << std::endl;
+              //               std::cout << " IsoTrack_pixByLayer0 [" << best_track << "] = " << IsoTrack_pixByLayer0 [best_track] << std::endl;
               
               if (IsoTrack_pixByLayer0[best_track] == 1) {
                 //---- BPIX
@@ -1064,23 +1068,23 @@ int main(int argc, char** argv) {
             }
           }
           
-       
+          
           if (IsoTrack_pixByLayer1[best_track] != 0) {  
             ilayer = IsoTrack_layerOrSideByLayer1[best_track];
             iladderblade = IsoTrack_ladderOrBladeByLayer1[best_track];   
- 
+            
             if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
               
-//               std::cout << " iRun = " << iRun << " :: " << num_run_intervals << std::endl;
-//               std::cout << " iEdge = " << iEdge << " :: " << eta_edges.size()-1 << std::endl;
-//               std::cout << " ilayer = " << ilayer << " :: " << 20 << std::endl;
-//               std::cout << " iladderblade = " << iladderblade << " :: " << ladderbladeId.size() << std::endl;
-//               std::cout << " map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
-//               std::cout << " map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
-//               std::cout << " map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
-//               std::cout << " map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
-//               std::cout << " IsoTrack_dedxByLayer1 [" << best_track << "] = " << IsoTrack_dedxByLayer1 [best_track] << std::endl;
-//               std::cout << " IsoTrack_pixByLayer1 [" << best_track << "] = " << IsoTrack_pixByLayer1 [best_track] << std::endl;
+              //               std::cout << " iRun = " << iRun << " :: " << num_run_intervals << std::endl;
+              //               std::cout << " iEdge = " << iEdge << " :: " << eta_edges.size()-1 << std::endl;
+              //               std::cout << " ilayer = " << ilayer << " :: " << 20 << std::endl;
+              //               std::cout << " iladderblade = " << iladderblade << " :: " << ladderbladeId.size() << std::endl;
+              //               std::cout << " map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
+              //               std::cout << " map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
+              //               std::cout << " map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
+              //               std::cout << " map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
+              //               std::cout << " IsoTrack_dedxByLayer1 [" << best_track << "] = " << IsoTrack_dedxByLayer1 [best_track] << std::endl;
+              //               std::cout << " IsoTrack_pixByLayer1 [" << best_track << "] = " << IsoTrack_pixByLayer1 [best_track] << std::endl;
               
               if (IsoTrack_pixByLayer1[best_track] == 1) {
                 //---- BPIX
@@ -1096,19 +1100,19 @@ int main(int argc, char** argv) {
           if (IsoTrack_pixByLayer2[best_track] != 0) {  
             ilayer = IsoTrack_layerOrSideByLayer2[best_track];
             iladderblade = IsoTrack_ladderOrBladeByLayer2[best_track];   
-           
+            
             if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
               
-//               std::cout << " iRun = " << iRun << " :: " << num_run_intervals << std::endl;
-//               std::cout << " iEdge = " << iEdge << " :: " << eta_edges.size()-1 << std::endl;
-//               std::cout << " ilayer = " << ilayer << " :: " << 20 << std::endl;
-//               std::cout << " iladderblade = " << iladderblade << " :: " << ladderbladeId.size() << std::endl;
-//               std::cout << " map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
-//               std::cout << " map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
-//               std::cout << " map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
-//               std::cout << " map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
-//               std::cout << " IsoTrack_dedxByLayer2 [" << best_track << "] = " << IsoTrack_dedxByLayer2 [best_track] << std::endl;
-//               std::cout << " IsoTrack_pixByLayer2 [" << best_track << "] = " << IsoTrack_pixByLayer2 [best_track] << std::endl;
+              //               std::cout << " iRun = " << iRun << " :: " << num_run_intervals << std::endl;
+              //               std::cout << " iEdge = " << iEdge << " :: " << eta_edges.size()-1 << std::endl;
+              //               std::cout << " ilayer = " << ilayer << " :: " << 20 << std::endl;
+              //               std::cout << " iladderblade = " << iladderblade << " :: " << ladderbladeId.size() << std::endl;
+              //               std::cout << " map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
+              //               std::cout << " map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
+              //               std::cout << " map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
+              //               std::cout << " map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
+              //               std::cout << " IsoTrack_dedxByLayer2 [" << best_track << "] = " << IsoTrack_dedxByLayer2 [best_track] << std::endl;
+              //               std::cout << " IsoTrack_pixByLayer2 [" << best_track << "] = " << IsoTrack_pixByLayer2 [best_track] << std::endl;
               
               if (IsoTrack_pixByLayer2[best_track] == 1) {
                 //---- BPIX
@@ -1124,19 +1128,19 @@ int main(int argc, char** argv) {
           if (IsoTrack_pixByLayer3[best_track] != 0) {  
             ilayer = IsoTrack_layerOrSideByLayer3[best_track];
             iladderblade = IsoTrack_ladderOrBladeByLayer3[best_track];   
-          
+            
             if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
               
-//               std::cout << " iRun = " << iRun << " :: " << num_run_intervals << std::endl;
-//               std::cout << " iEdge = " << iEdge << " :: " << eta_edges.size()-1 << std::endl;
-//               std::cout << " ilayer = " << ilayer << " :: " << 20 << std::endl;
-//               std::cout << " iladderblade = " << iladderblade << " :: " << ladderbladeId.size() << std::endl;
-//               std::cout << " map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
-//               std::cout << " map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
-//               std::cout << " map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
-//               std::cout << " map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
-//               std::cout << " IsoTrack_dedxByLayer3 [" << best_track << "] = " << IsoTrack_dedxByLayer3 [best_track] << std::endl;
-//               std::cout << " IsoTrack_pixByLayer3 [" << best_track << "] = " << IsoTrack_pixByLayer3 [best_track] << std::endl;
+              //               std::cout << " iRun = " << iRun << " :: " << num_run_intervals << std::endl;
+              //               std::cout << " iEdge = " << iEdge << " :: " << eta_edges.size()-1 << std::endl;
+              //               std::cout << " ilayer = " << ilayer << " :: " << 20 << std::endl;
+              //               std::cout << " iladderblade = " << iladderblade << " :: " << ladderbladeId.size() << std::endl;
+              //               std::cout << " map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
+              //               std::cout << " map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
+              //               std::cout << " map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
+              //               std::cout << " map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
+              //               std::cout << " IsoTrack_dedxByLayer3 [" << best_track << "] = " << IsoTrack_dedxByLayer3 [best_track] << std::endl;
+              //               std::cout << " IsoTrack_pixByLayer3 [" << best_track << "] = " << IsoTrack_pixByLayer3 [best_track] << std::endl;
               
               if (IsoTrack_pixByLayer3[best_track] == 1) {
                 //---- BPIX
@@ -1153,19 +1157,19 @@ int main(int argc, char** argv) {
           if (IsoTrack_pixByLayer4[best_track] != 0) {  
             ilayer = IsoTrack_layerOrSideByLayer4[best_track];
             iladderblade = IsoTrack_ladderOrBladeByLayer4[best_track];   
-
+            
             if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
               
-//               std::cout << " iRun = " << iRun << " :: " << num_run_intervals << std::endl;
-//               std::cout << " iEdge = " << iEdge << " :: " << eta_edges.size()-1 << std::endl;
-//               std::cout << " ilayer = " << ilayer << " :: " << 20 << std::endl;
-//               std::cout << " iladderblade = " << iladderblade << " :: " << ladderbladeId.size() << std::endl;
-//               std::cout << " map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
-//               std::cout << " map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
-//               std::cout << " map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
-//               std::cout << " map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
-//               std::cout << " IsoTrack_dedxByLayer4 [" << best_track << "] = " << IsoTrack_dedxByLayer4 [best_track] << std::endl;
-//               std::cout << " IsoTrack_pixByLayer4 [" << best_track << "] = " << IsoTrack_pixByLayer4 [best_track] << std::endl;
+              //               std::cout << " iRun = " << iRun << " :: " << num_run_intervals << std::endl;
+              //               std::cout << " iEdge = " << iEdge << " :: " << eta_edges.size()-1 << std::endl;
+              //               std::cout << " ilayer = " << ilayer << " :: " << 20 << std::endl;
+              //               std::cout << " iladderblade = " << iladderblade << " :: " << ladderbladeId.size() << std::endl;
+              //               std::cout << " map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
+              //               std::cout << " map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
+              //               std::cout << " map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
+              //               std::cout << " map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
+              //               std::cout << " IsoTrack_dedxByLayer4 [" << best_track << "] = " << IsoTrack_dedxByLayer4 [best_track] << std::endl;
+              //               std::cout << " IsoTrack_pixByLayer4 [" << best_track << "] = " << IsoTrack_pixByLayer4 [best_track] << std::endl;
               
               
               if (IsoTrack_pixByLayer4[best_track] == 1) {
@@ -1183,19 +1187,19 @@ int main(int argc, char** argv) {
           if (IsoTrack_pixByLayer5[best_track] != 0) {  
             ilayer = IsoTrack_layerOrSideByLayer5[best_track];
             iladderblade = IsoTrack_ladderOrBladeByLayer5[best_track];   
-     
+            
             if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
               
-//               std::cout << " iRun = " << iRun << " :: " << num_run_intervals << std::endl;
-//               std::cout << " iEdge = " << iEdge << " :: " << eta_edges.size()-5 << std::endl;
-//               std::cout << " ilayer = " << ilayer << " :: " << 25 << std::endl;
-//               std::cout << " iladderblade = " << iladderblade << " :: " << ladderbladeId.size() << std::endl;
-//               std::cout << " map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
-//               std::cout << " map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
-//               std::cout << " map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
-//               std::cout << " map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
-//               std::cout << " IsoTrack_dedxByLayer5 [" << best_track << "] = " << IsoTrack_dedxByLayer5 [best_track] << std::endl;
-//               std::cout << " IsoTrack_pixByLayer5 [" << best_track << "] = " << IsoTrack_pixByLayer5 [best_track] << std::endl;
+              //               std::cout << " iRun = " << iRun << " :: " << num_run_intervals << std::endl;
+              //               std::cout << " iEdge = " << iEdge << " :: " << eta_edges.size()-5 << std::endl;
+              //               std::cout << " ilayer = " << ilayer << " :: " << 25 << std::endl;
+              //               std::cout << " iladderblade = " << iladderblade << " :: " << ladderbladeId.size() << std::endl;
+              //               std::cout << " map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
+              //               std::cout << " map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
+              //               std::cout << " map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] = " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade] << " --> " << map_h_FPIX_data[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
+              //               std::cout << " map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] = " << map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] << std::endl;
+              //               std::cout << " IsoTrack_dedxByLayer5 [" << best_track << "] = " << IsoTrack_dedxByLayer5 [best_track] << std::endl;
+              //               std::cout << " IsoTrack_pixByLayer5 [" << best_track << "] = " << IsoTrack_pixByLayer5 [best_track] << std::endl;
               
               
               if (IsoTrack_pixByLayer5[best_track] == 1) {
@@ -1225,7 +1229,7 @@ int main(int argc, char** argv) {
             }
           }
           
-//           std::cout << " I am done ... " << std::endl;
+          //           std::cout << " I am done ... " << std::endl;
           
         }
       }
@@ -1234,248 +1238,248 @@ int main(int argc, char** argv) {
   
   
   
+  
+  for (int iEntry=0; iEntry<inputTree_mc->GetEntries(); iEntry++) {
+    inputTree_mc->GetEntry(iEntry);
+    if (!(iEntry%50000)) std::cout << "   " << iEntry << " ; nIsoTrack = "  << nIsoTrack << std::endl;
     
-    for (int iEntry=0; iEntry<inputTree_mc->GetEntries(); iEntry++) {
-      inputTree_mc->GetEntry(iEntry);
-      if (!(iEntry%50000)) std::cout << "   " << iEntry << " ; nIsoTrack = "  << nIsoTrack << std::endl;
-      
-      
-      int iRun = 0;
-      
-      float max_pt = 0;
-      int best_iMuon = -1;
-      //---- muon
-      for (int iMuon = 0; iMuon < std::min(kMaxLepGood, nLepGood); iMuon++) {
-        if (LepGood_pdgId[iMuon] == 13 && LepGood_tightId[iMuon] == 1 && LepGood_pt[iMuon] > max_pt && fabs(LepGood_eta[iMuon])<2.4) {
-          max_pt = LepGood_pt[iMuon];
-          best_iMuon = iMuon;
-        }
+    
+    int iRun = 0;
+    
+    float max_pt = 0;
+    int best_iMuon = -1;
+    //---- muon
+    for (int iMuon = 0; iMuon < std::min(kMaxLepGood, nLepGood); iMuon++) {
+      if (LepGood_pdgId[iMuon] == 13 && LepGood_tightId[iMuon] == 1 && LepGood_pt[iMuon] > max_pt && fabs(LepGood_eta[iMuon])<2.4) {
+        max_pt = LepGood_pt[iMuon];
+        best_iMuon = iMuon;
       }
+    }
+    
+    if (best_iMuon != -1) {
+      TLorentzVector muon;
+      muon.SetPtEtaPhiM(LepGood_pt[best_iMuon], LepGood_eta[best_iMuon], LepGood_phi[best_iMuon], 0);
       
-      if (best_iMuon != -1) {
-        TLorentzVector muon;
-        muon.SetPtEtaPhiM(LepGood_pt[best_iMuon], LepGood_eta[best_iMuon], LepGood_phi[best_iMuon], 0);
+      //---- tracks
+      //
+      //       best_track read from tree
+      //
+      
+      if (best_track != -1) {
         
-        //---- tracks
-        //
-        //       best_track read from tree
-        //
+        int iEdge = FindEdgeAbs (IsoTrack_eta[best_track], eta_edges);
         
-        if (best_track != -1) {
+        //         std::cout << "  IsoTrack_eta[" << best_track << "]  = " << IsoTrack_eta[best_track] << " --> iEdge = " << iEdge << std::endl;
+        
+        if (iEdge != -1) {
           
-          int iEdge = FindEdgeAbs (IsoTrack_eta[best_track], eta_edges);
+          //
+          //   pixByLayer is 0 for strips
+          //                is 1 for bpix, 2 for fpix (pixels)
+          //
           
-          //         std::cout << "  IsoTrack_eta[" << best_track << "]  = " << IsoTrack_eta[best_track] << " --> iEdge = " << iEdge << std::endl;
+          int ilayer = -1; // IsoTrack_layerOrSideByLayer0[best_track];
+          int iladderblade = -1; // IsoTrack_ladderOrBladeByLayer0[best_track];
           
-          if (iEdge != -1) {
-            
-            //
-            //   pixByLayer is 0 for strips
-            //                is 1 for bpix, 2 for fpix (pixels)
-            //
-            
-            int ilayer = -1; // IsoTrack_layerOrSideByLayer0[best_track];
-            int iladderblade = -1; // IsoTrack_ladderOrBladeByLayer0[best_track];
-            
-            //           std::cout << "  IsoTrack_pixByLayer0[" << best_track << "]  = " << IsoTrack_pixByLayer0[best_track]  << std::endl;
-            
-            
-            if (IsoTrack_pixByLayer0[best_track] != 0) {  
-              ilayer = IsoTrack_layerOrSideByLayer0[best_track];
-              iladderblade = IsoTrack_ladderOrBladeByLayer0[best_track];   
-              if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
-                if (IsoTrack_pixByLayer0[best_track] == 1) {
-                  //---- BPIX
-                  float additional_smearing = 1.0;
-                  if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
-                    f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
-                    additional_smearing = f_smearing->GetRandom();
-                    if (additional_smearing <=0) additional_smearing = 1.0;
-                  }
-                  map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer0 [best_track] * additional_smearing); 
-                  //               std::cout << "  map_h_BPIX_mc[" << iRun << "][" << ilayer << "][" << iEdge << "][" << iladderblade << "] entries = " << map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
+          //           std::cout << "  IsoTrack_pixByLayer0[" << best_track << "]  = " << IsoTrack_pixByLayer0[best_track]  << std::endl;
+          
+          
+          if (IsoTrack_pixByLayer0[best_track] != 0) {  
+            ilayer = IsoTrack_layerOrSideByLayer0[best_track];
+            iladderblade = IsoTrack_ladderOrBladeByLayer0[best_track];   
+            if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
+              if (IsoTrack_pixByLayer0[best_track] == 1) {
+                //---- BPIX
+                float additional_smearing = 1.0;
+                if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+                  f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
+                  additional_smearing = f_smearing->GetRandom();
+                  if (additional_smearing <=0) additional_smearing = 1.0;
                 }
-                else {
-                  //---- FPIX
-                  float additional_smearing = 1.0;
-                  if ( map_smearing_FPIX[ilayer][iEdge] != 0) {
-                    f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
-                    additional_smearing = f_smearing->GetRandom();
-                    if (additional_smearing <=0) additional_smearing = 1.0;
-                  }
-                  map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer0 [best_track] * additional_smearing); 
+                map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer0 [best_track] * additional_smearing); 
+                //               std::cout << "  map_h_BPIX_mc[" << iRun << "][" << ilayer << "][" << iEdge << "][" << iladderblade << "] entries = " << map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade]->GetEntries() << std::endl;
+              }
+              else {
+                //---- FPIX
+                float additional_smearing = 1.0;
+                if ( map_smearing_FPIX[ilayer][iEdge] != 0) {
+                  f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
+                  additional_smearing = f_smearing->GetRandom();
+                  if (additional_smearing <=0) additional_smearing = 1.0;
                 }
+                map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer0 [best_track] * additional_smearing); 
               }
             }
-            
-            
-            if (IsoTrack_pixByLayer1[best_track] != 0) {  
-              ilayer = IsoTrack_layerOrSideByLayer1[best_track];
-              iladderblade = IsoTrack_ladderOrBladeByLayer1[best_track];   
-              if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
-                if (IsoTrack_pixByLayer1[best_track] == 1) {
-                  //---- BPIX
-                  float additional_smearing = 1.0;
-                  if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
-                    f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
-                    additional_smearing = f_smearing->GetRandom();
-                    if (additional_smearing <=0) additional_smearing = 1.0;
-                  }
-                  map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer1 [best_track] * additional_smearing); 
-                }
-                else {
-                  //---- FPIX
-                  float additional_smearing = 1.0;
-                  if ( map_smearing_FPIX[ilayer][iEdge] != 0) {
-                    f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
-                    additional_smearing = f_smearing->GetRandom();
-                    if (additional_smearing <=0) additional_smearing = 1.0;
-                  }
-                  map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer1 [best_track] * additional_smearing); 
-                }
-              }
-            }
-            
-            if (IsoTrack_pixByLayer2[best_track] != 0) {  
-              ilayer = IsoTrack_layerOrSideByLayer2[best_track];
-              iladderblade = IsoTrack_ladderOrBladeByLayer2[best_track];   
-              if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
-                if (IsoTrack_pixByLayer2[best_track] == 1) {
-                  //---- BPIX
-                  float additional_smearing = 1.0;
-                  if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
-                    f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
-                    additional_smearing = f_smearing->GetRandom();
-                    if (additional_smearing <=0) additional_smearing = 1.0;
-                  }
-                  map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer2 [best_track] * additional_smearing); 
-                }
-                else {
-                  //---- FPIX
-                  float additional_smearing = 1.0;
-                  if ( map_smearing_FPIX[ilayer][iEdge] != 0) {
-                    f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
-                    additional_smearing = f_smearing->GetRandom();
-                    if (additional_smearing <=0) additional_smearing = 1.0;
-                  }
-                  map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer2 [best_track] * additional_smearing); 
-                }
-              }
-            }
-            
-            if (IsoTrack_pixByLayer3[best_track] != 0) {  
-              ilayer = IsoTrack_layerOrSideByLayer3[best_track];
-              iladderblade = IsoTrack_ladderOrBladeByLayer3[best_track];   
-              if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
-                if (IsoTrack_pixByLayer3[best_track] == 1) {
-                  //---- BPIX
-                  float additional_smearing = 1.0;
-                  if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
-                    f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
-                    additional_smearing = f_smearing->GetRandom();
-                    if (additional_smearing <=0) additional_smearing = 1.0;
-                  }
-                  map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer3 [best_track] * additional_smearing); 
-                }
-                else {
-                  //---- FPIX
-                  float additional_smearing = 1.0;
-                  if ( map_smearing_FPIX[ilayer][iEdge] != 0) {
-                    f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
-                    additional_smearing = f_smearing->GetRandom();
-                    if (additional_smearing <=0) additional_smearing = 1.0;
-                  }
-                  map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer3 [best_track] * additional_smearing); 
-                }
-              }
-            }
-            
-            if (IsoTrack_pixByLayer4[best_track] != 0) {  
-              ilayer = IsoTrack_layerOrSideByLayer4[best_track];
-              iladderblade = IsoTrack_ladderOrBladeByLayer4[best_track];   
-              if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
-                if (IsoTrack_pixByLayer4[best_track] == 1) {
-                  //---- BPIX
-                  float additional_smearing = 1.0;
-                  if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
-                    f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
-                    additional_smearing = f_smearing->GetRandom();
-                    if (additional_smearing <=0) additional_smearing = 1.0;
-                  }
-                  map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer4 [best_track] * additional_smearing); 
-                }
-                else {
-                  //---- FPIX
-                  float additional_smearing = 1.0;
-                  if ( map_smearing_FPIX[ilayer][iEdge] != 0) {
-                    f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
-                    additional_smearing = f_smearing->GetRandom();
-                    if (additional_smearing <=0) additional_smearing = 1.0;
-                  }
-                  map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer4 [best_track] * additional_smearing); 
-                }
-              }
-            }
-            
-            
-            if (IsoTrack_pixByLayer5[best_track] != 0) {  
-              ilayer = IsoTrack_layerOrSideByLayer5[best_track];
-              iladderblade = IsoTrack_ladderOrBladeByLayer5[best_track];   
-              if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
-                if (IsoTrack_pixByLayer5[best_track] == 1) {
-                  //---- BPIX
-                  float additional_smearing = 1.0;
-                  if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
-                    f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
-                    additional_smearing = f_smearing->GetRandom();
-                    if (additional_smearing <=0) additional_smearing = 1.0;
-                  }
-                  map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer5 [best_track] * additional_smearing); 
-                }
-                else {
-                  //---- FPIX
-                  float additional_smearing = 1.0;
-                  if ( map_smearing_FPIX[ilayer][iEdge] != 0) {
-                    f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
-                    additional_smearing = f_smearing->GetRandom();
-                    if (additional_smearing <=0) additional_smearing = 1.0;
-                  }
-                  map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer5 [best_track] * additional_smearing); 
-                }
-              }
-            }
-            
-            if (IsoTrack_pixByLayer6[best_track] != 0) {  
-              ilayer = IsoTrack_layerOrSideByLayer6[best_track];
-              iladderblade = IsoTrack_ladderOrBladeByLayer6[best_track];   
-              if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
-                if (IsoTrack_pixByLayer6[best_track] == 1) {
-                  //---- BPIX
-                  float additional_smearing = 1.0;
-                  if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
-                    f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
-                    additional_smearing = f_smearing->GetRandom();
-                    if (additional_smearing <=0) additional_smearing = 1.0;
-                  }
-                  map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer6 [best_track] * additional_smearing); 
-                }
-                else {
-                  //---- FPIX
-                  float additional_smearing = 1.0;
-                  if ( map_smearing_FPIX[ilayer][iEdge] != 0) {
-                    f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
-                    additional_smearing = f_smearing->GetRandom();
-                    if (additional_smearing <=0) additional_smearing = 1.0;
-                  }
-                  map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer6 [best_track] * additional_smearing); 
-                }
-              }
-            }
-            
           }
+          
+          
+          if (IsoTrack_pixByLayer1[best_track] != 0) {  
+            ilayer = IsoTrack_layerOrSideByLayer1[best_track];
+            iladderblade = IsoTrack_ladderOrBladeByLayer1[best_track];   
+            if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
+              if (IsoTrack_pixByLayer1[best_track] == 1) {
+                //---- BPIX
+                float additional_smearing = 1.0;
+                if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+                  f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
+                  additional_smearing = f_smearing->GetRandom();
+                  if (additional_smearing <=0) additional_smearing = 1.0;
+                }
+                map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer1 [best_track] * additional_smearing); 
+              }
+              else {
+                //---- FPIX
+                float additional_smearing = 1.0;
+                if ( map_smearing_FPIX[ilayer][iEdge] != 0) {
+                  f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
+                  additional_smearing = f_smearing->GetRandom();
+                  if (additional_smearing <=0) additional_smearing = 1.0;
+                }
+                map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer1 [best_track] * additional_smearing); 
+              }
+            }
+          }
+          
+          if (IsoTrack_pixByLayer2[best_track] != 0) {  
+            ilayer = IsoTrack_layerOrSideByLayer2[best_track];
+            iladderblade = IsoTrack_ladderOrBladeByLayer2[best_track];   
+            if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
+              if (IsoTrack_pixByLayer2[best_track] == 1) {
+                //---- BPIX
+                float additional_smearing = 1.0;
+                if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+                  f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
+                  additional_smearing = f_smearing->GetRandom();
+                  if (additional_smearing <=0) additional_smearing = 1.0;
+                }
+                map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer2 [best_track] * additional_smearing); 
+              }
+              else {
+                //---- FPIX
+                float additional_smearing = 1.0;
+                if ( map_smearing_FPIX[ilayer][iEdge] != 0) {
+                  f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
+                  additional_smearing = f_smearing->GetRandom();
+                  if (additional_smearing <=0) additional_smearing = 1.0;
+                }
+                map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer2 [best_track] * additional_smearing); 
+              }
+            }
+          }
+          
+          if (IsoTrack_pixByLayer3[best_track] != 0) {  
+            ilayer = IsoTrack_layerOrSideByLayer3[best_track];
+            iladderblade = IsoTrack_ladderOrBladeByLayer3[best_track];   
+            if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
+              if (IsoTrack_pixByLayer3[best_track] == 1) {
+                //---- BPIX
+                float additional_smearing = 1.0;
+                if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+                  f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
+                  additional_smearing = f_smearing->GetRandom();
+                  if (additional_smearing <=0) additional_smearing = 1.0;
+                }
+                map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer3 [best_track] * additional_smearing); 
+              }
+              else {
+                //---- FPIX
+                float additional_smearing = 1.0;
+                if ( map_smearing_FPIX[ilayer][iEdge] != 0) {
+                  f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
+                  additional_smearing = f_smearing->GetRandom();
+                  if (additional_smearing <=0) additional_smearing = 1.0;
+                }
+                map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer3 [best_track] * additional_smearing); 
+              }
+            }
+          }
+          
+          if (IsoTrack_pixByLayer4[best_track] != 0) {  
+            ilayer = IsoTrack_layerOrSideByLayer4[best_track];
+            iladderblade = IsoTrack_ladderOrBladeByLayer4[best_track];   
+            if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
+              if (IsoTrack_pixByLayer4[best_track] == 1) {
+                //---- BPIX
+                float additional_smearing = 1.0;
+                if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+                  f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
+                  additional_smearing = f_smearing->GetRandom();
+                  if (additional_smearing <=0) additional_smearing = 1.0;
+                }
+                map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer4 [best_track] * additional_smearing); 
+              }
+              else {
+                //---- FPIX
+                float additional_smearing = 1.0;
+                if ( map_smearing_FPIX[ilayer][iEdge] != 0) {
+                  f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
+                  additional_smearing = f_smearing->GetRandom();
+                  if (additional_smearing <=0) additional_smearing = 1.0;
+                }
+                map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer4 [best_track] * additional_smearing); 
+              }
+            }
+          }
+          
+          
+          if (IsoTrack_pixByLayer5[best_track] != 0) {  
+            ilayer = IsoTrack_layerOrSideByLayer5[best_track];
+            iladderblade = IsoTrack_ladderOrBladeByLayer5[best_track];   
+            if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
+              if (IsoTrack_pixByLayer5[best_track] == 1) {
+                //---- BPIX
+                float additional_smearing = 1.0;
+                if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+                  f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
+                  additional_smearing = f_smearing->GetRandom();
+                  if (additional_smearing <=0) additional_smearing = 1.0;
+                }
+                map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer5 [best_track] * additional_smearing); 
+              }
+              else {
+                //---- FPIX
+                float additional_smearing = 1.0;
+                if ( map_smearing_FPIX[ilayer][iEdge] != 0) {
+                  f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
+                  additional_smearing = f_smearing->GetRandom();
+                  if (additional_smearing <=0) additional_smearing = 1.0;
+                }
+                map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer5 [best_track] * additional_smearing); 
+              }
+            }
+          }
+          
+          if (IsoTrack_pixByLayer6[best_track] != 0) {  
+            ilayer = IsoTrack_layerOrSideByLayer6[best_track];
+            iladderblade = IsoTrack_ladderOrBladeByLayer6[best_track];   
+            if ((ilayer >=0 && ilayer<layerId.size()) && (iladderblade>=0 && iladderblade<ladderbladeId.size())) {
+              if (IsoTrack_pixByLayer6[best_track] == 1) {
+                //---- BPIX
+                float additional_smearing = 1.0;
+                if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+                  f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
+                  additional_smearing = f_smearing->GetRandom();
+                  if (additional_smearing <=0) additional_smearing = 1.0;
+                }
+                map_h_BPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer6 [best_track] * additional_smearing); 
+              }
+              else {
+                //---- FPIX
+                float additional_smearing = 1.0;
+                if ( map_smearing_FPIX[ilayer][iEdge] != 0) {
+                  f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
+                  additional_smearing = f_smearing->GetRandom();
+                  if (additional_smearing <=0) additional_smearing = 1.0;
+                }
+                map_h_FPIX_mc[iRun][ilayer][iEdge][iladderblade] ->Fill(IsoTrack_dedxByLayer6 [best_track] * additional_smearing); 
+              }
+            }
+          }
+          
         }
       }
     }
+  }
   
   
   
@@ -1560,10 +1564,10 @@ int main(int argc, char** argv) {
       name = Form ("cc_summary_layer_%d_eta_%d" , ilayer, iEdge); 
       TCanvas* cc_summary_iEdge = new TCanvas (name.Data(),"",1400,400);
       cc_summary_iEdge->Divide(ladderbladeId.size(), 2);
- 
+      
       for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
         
-      
+        
         TLegend* leg = new TLegend(0.50,0.70,0.90,0.90);
         for (int iRun =0; iRun < num_run_intervals; iRun++) {
           std::string name = " data [" + std::to_string(minRun+iRun*deltaRun) + " , " + std::to_string(minRun+(iRun+1)*deltaRun) + "] "; 
@@ -1572,20 +1576,20 @@ int main(int argc, char** argv) {
         leg->AddEntry(map_h_BPIX_mc[0][ilayer][iEdge][iladderblade], "mc",  "pl");
         
         
-//         name = Form ("cc_bin_BPIX_%d_%d_%d" , ilayer, iEdge, iladderblade); 
-//         
-//         TCanvas* cc_summary = new TCanvas (name.Data(),"",1000,1000);
-//         
-//         map_h_BPIX_mc[0][ilayer][iEdge][iladderblade]  ->Draw("PL");
-//         for (int iRun =0; iRun < num_run_intervals; iRun++) { 
-//           map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Draw("PL same");
-//         }
-//         map_h_BPIX_mc[0][ilayer][iEdge][iladderblade]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
-//         leg->Draw();
+        //         name = Form ("cc_bin_BPIX_%d_%d_%d" , ilayer, iEdge, iladderblade); 
+        //         
+        //         TCanvas* cc_summary = new TCanvas (name.Data(),"",1000,1000);
+        //         
+        //         map_h_BPIX_mc[0][ilayer][iEdge][iladderblade]  ->Draw("PL");
+        //         for (int iRun =0; iRun < num_run_intervals; iRun++) { 
+        //           map_h_BPIX_data[iRun][ilayer][iEdge][iladderblade]->Draw("PL same");
+        //         }
+        //         map_h_BPIX_mc[0][ilayer][iEdge][iladderblade]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
+        //         leg->Draw();
         
         
-//         cc_summary->Write();
-       
+        //         cc_summary->Write();
+        
         
         
         // BPIX
@@ -1627,7 +1631,7 @@ int main(int argc, char** argv) {
         
         map_h_BPIX_mc[0][ilayer][iEdge][iladderblade]->GetXaxis()->SetTitle("dE/dx (XX*GeV/cm)");
         leg->Draw();
-    
+        
         name = Form ("plots_run/cc_summary_layer_%d_eta_%d_ladder_%d_BPIX.png" , ilayer, iEdge, iladderblade); 
         cc_summary_iEdge_iladder_BPIX->SaveAs(name.Data());
         
@@ -1652,7 +1656,7 @@ int main(int argc, char** argv) {
         
       }
       
-//       cc_summary_iEdge->Write();
+      //       cc_summary_iEdge->Write();
       name = Form ("plots_run/cc_summary_layer_%d_eta_%d.png" , ilayer, iEdge); 
       cc_summary_iEdge->SaveAs(name.Data());
       
@@ -1662,7 +1666,7 @@ int main(int argc, char** argv) {
   
   for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
     for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {    
-  
+      
       TString name;
       name = Form ("cc_add_layer_%d_eta_%d_BPIX" , ilayer, iEdge); 
       TCanvas* cc_add_iEdge_iladder_BPIX = new TCanvas (name.Data(),"",800,600);
