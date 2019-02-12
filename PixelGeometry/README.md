@@ -58,6 +58,18 @@ Filter:
     hadd Data/8Feb2019/tree_filtered_data_SingleMuon_31Mar2018.root Data/8Feb2019/tree_filtered_data_SingleMuon_Run2017*_31Mar2018.root
 
     
+    ./filterTree.exe Data/11Feb2019/tree_DYJetsM50_HT100to200.root     Data/11Feb2019/tree_filtered_mc_DYJetsM50_HT100to200.root  
+    ./filterTree.exe Data/11Feb2019/tree_SingleMuon_Run2017B_31Mar2018.root     Data/11Feb2019/tree_filtered_data_SingleMuon_Run2017B_31Mar2018.root  
+    ./filterTree.exe Data/11Feb2019/tree_SingleMuon_Run2017C_31Mar2018.root     Data/11Feb2019/tree_filtered_data_SingleMuon_Run2017C_31Mar2018.root  
+    ./filterTree.exe Data/11Feb2019/tree_SingleMuon_Run2017D_31Mar2018.root     Data/11Feb2019/tree_filtered_data_SingleMuon_Run2017D_31Mar2018.root  
+    ./filterTree.exe Data/11Feb2019/tree_SingleMuon_Run2017E_31Mar2018.root     Data/11Feb2019/tree_filtered_data_SingleMuon_Run2017E_31Mar2018.root  
+    ./filterTree.exe Data/11Feb2019/tree_SingleMuon_Run2017F_31Mar2018.root     Data/11Feb2019/tree_filtered_data_SingleMuon_Run2017F_31Mar2018.root  
+    
+    hadd Data/11Feb2019/tree_filtered_data_SingleMuon_31Mar2018.root Data/11Feb2019/tree_filtered_data_SingleMuon_Run2017*_31Mar2018.root
+    
+    
+    
+    
     
     ./filterTree.exe Data/tree_data_calibrated_cmssw_firstRound.root   Data/tree_filtered_data_calibrated_cmssw_firstRound.root 
 
@@ -153,6 +165,10 @@ Draw:
     
     ./drawPixelTimeUncorrected.exe  Data/8Feb2019/tree_filtered_data_SingleMuon_31Mar2018.root     Data/8Feb2019/tree_filtered_mc_DYJetsM50_HT100to200.root   30       5       scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt   smear_for_cmssw.txt
 
+    
+    ./drawPixelTimeNew.exe Data/11Feb2019/tree_filtered_data_SingleMuon_31Mar2018.root     Data/11Feb2019/tree_filtered_mc_DYJetsM50_HT100to200.root        30       5         
+    
+    
     
     
     
