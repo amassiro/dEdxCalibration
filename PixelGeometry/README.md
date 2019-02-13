@@ -70,6 +70,10 @@ Filter:
     
     
     
+    ls --color=never  Data/11Feb2019-SR/ | awk '{print "./filterTree.exe Data/11Feb2019-SR/"$1"   Data/11Feb2019-SR/tree_filtered_"$1}'
+    
+    
+    
     
     ./filterTree.exe Data/tree_data_calibrated_cmssw_firstRound.root   Data/tree_filtered_data_calibrated_cmssw_firstRound.root 
 
