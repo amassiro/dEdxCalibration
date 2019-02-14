@@ -550,6 +550,24 @@ Draw geometry:
     
     
     
+Draw effect of smearing and scaling
+====
+
+    r99t Data/11Feb2019-SR/tree_Wino_M_1000_cTau_10.root
+    tree->Draw("IsoTrack_dedxUnSmearedByLayer0[0]/IsoTrack_dedxByLayer0[0]")
+    
+    tree->Draw("IsoTrack_dedxUnSmearedByLayer0[0]")
+    tree->Draw("IsoTrack_dedxByLayer0[0]", "", "same")
+    
+    
+    
+    tree_Wino_M_1000_cTau_10.root
+    tree_Wino_M_300_cTau_10.root
+    tree_Wino_M_300_cTau_30.root
+    tree_Wino_M_300_cTau_3.root
+    tree_Wino_M_500_cTau_10.root
+    tree_Wino_M_650_cTau_10.root
+    tree_Wino_M_800_cTau_10.root
     
     
     
