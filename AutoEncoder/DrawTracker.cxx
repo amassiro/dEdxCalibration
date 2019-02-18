@@ -79,10 +79,10 @@ void DrawTracker( std::string var = "ciao", int NBIN = 1000, float MIN = 0, floa
   
  
   TFile* inputFile_bkg = new TFile ("Data/../calibration/11Feb2019/tree_filtered_mc_DYJetsM50_HT100to200.root", "READ");   
-  TTree* inputTree_bkg = (TTree*) ((TTree*) inputFile_bkg -> Get ("tree")) -> Clone ("flatTree_bkg");
+  TTree* inputTree_bkg = (TTree*) ((TTree*) inputFile_bkg -> Get ("tree"));
   
-  TFile* inputFile_data = new TFile ("tree_filtered_data_SingleMuon_Run2017E_31Mar2018.root", "READ");   
-  TTree* inputTree_data = (TTree*) ((TTree*) inputFile_data -> Get ("tree")) -> Clone ("flatTree_data");
+  TFile* inputFile_data = new TFile ("Data/../calibration/11Feb2019/tree_filtered_data_SingleMuon_Run2017E_31Mar2018.root", "READ");   
+  TTree* inputTree_data = (TTree*) ((TTree*) inputFile_data -> Get ("tree"));
  
   
   TString name;
