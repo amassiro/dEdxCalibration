@@ -88,6 +88,17 @@ Draw
     r99t Draw.cxx\(\"tk_dedxl2\",100,0,10,\"tk_category\=\=2\"\)
 
     
+Draw data vs MC for tracker
+====
+
+    r99t DrawTracker.cxx\(\"IsoTrack_dedxUnSmearedByLayer5\",100,0,10,\"IsoTrack_pixByLayer5\=\=0\"\)
+
+    r99t DrawTracker.cxx\(\"IsoTrack_dedxUnSmearedByLayer0\",100,0,10,\"IsoTrack_pixByLayer0\=\=1\"\)
+
+    
+    
+    
+    
     
     
     

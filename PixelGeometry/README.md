@@ -173,7 +173,15 @@ Draw:
     ./drawPixelTimeNew.exe Data/11Feb2019/tree_filtered_data_SingleMuon_31Mar2018.root     Data/11Feb2019/tree_filtered_mc_DYJetsM50_HT100to200.root        30       5         
     
     
+Draw time evolution
+====
+
+    void DrawTimeEvolution( std::string BPIXorFPIX = "BPIX", int num_run_intervals = 30, int ilayer = 0, int iEdge = 0, int iladderblade = 0) 
     
+    r99t DrawTimeEvolution.cxx\(\"BPIX\",30,1,0,1\)
+    
+    r99t DrawTimeEvolution.cxx\(\"BPIX\",5,1,0,1\)
+    r99t DrawTimeEvolution.cxx\(\"BPIX\",5,1,1,1\)
     
     
 Complete procedure
@@ -558,7 +566,9 @@ Draw effect of smearing and scaling
     
     tree->Draw("IsoTrack_dedxUnSmearedByLayer0[0]")
     tree->Draw("IsoTrack_dedxByLayer0[0]", "", "same")
-    
+
+    tree->Draw("IsoTrack_dedxUnSmearedByLayer1[0]")
+    tree->Draw("IsoTrack_dedxByLayer1[0]", "", "same")
     
     
     tree_Wino_M_1000_cTau_10.root
