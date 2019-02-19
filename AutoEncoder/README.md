@@ -52,7 +52,49 @@ Prepare flat tree
           Data/MoreData/Wino_M_800_cTau_20/treeProducerXtracks/flat_tree.root   
           
 
+          
+    ./prepareTree.exe   Data/../calibration/11Feb2019-SR/tree_Wino_M_1000_cTau_10.root  Data/../calibration/11Feb2019-SR/flat_tree_Wino_M_1000_cTau_10.root       1
+    ./prepareTree.exe   Data/../calibration/11Feb2019-SR/tree_Wino_M_800_cTau_10.root  Data/../calibration/11Feb2019-SR/flat_tree_Wino_M_800_cTau_10.root         1
+    ./prepareTree.exe   Data/../calibration/11Feb2019-SR/tree_Wino_M_300_cTau_10.root  Data/../calibration/11Feb2019-SR/flat_tree_Wino_M_300_cTau_10.root         1
 
+    ./prepareTree.exe   Data/../calibration/11Feb2019-SR/tree_filtered_tree_DYJetsM50_HT200to400.root  Data/../calibration/11Feb2019-SR/flat_tree_filtered_tree_DYJetsM50_HT200to400.root         
+
+    
+    
+    flatTree->Draw("tk_dedxl0:tk_pt", "tk_pt<200 && tk_dedxl0>0 && tk_dedxl0<20", "colz");
+    flatTree->Draw("tk_dedxl0:(tk_pt*cosh(tk_eta))", "(tk_pt*cosh(tk_eta))<1000 && tk_dedxl0>0 && tk_dedxl0<20", "colz");
+    flatTree->Draw("tk_dedxl0:(tk_pt*cosh(tk_eta))", "(tk_pt)<200 && tk_dedxl0>0 && tk_dedxl0<20", "colz");
+    
+    hadd Data/../calibration/11Feb2019-SR/flat_tree_Wino_All_cTau_10.root Data/../calibration/11Feb2019-SR/flat_tree_Wino_M_*_cTau_10.root
+    Data/../calibration/11Feb2019-SR/flat_tree_filtered_tree_DYJetsM50_HT200to400.root 
+    
+    
+    r99t Data/../calibration/11Feb2019-SR/flat_tree_Wino_All_cTau_10.root    Data/../calibration/11Feb2019-SR/flat_tree_filtered_tree_DYJetsM50_HT200to400.root 
+
+    r99t Data/../calibration/11Feb2019-SR/flat_tree_Wino_M_1000_cTau_10.root    Data/../calibration/11Feb2019-SR/flat_tree_filtered_tree_DYJetsM50_HT200to400.root 
+
+    TTree* sig = (TTree*) _file0->Get("flatTree");
+    TTree* bkg = (TTree*) _file1->Get("flatTree");
+    
+    bkg->Draw("tk_dedxl0:(tk_pt*cosh(tk_eta))", "(tk_pt)<200 && tk_dedxl0>0 && tk_dedxl0<20", "colz");
+    sig->Draw("tk_dedxl0:(tk_pt*cosh(tk_eta))", "(tk_pt)<200 && tk_dedxl0>0 && tk_dedxl0<20", "same");
+
+    
+    bkg->Draw("tk_dedxl0:(tk_pt*cosh(tk_eta))", "(tk_pt*cosh(tk_eta))<300 && tk_dedxl0>0 && tk_dedxl0<20", "colz");
+    sig->SetMarkerColor(kRed);
+    sig->SetMarkerSize(0.5);
+    sig->SetMarkerStyle(20);
+    sig->Draw("tk_dedxl0:(tk_pt*cosh(tk_eta))", "(tk_pt*cosh(tk_eta))<300 && tk_dedxl0>0 && tk_dedxl0<20", "same");
+
+    
+    
+    bkg->Draw("tk_dedxl1:(tk_pt*cosh(tk_eta))", "(tk_pt*cosh(tk_eta))<300 && tk_dedxl1>0 && tk_dedxl1<20", "colz");
+    sig->SetMarkerColor(kRed);
+    sig->SetMarkerSize(0.5);
+    sig->SetMarkerStyle(20);
+    sig->Draw("tk_dedxl1:(tk_pt*cosh(tk_eta))", "(tk_pt*cosh(tk_eta))<300 && tk_dedxl1>0 && tk_dedxl1<20", "same");
+
+    
 
 Simple NN train
 ====

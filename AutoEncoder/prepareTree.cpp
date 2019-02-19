@@ -159,6 +159,7 @@ int main(int argc, char** argv) {
   //
   
   Float_t tk_eta;      outputTree->Branch("tk_eta", &tk_eta);
+  Float_t tk_pt;       outputTree->Branch("tk_pt",  &tk_pt);
   
   
   
@@ -223,6 +224,7 @@ int main(int argc, char** argv) {
       if (IsoTrack_sizeXbyLayer7[best_track] != 0)  tk_dedxl7 = IsoTrack_dedxByLayer7[best_track];
       
       tk_eta = IsoTrack_eta[best_track];
+      tk_pt  = IsoTrack_pt [best_track];
       
       tk_category = -1;
       if ( (tk_dedxl0!= -1) && (tk_dedxl1!= -1) && (tk_dedxl2!= -1) && (tk_dedxl3!= -1) && (tk_dedxl4!= -1) && (tk_dedxl5!= -1) && (tk_dedxl6!= -1) && (tk_dedxl7!= -1) )  tk_category = 6;
