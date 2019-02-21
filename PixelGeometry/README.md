@@ -401,7 +401,12 @@ Add calibration as a weight:
     
     
     
-    
+Draw dx and geometry
+====
+
+    tree->Draw("IsoTrack_dxByLayer0[0]:IsoTrack_eta[0]", "", "colz")
+
+
     
 Draw phi modulation:
 ====

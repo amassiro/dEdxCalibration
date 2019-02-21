@@ -94,7 +94,48 @@ Prepare flat tree
     sig->SetMarkerStyle(20);
     sig->Draw("tk_dedxl1:(tk_pt*cosh(tk_eta))", "(tk_pt*cosh(tk_eta))<300 && tk_dedxl1>0 && tk_dedxl1<20", "same");
 
+
+    bkg->Draw("tk_dedxl2:(tk_pt*cosh(tk_eta))", "(tk_pt*cosh(tk_eta))<300 && tk_dedxl2>0 && tk_dedxl2<20", "colz");
+    sig->SetMarkerColor(kRed);
+    sig->SetMarkerSize(0.5);
+    sig->SetMarkerStyle(20);
+    sig->Draw("tk_dedxl2:(tk_pt*cosh(tk_eta))", "(tk_pt*cosh(tk_eta))<300 && tk_dedxl2>0 && tk_dedxl2<20", "same");
+
+
+    bkg->Draw("(tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.:(tk_pt*cosh(tk_eta))", "(tk_pt*cosh(tk_eta))<300 && (tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.>0 && (tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.<20", "colz");
+    sig->SetMarkerColor(kRed);
+    sig->SetMarkerSize(0.5);
+    sig->SetMarkerStyle(20);
+    sig->Draw("(tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.:(tk_pt*cosh(tk_eta))", "(tk_pt*cosh(tk_eta))<300 && (tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.>0 && (tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.<20", "same");
+
     
+    
+    bkg->Draw("(tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.:(tk_pt*cosh(tk_eta))", "(tk_pt*cosh(tk_eta))<1000 && (tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.>0 && (tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.<20", "colz");
+    sig->SetMarkerColor(kRed);
+    sig->SetMarkerSize(0.5);
+    sig->SetMarkerStyle(20);
+    sig->Draw("(tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.:(tk_pt*cosh(tk_eta))", "(tk_pt*cosh(tk_eta))<1000 && (tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.>0 && (tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.<20", "same");
+
+    
+    
+    
+    
+    bkg->Draw("(tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.", "(tk_pt*cosh(tk_eta))<300 && (tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.>0 && (tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.<20", "");
+    sig->Draw("(tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.", "1000.*((tk_pt*cosh(tk_eta))<300 && (tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.>0 && (tk_dedxl0+tk_dedxl1+tk_dedxl2)/3.<20)", "same");
+
+    
+    
+    bkg->Draw("tk_dedxl2:(tk_pt)", "(tk_pt)<300 && tk_dedxl2>0 && tk_dedxl2<20", "colz");
+    sig->SetMarkerColor(kRed);
+    sig->SetMarkerSize(0.5);
+    sig->SetMarkerStyle(20);
+    sig->Draw("tk_dedxl2:(tk_pt)", "(tk_pt)<300 && tk_dedxl2>0 && tk_dedxl2<20", "same");
+
+    
+    
+    
+    
+
 
 Simple NN train
 ====
