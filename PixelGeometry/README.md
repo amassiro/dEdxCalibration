@@ -68,6 +68,15 @@ Filter:
     hadd Data/11Feb2019/tree_filtered_data_SingleMuon_31Mar2018.root Data/11Feb2019/tree_filtered_data_SingleMuon_Run2017*_31Mar2018.root
     
     
+ 
+ 
+ 
+    ./filterTree.exe Data/22Mar2019/DYJetsM50_2018.root    Data/22Mar2019/tree_filtered_DYJetsM50_2018.root  
+    
+    ./drawPixel.exe     Data/22Mar2019/tree_filtered_DYJetsM50_2018.root        Data/11Feb2019/tree_filtered_mc_DYJetsM50_HT100to200.root
+
+    
+    
     
     
     ls --color=never  Data/11Feb2019-SR/ | awk '{print "./filterTree.exe Data/11Feb2019-SR/"$1"   Data/11Feb2019-SR/tree_filtered_"$1}'
