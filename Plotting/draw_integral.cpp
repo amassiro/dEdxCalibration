@@ -60,7 +60,7 @@ void setupHisto(TH1F* histo, int icolor) {
 
 
 //---- find the eta range bin corresponding to the "eta" value
-int FindEdge (float eta, std::vector<float> eta_edges) {
+int FindEdge (float eta, std::vector<float>& eta_edges) {
   
   int ieta = -1;
   
@@ -98,6 +98,9 @@ int main(int argc, char** argv) {
   std::cout << " Plot all time periods together " << std::endl;
   std::cout << " ================================ " << std::endl;
   
+  //----
+  //---- get the two root files with the two trees
+  //----  
   
   std::string name_input_file_data = "out.root"; 
   if (argc>=2) {
@@ -108,14 +111,6 @@ int main(int argc, char** argv) {
   
   ROOT::RDataFrame dataframe_data ("tree", name_input_file_data.c_str());
   
-//   myHisto = d.Histo1D("Branch_A");
-  
-  //   ROOT::RDF::RResultPtr<TH1D>
-//   auto h_data = dataframe_data.Filter("IsoTrack_layerOrSideByHit0==1").Histo1D("IsoTrack_layerOrSideByHit0");
-//   
-//   h_data->SaveAs("mytest_data.root");
-
-  
   std::string name_input_file_mc = "out.root";
   if (argc>=3) {
     name_input_file_mc = argv[2];
@@ -125,9 +120,98 @@ int main(int argc, char** argv) {
   ROOT::RDataFrame dataframe_mc ("tree", name_input_file_mc.c_str());
   
   
+  //----
+  //---- Now define the cuts, first the common ones, then the specific
+  //----
   
   
   
+  
+  std::vector<float> eta_edges;
+  
+  eta_edges.push_back(0.0);
+  eta_edges.push_back(0.3);  //--- exclude
+  eta_edges.push_back(0.6);  //--- exclude
+  eta_edges.push_back(1.0);  //--- exclude
+  eta_edges.push_back(1.3);
+  eta_edges.push_back(1.6);  //--- exclude
+  eta_edges.push_back(2.1);
+  eta_edges.push_back(2.5);
+  
+  
+  
+  
+  int num_run_intervals = 10;
+  if (argc>=4) {
+    num_run_intervals = atoi(argv[3]);
+  }
+  std::cout << " num_run_intervals = " << num_run_intervals << std::endl;
+  
+  int num_max_layer = 5; // 20
+  if (argc>=5) {
+    num_max_layer = atoi(argv[4]);
+  }
+  std::cout << " num_max_layer = " << num_max_layer << std::endl;
+  
+  
+  
+  
+  
+  //---- 
+  //---- layer 
+  //----
+  std::vector<int> layerId;
+  for (int ilayer = 0; ilayer<num_max_layer; ilayer++) {
+    layerId.push_back(ilayer);
+  }
+  
+  
+  //---- 
+  //---- ladderblade 
+  //----
+  std::vector<int> ladderbladeId;
+  for (int iladderblade = 0; iladderblade<40; iladderblade++) {
+    ladderbladeId.push_back(iladderblade);
+  }
+  
+  
+  
+  //---- 
+  //---- variables definition
+  //---- 
+  
+  
+  std::string by_what = "ByHit";
+  
+  std::string variable_layer        = "IsoTrack_layerOrSide" + by_what ;
+  std::string variable_ladder_blade = "IsoTrack_ladderOrBlade" + by_what;
+  
+  std::string variable_eta          = "IsoTrack_eta";
+  std::string variable_pt           = "IsoTrack_pt";
+  
+  
+  auto cutGreater = [](float b2, float b1) { return b2 >  b1; };
+  auto cutEqual   = [](float b2, float b1) { return b2 == b1; };
+  auto cutBetween = [](float b,  float min, float max) { return (b <= max) && (b > min); };
+  
+  auto cutFindEdgeAbs = [&eta_edges](float eta, int iEdge) { return (iEdge == FindEdgeAbs (eta, eta_edges)); };
+    
+  
+  for (int iHit = 0; iHit<14; iHit++) {
+    
+    for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
+      auto dataframe_data_layer = dataframe_data.Filter( cutEqual, { std::to_string(ilayer), variable_layer + std::to_string(iHit)} );      
+      for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
+        auto dataframe_data_layer_eta = dataframe_data_layer.Filter( cutFindEdgeAbs, { variable_eta + "[best_track]" , std::to_string(iEdge) } );      
+        
+        
+        
+        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+          std::cout << "ciao" << std::endl;
+        }
+      }
+    }
+  }
   
   
   
@@ -135,7 +219,11 @@ int main(int argc, char** argv) {
   
   auto h_data = dataframe_data.Filter("IsoTrack_layerOrSideByHit0==1").Histo1D("IsoTrack_layerOrSideByHit0");
   auto h_mc = dataframe_mc.Filter("IsoTrack_layerOrSideByHit0==1").Histo1D("IsoTrack_layerOrSideByHit0");
-    
+   
+  
+  
+  
+  
   
 }
 
