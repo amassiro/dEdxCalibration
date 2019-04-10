@@ -181,7 +181,8 @@ int main(int argc, char** argv) {
   //---- 
   
   
-  std::string by_what = "ByHit";
+//   std::string by_what = "ByHit";
+  std::string by_what = "ByLayer";
   
   std::string variable_layer        = "IsoTrack_layerOrSide" + by_what ;
   std::string variable_ladder_blade = "IsoTrack_ladderOrBlade" + by_what;
@@ -195,20 +196,29 @@ int main(int argc, char** argv) {
   auto cutBetween = [](float b,  float min, float max) { return (b <= max) && (b > min); };
   
   int iEdgeTotal;
-  auto cutFindEdgeAbs = [&](float eta) { return (iEdgeTotal == FindEdgeAbs (eta, eta_edges)); };
+  auto cutFindEdgeAbs = [&](float eta[], int best_track) { 
+//     std::cout << " eta[" << best_track <<"] = " << eta[best_track] << std::endl;
+    return (iEdgeTotal == FindEdgeAbs (eta[best_track], eta_edges)); };
     
+//   auto cutFindEdgeAbs = [&](float eta) { return (iEdgeTotal == FindEdgeAbs (eta, eta_edges)); };
+  int iLayerTotal;
+  auto cutEqualLAyer  = [&](int b2) { return b2 == iLayerTotal; };
+  
   
   for (int iHit = 0; iHit<14; iHit++) {
     
     for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
-      auto dataframe_data_layer = dataframe_data.Filter( cutEqual, { std::to_string(ilayer), variable_layer + std::to_string(iHit)} );      
+      iLayerTotal = ilayer;
+      auto dataframe_data_layer = dataframe_data.Filter( cutEqualLAyer, { variable_layer + std::to_string(iHit)} );      
       for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
         iEdgeTotal = iEdge;
-        auto dataframe_data_layer_eta = dataframe_data_layer.Filter( cutFindEdgeAbs, { variable_eta + "[best_track]" } );      
+        //         auto dataframe_data_layer_eta = dataframe_data_layer.Filter( cutFindEdgeAbs, { variable_eta + "[best_track]" } );      
+        auto dataframe_data_layer_eta = dataframe_data_layer.Filter( cutFindEdgeAbs, { variable_eta , "best_track" } );      
+//         auto dataframe_data_layer_eta = dataframe_data_layer.Filter( variable_eta + "[best_track] == 1" );      
         
         
         for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
-          std::cout << "ciao" << std::endl;
+//           std::cout << "ciao" << std::endl;
         }
       }
     }
@@ -218,8 +228,8 @@ int main(int argc, char** argv) {
   
   
   
-  auto h_data = dataframe_data.Filter("IsoTrack_layerOrSideByHit0==1").Histo1D("IsoTrack_layerOrSideByHit0");
-  auto h_mc = dataframe_mc.Filter("IsoTrack_layerOrSideByHit0==1").Histo1D("IsoTrack_layerOrSideByHit0");
+//   auto h_data = dataframe_data.Filter("IsoTrack_layerOrSideByHit0==1").Histo1D("IsoTrack_layerOrSideByHit0");
+//   auto h_mc = dataframe_mc.Filter("IsoTrack_layerOrSideByHit0==1").Histo1D("IsoTrack_layerOrSideByHit0");
    
   
   
