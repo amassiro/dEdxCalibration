@@ -194,7 +194,8 @@ int main(int argc, char** argv) {
   auto cutEqual   = [](float b2, float b1) { return b2 == b1; };
   auto cutBetween = [](float b,  float min, float max) { return (b <= max) && (b > min); };
   
-  auto cutFindEdgeAbs = [&eta_edges](float eta, int iEdge) { return (iEdge == FindEdgeAbs (eta, eta_edges)); };
+  int iEdgeTotal;
+  auto cutFindEdgeAbs = [&](float eta) { return (iEdgeTotal == FindEdgeAbs (eta, eta_edges)); };
     
   
   for (int iHit = 0; iHit<14; iHit++) {
@@ -202,8 +203,8 @@ int main(int argc, char** argv) {
     for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
       auto dataframe_data_layer = dataframe_data.Filter( cutEqual, { std::to_string(ilayer), variable_layer + std::to_string(iHit)} );      
       for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
-        auto dataframe_data_layer_eta = dataframe_data_layer.Filter( cutFindEdgeAbs, { variable_eta + "[best_track]" , std::to_string(iEdge) } );      
-        
+        iEdgeTotal = iEdge;
+        auto dataframe_data_layer_eta = dataframe_data_layer.Filter( cutFindEdgeAbs, { variable_eta + "[best_track]" } );      
         
         
         for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
