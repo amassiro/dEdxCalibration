@@ -225,8 +225,10 @@ int main(int argc, char** argv) {
     //---- iterate over the layers
     for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
       iLayerTotal = ilayer;
-      auto dataframe_data_layer = dataframe_data.Filter( cutEqualLayer, { variable_layer + std::to_string(iHit), "best_track" } );      
-      auto dataframe_mc_layer   = dataframe_mc.Filter  ( cutEqualLayer, { variable_layer + std::to_string(iHit), "best_track" } );      
+//       auto dataframe_data_layer = dataframe_data.Filter( cutEqualLayer, { variable_layer + std::to_string(iHit), "best_track" } );      
+//       auto dataframe_mc_layer   = dataframe_mc.Filter  ( cutEqualLayer, { variable_layer + std::to_string(iHit), "best_track" } );      
+      auto dataframe_data_layer = dataframe_data.Filter( variable_layer + std::to_string(iHit) + "[best_track] == 1" );      
+      auto dataframe_mc_layer   = dataframe_mc.Filter  ( variable_layer + std::to_string(iHit) + "[best_track] == 1" );      
       
       //---- iterate over the eta regions
       for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
