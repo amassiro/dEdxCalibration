@@ -120,6 +120,17 @@ int main(int argc, char** argv) {
   ROOT::RDataFrame dataframe_mc ("tree", name_input_file_mc.c_str());
   
   
+  
+  
+  std::string name_output_file_plots = "outplots.root";
+  if (argc>=4) {
+    name_output_file_plots = argv[3];
+  }
+  
+  
+  TFile* output_file_plots = new TFile (name_output_file_plots.c_str(), "RECREATE");
+  
+  
   //----
   //---- Now define the cuts, first the common ones, then the specific
   //----
@@ -184,6 +195,9 @@ int main(int argc, char** argv) {
 //   std::string by_what = "ByHit";
   std::string by_what = "ByLayer";
   
+  std::string variable_dedx         = "IsoTrack_dedxUnSmeared" + by_what ;
+//   std::string variable_dedx         = "IsoTrack_dedx" + by_what ;
+  
   std::string variable_layer        = "IsoTrack_layerOrSide" + by_what ;
   std::string variable_ladder_blade = "IsoTrack_ladderOrBlade" + by_what;
   
@@ -196,29 +210,52 @@ int main(int argc, char** argv) {
   auto cutBetween = [](float b,  float min, float max) { return (b <= max) && (b > min); };
   
   int iEdgeTotal;
-  auto cutFindEdgeAbs = [&](float eta[], int best_track) { 
-//     std::cout << " eta[" << best_track <<"] = " << eta[best_track] << std::endl;
-    return (iEdgeTotal == FindEdgeAbs (eta[best_track], eta_edges)); };
+  auto cutFindEdgeAbs = [&](float eta[], int best_track) { return (iEdgeTotal == FindEdgeAbs (eta[best_track], eta_edges)); };
     
-//   auto cutFindEdgeAbs = [&](float eta) { return (iEdgeTotal == FindEdgeAbs (eta, eta_edges)); };
   int iLayerTotal;
-  auto cutEqualLAyer  = [&](int b2) { return b2 == iLayerTotal; };
+  auto cutEqualLayer  = [&](int layer[], int best_track) { return layer[best_track] == iLayerTotal; };
+
+  int iBadderOrBladeTotal;
+  auto cutEqualBadderOrBlade  = [&](int badderorblade[], int best_track) { return badderorblade[best_track] == iBadderOrBladeTotal; };
   
   
+  //---- iterate over the hits
   for (int iHit = 0; iHit<14; iHit++) {
     
+    //---- iterate over the layers
     for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
       iLayerTotal = ilayer;
-      auto dataframe_data_layer = dataframe_data.Filter( cutEqualLAyer, { variable_layer + std::to_string(iHit)} );      
+      auto dataframe_data_layer = dataframe_data.Filter( cutEqualLayer, { variable_layer + std::to_string(iHit), "best_track" } );      
+      auto dataframe_mc_layer   = dataframe_mc.Filter  ( cutEqualLayer, { variable_layer + std::to_string(iHit), "best_track" } );      
+      
+      //---- iterate over the eta regions
       for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
         iEdgeTotal = iEdge;
-        //         auto dataframe_data_layer_eta = dataframe_data_layer.Filter( cutFindEdgeAbs, { variable_eta + "[best_track]" } );      
         auto dataframe_data_layer_eta = dataframe_data_layer.Filter( cutFindEdgeAbs, { variable_eta , "best_track" } );      
-//         auto dataframe_data_layer_eta = dataframe_data_layer.Filter( variable_eta + "[best_track] == 1" );      
+        auto dataframe_mc_layer_eta   = dataframe_mc_layer.Filter  ( cutFindEdgeAbs, { variable_eta , "best_track" } );      
         
-        
+        //---- iterate over the ladder (BPIX) and blade (FPIX)
         for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
-//           std::cout << "ciao" << std::endl;
+
+          iBadderOrBladeTotal = iladderblade;
+          auto dataframe_data_layer_eta_ladderblade = dataframe_data_layer_eta.Filter( cutEqualBadderOrBlade, { variable_ladder_blade + std::to_string(iHit), "best_track" } );      
+          auto dataframe_mc_layer_eta_ladderblade   = dataframe_mc_layer_eta.Filter  ( cutEqualBadderOrBlade, { variable_ladder_blade + std::to_string(iHit), "best_track" } );      
+          
+          //---- https://root-forum.cern.ch/t/rdataframe-histo1d-to-extract-histogram-from-an-indexed-vector-branch/31066
+          
+          auto h_data = dataframe_data_layer_eta_ladderblade
+                                                    .Define(variable_dedx+ std::to_string(iHit) + "_best_track", variable_dedx+ std::to_string(iHit) + "[best_track]")
+                                                    .Histo1D(variable_dedx+ std::to_string(iHit) + "_best_track");
+          auto h_mc   = dataframe_data_layer_eta_ladderblade
+                                                    .Define(variable_dedx+ std::to_string(iHit) + "_best_track", variable_dedx+ std::to_string(iHit) + "[best_track]")
+                                                    .Histo1D(variable_dedx+ std::to_string(iHit) + "_best_track");
+
+         
+          output_file_plots->cd();
+          h_data->Write();
+          h_mc->Write();
+          
+          //           std::cout << "ciao" << std::endl;
         }
       }
     }
@@ -232,10 +269,7 @@ int main(int argc, char** argv) {
 //   auto h_mc = dataframe_mc.Filter("IsoTrack_layerOrSideByHit0==1").Histo1D("IsoTrack_layerOrSideByHit0");
    
   
-  
-  
-  
-  
+ 
 }
 
 
