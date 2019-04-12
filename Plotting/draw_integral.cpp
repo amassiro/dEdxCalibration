@@ -210,8 +210,10 @@ int main(int argc, char** argv) {
   auto cutBetween = [](float b,  float min, float max) { return (b <= max) && (b > min); };
   
   int iEdgeTotal;
-  auto cutFindEdgeAbs = [&](float eta[], int best_track) { return (iEdgeTotal == FindEdgeAbs (eta[best_track], eta_edges)); };
-    
+//   auto cutFindEdgeAbs = [&](float eta[], int best_track) { return (iEdgeTotal == FindEdgeAbs (eta[best_track], eta_edges)); };
+//   auto cutFindEdgeAbs = [&](float eta[], int best_track) { return (FindEdgeAbs (eta[best_track], eta_edges) == 10); };
+  auto cutFindEdgeAbs = [](float eta[], int best_track) { return (eta[best_track] <10); };
+  
   int iLayerTotal;
   auto cutEqualLayer  = [&](int layer[], int best_track) { return layer[best_track] == iLayerTotal; };
 
@@ -235,6 +237,8 @@ int main(int argc, char** argv) {
         iEdgeTotal = iEdge;
         auto dataframe_data_layer_eta = dataframe_data_layer.Filter( cutFindEdgeAbs, { variable_eta , "best_track" } );      
         auto dataframe_mc_layer_eta   = dataframe_mc_layer.Filter  ( cutFindEdgeAbs, { variable_eta , "best_track" } );      
+//         auto dataframe_data_layer_eta = dataframe_data_layer.Filter( variable_eta + "[best_track]<3" );      
+//         auto dataframe_mc_layer_eta   = dataframe_mc_layer.Filter  ( variable_eta + "[best_track]<3" );      
         
         //---- iterate over the ladder (BPIX) and blade (FPIX)
         for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
