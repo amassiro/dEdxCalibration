@@ -215,8 +215,9 @@ int main(int argc, char** argv) {
   auto cutFindEdgeAbs = [](float eta[], int best_track) { return (eta[best_track] <10); };
   
   int iLayerTotal;
-  auto cutEqualLayer  = [&](int layer[], int best_track) { return layer[best_track] == iLayerTotal; };
-
+//   auto cutEqualLayer  = [&](int layer[], int best_track) { return layer[best_track] == iLayerTotal; };
+  auto cutEqualLayer  = [&](int layer) { return layer == iLayerTotal; };
+  
   int iBadderOrBladeTotal;
   auto cutEqualBadderOrBlade  = [&](int badderorblade[], int best_track) { return badderorblade[best_track] == iBadderOrBladeTotal; };
   
@@ -229,14 +230,23 @@ int main(int argc, char** argv) {
       iLayerTotal = ilayer;
 //       auto dataframe_data_layer = dataframe_data.Filter( cutEqualLayer, { variable_layer + std::to_string(iHit), "best_track" } );      
 //       auto dataframe_mc_layer   = dataframe_mc.Filter  ( cutEqualLayer, { variable_layer + std::to_string(iHit), "best_track" } );      
-      auto dataframe_data_layer = dataframe_data.Filter( variable_layer + std::to_string(iHit) + "[best_track] == 1" );      
-      auto dataframe_mc_layer   = dataframe_mc.Filter  ( variable_layer + std::to_string(iHit) + "[best_track] == 1" );      
+      
+      //---> it works but not what I want
+//       auto dataframe_data_layer = dataframe_data.Filter( variable_layer + std::to_string(iHit) + "[best_track] == 1" );      
+//       auto dataframe_mc_layer   = dataframe_mc.Filter  ( variable_layer + std::to_string(iHit) + "[best_track] == 1" );  
+      
+      auto dataframe_data_layer = dataframe_data.Define( variable_layer + std::to_string(iHit) + "_best_track", variable_layer + std::to_string(iHit) + "[best_track]" ).Filter( cutEqualLayer, { variable_layer + std::to_string(iHit) + "_best_track" } );      
+      auto dataframe_mc_layer   = dataframe_mc.Define  ( variable_layer + std::to_string(iHit) + "_best_track", variable_layer + std::to_string(iHit) + "[best_track]" ).Filter( cutEqualLayer, { variable_layer + std::to_string(iHit) + "_best_track" } );      
+
+//       auto dataframe_data_layer = dataframe_data.Define( variable_layer + std::to_string(iHit) + "_best_track", variable_layer + std::to_string(iHit) + "[best_track]" ).Filter( variable_layer + std::to_string(iHit) + "_best_track == 1"  );      
+//       auto dataframe_mc_layer   = dataframe_mc.Define  ( variable_layer + std::to_string(iHit) + "_best_track", variable_layer + std::to_string(iHit) + "[best_track]" ).Filter( variable_layer + std::to_string(iHit) + "_best_track == 1"  );      
+      
       
       //---- iterate over the eta regions
       for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
         iEdgeTotal = iEdge;
-        auto dataframe_data_layer_eta = dataframe_data_layer.Filter( cutFindEdgeAbs, { variable_eta , "best_track" } );      
-        auto dataframe_mc_layer_eta   = dataframe_mc_layer.Filter  ( cutFindEdgeAbs, { variable_eta , "best_track" } );      
+//         auto dataframe_data_layer_eta = dataframe_data_layer.Filter( cutFindEdgeAbs, { variable_eta , "best_track" } );      
+//         auto dataframe_mc_layer_eta   = dataframe_mc_layer.Filter  ( cutFindEdgeAbs, { variable_eta , "best_track" } );      
 //         auto dataframe_data_layer_eta = dataframe_data_layer.Filter( variable_eta + "[best_track]<3" );      
 //         auto dataframe_mc_layer_eta   = dataframe_mc_layer.Filter  ( variable_eta + "[best_track]<3" );      
         
@@ -244,22 +254,22 @@ int main(int argc, char** argv) {
         for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
 
           iBadderOrBladeTotal = iladderblade;
-          auto dataframe_data_layer_eta_ladderblade = dataframe_data_layer_eta.Filter( cutEqualBadderOrBlade, { variable_ladder_blade + std::to_string(iHit), "best_track" } );      
-          auto dataframe_mc_layer_eta_ladderblade   = dataframe_mc_layer_eta.Filter  ( cutEqualBadderOrBlade, { variable_ladder_blade + std::to_string(iHit), "best_track" } );      
+//           auto dataframe_data_layer_eta_ladderblade = dataframe_data_layer_eta.Filter( cutEqualBadderOrBlade, { variable_ladder_blade + std::to_string(iHit), "best_track" } );      
+//           auto dataframe_mc_layer_eta_ladderblade   = dataframe_mc_layer_eta.Filter  ( cutEqualBadderOrBlade, { variable_ladder_blade + std::to_string(iHit), "best_track" } );      
           
           //---- https://root-forum.cern.ch/t/rdataframe-histo1d-to-extract-histogram-from-an-indexed-vector-branch/31066
           
-          auto h_data = dataframe_data_layer_eta_ladderblade
-                                                    .Define(variable_dedx+ std::to_string(iHit) + "_best_track", variable_dedx+ std::to_string(iHit) + "[best_track]")
-                                                    .Histo1D(variable_dedx+ std::to_string(iHit) + "_best_track");
-          auto h_mc   = dataframe_data_layer_eta_ladderblade
-                                                    .Define(variable_dedx+ std::to_string(iHit) + "_best_track", variable_dedx+ std::to_string(iHit) + "[best_track]")
-                                                    .Histo1D(variable_dedx+ std::to_string(iHit) + "_best_track");
-
+//           auto h_data = dataframe_data_layer_eta_ladderblade
+//                                                     .Define(variable_dedx+ std::to_string(iHit) + "_best_track", variable_dedx+ std::to_string(iHit) + "[best_track]")
+//                                                     .Histo1D(variable_dedx+ std::to_string(iHit) + "_best_track");
+//           auto h_mc   = dataframe_data_layer_eta_ladderblade
+//                                                     .Define(variable_dedx+ std::to_string(iHit) + "_best_track", variable_dedx+ std::to_string(iHit) + "[best_track]")
+//                                                     .Histo1D(variable_dedx+ std::to_string(iHit) + "_best_track");
+// 
          
           output_file_plots->cd();
-          h_data->Write();
-          h_mc->Write();
+//           h_data->Write();
+//           h_mc->Write();
           
           //           std::cout << "ciao" << std::endl;
         }
