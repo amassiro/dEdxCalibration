@@ -219,7 +219,8 @@ int main(int argc, char** argv) {
   auto cutEqualLayer  = [&](int layer) { return layer == iLayerTotal; };
   
   int iBadderOrBladeTotal;
-  auto cutEqualBadderOrBlade  = [&](int badderorblade[], int best_track) { return badderorblade[best_track] == iBadderOrBladeTotal; };
+//   auto cutEqualBadderOrBlade  = [&](int badderorblade[], int best_track) { return badderorblade[best_track] == iBadderOrBladeTotal; };
+  auto cutEqualBadderOrBlade  = [&](int badderorblade) { return badderorblade == iBadderOrBladeTotal; };
   
   
   //---- iterate over the hits
@@ -228,20 +229,10 @@ int main(int argc, char** argv) {
     //---- iterate over the layers
     for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
       iLayerTotal = ilayer;
-//       auto dataframe_data_layer = dataframe_data.Filter( cutEqualLayer, { variable_layer + std::to_string(iHit), "best_track" } );      
-//       auto dataframe_mc_layer   = dataframe_mc.Filter  ( cutEqualLayer, { variable_layer + std::to_string(iHit), "best_track" } );      
-      
-      //---> it works but not what I want
-//       auto dataframe_data_layer = dataframe_data.Filter( variable_layer + std::to_string(iHit) + "[best_track] == 1" );      
-//       auto dataframe_mc_layer   = dataframe_mc.Filter  ( variable_layer + std::to_string(iHit) + "[best_track] == 1" );  
       
       auto dataframe_data_layer = dataframe_data.Define( variable_layer + std::to_string(iHit) + "_best_track", variable_layer + std::to_string(iHit) + "[best_track]" ).Filter( cutEqualLayer, { variable_layer + std::to_string(iHit) + "_best_track" } );      
       auto dataframe_mc_layer   = dataframe_mc.Define  ( variable_layer + std::to_string(iHit) + "_best_track", variable_layer + std::to_string(iHit) + "[best_track]" ).Filter( cutEqualLayer, { variable_layer + std::to_string(iHit) + "_best_track" } );      
-
-//       auto dataframe_data_layer = dataframe_data.Define( variable_layer + std::to_string(iHit) + "_best_track", variable_layer + std::to_string(iHit) + "[best_track]" ).Filter( variable_layer + std::to_string(iHit) + "_best_track == 1"  );      
-//       auto dataframe_mc_layer   = dataframe_mc.Define  ( variable_layer + std::to_string(iHit) + "_best_track", variable_layer + std::to_string(iHit) + "[best_track]" ).Filter( variable_layer + std::to_string(iHit) + "_best_track == 1"  );      
-      
-      
+    
       //---- iterate over the eta regions
       for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
         iEdgeTotal = iEdge;
@@ -254,8 +245,8 @@ int main(int argc, char** argv) {
         for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
 
           iBadderOrBladeTotal = iladderblade;
-//           auto dataframe_data_layer_eta_ladderblade = dataframe_data_layer_eta.Filter( cutEqualBadderOrBlade, { variable_ladder_blade + std::to_string(iHit), "best_track" } );      
-//           auto dataframe_mc_layer_eta_ladderblade   = dataframe_mc_layer_eta.Filter  ( cutEqualBadderOrBlade, { variable_ladder_blade + std::to_string(iHit), "best_track" } );      
+          auto dataframe_data_layer_eta_ladderblade = dataframe_data_layer_eta.Define(variable_ladder_blade + std::to_string(iHit) + "_best_track", variable_ladder_blade + std::to_string(iHit) + "[best_track]").Filter( cutEqualBadderOrBlade, { variable_ladder_blade + std::to_string(iHit) + "_best_track" } );      
+          auto dataframe_mc_layer_eta_ladderblade   = dataframe_mc_layer_eta.Define(variable_ladder_blade + std::to_string(iHit) + "_best_track", variable_ladder_blade + std::to_string(iHit) + "[best_track]").Filter( cutEqualBadderOrBlade, { variable_ladder_blade + std::to_string(iHit) + "_best_track" } );      
           
           //---- https://root-forum.cern.ch/t/rdataframe-histo1d-to-extract-histogram-from-an-indexed-vector-branch/31066
           
