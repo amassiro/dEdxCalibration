@@ -226,65 +226,54 @@ int main(int argc, char** argv) {
 //   
   
   //---- iterate over the hits
+  output_file_plots->cd();
+  
   for (int iHit = 0; iHit<14; iHit++) {
     
     std::cout << " iHit = " << iHit << " :: 14 " << std::endl;
     
     //---- iterate over the layers
-    dataframe_data.Define( variable_layer + std::to_string(iHit) + "_best_track", variable_layer + std::to_string(iHit) + "[best_track]" );      
-    dataframe_mc  .Define( variable_layer + std::to_string(iHit) + "_best_track", variable_layer + std::to_string(iHit) + "[best_track]" );      
-    
-    dataframe_data.Define( variable_eta + "_best_track", variable_eta + "[best_track]" );
-    dataframe_mc  .Define( variable_eta + "_best_track", variable_eta + "[best_track]" );
-    
-    dataframe_data.Define(variable_ladder_blade + std::to_string(iHit) + "_best_track", variable_ladder_blade + std::to_string(iHit) + "[best_track]");
-    dataframe_mc  .Define(variable_ladder_blade + std::to_string(iHit) + "_best_track", variable_ladder_blade + std::to_string(iHit) + "[best_track]");
-    
-    dataframe_data.Define(variable_ladder_blade + std::to_string(iHit) + "_best_track", variable_ladder_blade + std::to_string(iHit) + "[best_track]");
-    dataframe_mc  .Define(variable_ladder_blade + std::to_string(iHit) + "_best_track", variable_ladder_blade + std::to_string(iHit) + "[best_track]");
-    
-    dataframe_data.Define(variable_dedx+ std::to_string(iHit) + "_best_track", variable_dedx+ std::to_string(iHit) + "[best_track]");
-    dataframe_mc  .Define(variable_dedx+ std::to_string(iHit) + "_best_track", variable_dedx+ std::to_string(iHit) + "[best_track]");
-    
-    
+    auto complete_dataframe_data = dataframe_data.Define( variable_layer + std::to_string(iHit) + "_best_track", variable_layer + std::to_string(iHit) + "[best_track]" )
+                                                 .Define( variable_eta + "_best_track", variable_eta + "[best_track]" )
+                                                 .Define( variable_ladder_blade + std::to_string(iHit) + "_best_track", variable_ladder_blade + std::to_string(iHit) + "[best_track]")
+                                                 .Define( variable_dedx+ std::to_string(iHit) + "_best_track", variable_dedx+ std::to_string(iHit) + "[best_track]");
+                  
+    auto complete_dataframe_mc   = dataframe_mc .Define( variable_layer + std::to_string(iHit) + "_best_track", variable_layer + std::to_string(iHit) + "[best_track]" )
+                                                .Define( variable_eta + "_best_track", variable_eta + "[best_track]" )
+                                                .Define( variable_ladder_blade + std::to_string(iHit) + "_best_track", variable_ladder_blade + std::to_string(iHit) + "[best_track]")
+                                                .Define( variable_dedx+ std::to_string(iHit) + "_best_track", variable_dedx+ std::to_string(iHit) + "[best_track]");
+                  
+       
     for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
       iLayerTotal = ilayer;
       
-      auto dataframe_data_layer = dataframe_data.Filter( cutEqualLayer, { variable_layer + std::to_string(iHit) + "_best_track" } );      
-      auto dataframe_mc_layer   = dataframe_mc  .Filter( cutEqualLayer, { variable_layer + std::to_string(iHit) + "_best_track" } );      
-//       auto dataframe_data_layer = dataframe_data.Define( variable_layer + std::to_string(iHit) + "_best_track", variable_layer + std::to_string(iHit) + "[best_track]" ).Filter( cutEqualLayer, { variable_layer + std::to_string(iHit) + "_best_track" } );      
-//       auto dataframe_mc_layer   = dataframe_mc.Define  ( variable_layer + std::to_string(iHit) + "_best_track", variable_layer + std::to_string(iHit) + "[best_track]" ).Filter( cutEqualLayer, { variable_layer + std::to_string(iHit) + "_best_track" } );      
+      std::cout << " ilayer = " << ilayer << std::endl;
       
       //---- iterate over the eta regions
       for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
         iEdgeTotal = iEdge;
-        auto dataframe_data_layer_eta = dataframe_data_layer.Filter ( cutFindEdgeAbs, { variable_eta + "_best_track" } );      
-        auto dataframe_mc_layer_eta   = dataframe_mc_layer  .Filter ( cutFindEdgeAbs, { variable_eta + "_best_track" } );      
       
-//         auto dataframe_data_layer_eta = dataframe_data_layer.Define( variable_eta + "_best_track", variable_eta + "[best_track]" ).Filter ( cutFindEdgeAbs, { variable_eta + "_best_track" } );      
-//         auto dataframe_mc_layer_eta   = dataframe_mc_layer  .Define( variable_eta + "_best_track", variable_eta + "[best_track]" ).Filter ( cutFindEdgeAbs, { variable_eta + "_best_track" } );      
+        std::cout << " iEdge = " << iEdge << std::endl;
         
         //---- iterate over the ladder (BPIX) and blade (FPIX)
         for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
 
           iBadderOrBladeTotal = iladderblade;
-          auto dataframe_data_layer_eta_ladderblade = dataframe_data_layer_eta.Filter( cutEqualBadderOrBlade, { variable_ladder_blade + std::to_string(iHit) + "_best_track" } );      
-          auto dataframe_mc_layer_eta_ladderblade   = dataframe_mc_layer_eta  .Filter( cutEqualBadderOrBlade, { variable_ladder_blade + std::to_string(iHit) + "_best_track" } );      
 
-//           auto dataframe_data_layer_eta_ladderblade = dataframe_data_layer_eta.Define(variable_ladder_blade + std::to_string(iHit) + "_best_track", variable_ladder_blade + std::to_string(iHit) + "[best_track]").Filter( cutEqualBadderOrBlade, { variable_ladder_blade + std::to_string(iHit) + "_best_track" } );      
-//           auto dataframe_mc_layer_eta_ladderblade   = dataframe_mc_layer_eta.Define(variable_ladder_blade + std::to_string(iHit) + "_best_track", variable_ladder_blade + std::to_string(iHit) + "[best_track]").Filter( cutEqualBadderOrBlade, { variable_ladder_blade + std::to_string(iHit) + "_best_track" } );      
-
+          std::cout << " iladderblade = " << iladderblade << std::endl;
           
           //---- https://root-forum.cern.ch/t/rdataframe-histo1d-to-extract-histogram-from-an-indexed-vector-branch/31066
-          
-          auto h_data = dataframe_data_layer_eta_ladderblade
-//                                                     .Define(variable_dedx+ std::to_string(iHit) + "_best_track", variable_dedx+ std::to_string(iHit) + "[best_track]")
-                                                    .Histo1D(variable_dedx+ std::to_string(iHit) + "_best_track");
-          auto h_mc   = dataframe_data_layer_eta_ladderblade
-//                                                     .Define(variable_dedx+ std::to_string(iHit) + "_best_track", variable_dedx+ std::to_string(iHit) + "[best_track]")
-                                                    .Histo1D(variable_dedx+ std::to_string(iHit) + "_best_track");
 
-         
+          auto h_data  = complete_dataframe_data.Filter ( cutEqualLayer, { variable_layer + std::to_string(iHit) + "_best_track" } )
+                                                .Filter ( cutFindEdgeAbs, { variable_eta + "_best_track" } )
+                                                .Filter ( cutEqualBadderOrBlade, { variable_ladder_blade + std::to_string(iHit) + "_best_track" } )
+                                                .Histo1D(variable_dedx+ std::to_string(iHit) + "_best_track");      
+          
+          auto h_mc   = complete_dataframe_mc  .Filter ( cutEqualLayer, { variable_layer + std::to_string(iHit) + "_best_track" } )
+                                               .Filter ( cutFindEdgeAbs, { variable_eta + "_best_track" } )
+                                               .Filter ( cutEqualBadderOrBlade, { variable_ladder_blade + std::to_string(iHit) + "_best_track" } )
+                                               .Histo1D(variable_dedx+ std::to_string(iHit) + "_best_track");      
+                                                                             
           output_file_plots->cd();
           h_data->Write();
           h_mc->Write();
