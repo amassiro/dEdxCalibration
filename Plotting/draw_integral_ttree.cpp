@@ -152,12 +152,23 @@ int main(int argc, char** argv) {
   
   std::vector<float> eta_edges;
   
+//   eta_edges.push_back(0.0);
+//   eta_edges.push_back(0.3);  //--- exclude
+//   eta_edges.push_back(0.6);  //--- exclude
+//   eta_edges.push_back(1.0);  //--- exclude
+//   eta_edges.push_back(1.3);
+//   eta_edges.push_back(1.6);  //--- exclude
+//   eta_edges.push_back(2.1);
+//   eta_edges.push_back(2.5);
+
+
+
   eta_edges.push_back(0.0);
-  eta_edges.push_back(0.3);  //--- exclude
-  eta_edges.push_back(0.6);  //--- exclude
-  eta_edges.push_back(1.0);  //--- exclude
+//   eta_edges.push_back(0.3);  //--- exclude
+//   eta_edges.push_back(0.6);  //--- exclude
+//   eta_edges.push_back(1.0);  //--- exclude
   eta_edges.push_back(1.3);
-  eta_edges.push_back(1.6);  //--- exclude
+//   eta_edges.push_back(1.6);  //--- exclude
   eta_edges.push_back(2.1);
   eta_edges.push_back(2.5);
   
@@ -217,6 +228,13 @@ int main(int argc, char** argv) {
   
   
   
+//   
+//   NBIN, minBIN, maxBIN
+//   
+
+  int NBIN = 50;
+  float minBIN = 0;
+  float maxBIN = 10;
   
   
   //---- iRun       layer         eta        ladderblade     
@@ -240,12 +258,12 @@ int main(int argc, char** argv) {
         for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
           TString name;      
           name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_data", iRun, ilayer, iEdge, iladderblade);   
-          TH1F* temp = new TH1F (name.Data(), "data", 100, 0, 10);  
+          TH1F* temp = new TH1F (name.Data(), "data", NBIN, minBIN, maxBIN);  
           setupHisto(temp, iRun);
           v_h_BPIX.push_back ( temp );
           
           name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX_data", iRun, ilayer, iEdge, iladderblade);   
-          TH1F* temp2 = new TH1F (name.Data(), "data", 100, 0, 10);  
+          TH1F* temp2 = new TH1F (name.Data(), "data", NBIN, minBIN, maxBIN);  
           setupHisto(temp2, iRun);
           v_h_FPIX.push_back ( temp2 );
           
@@ -269,12 +287,12 @@ int main(int argc, char** argv) {
       
       TString name;      
       name = Form ("h_ilayer_%d__iEdge_%d__dedxById_BPIX_data", ilayer, iEdge);   
-      TH1F* temp = new TH1F (name.Data(), "data", 100, 0, 10);  
+      TH1F* temp = new TH1F (name.Data(), "data", NBIN, minBIN, maxBIN);  
       setupHisto(temp, iEdge);
       v_h_BPIX.push_back ( temp );
       
       name = Form ("h_ilayer_%d__iEdge_%d__dedxById_FPIX_data", ilayer, iEdge);   
-      TH1F* temp2 = new TH1F (name.Data(), "data", 100, 0, 10);  
+      TH1F* temp2 = new TH1F (name.Data(), "data", NBIN, minBIN, maxBIN);  
       setupHisto(temp2, iEdge);
       v_h_FPIX.push_back ( temp2 );
       
@@ -309,13 +327,13 @@ int main(int argc, char** argv) {
         for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
           TString name;      
           name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_mc", iRun, ilayer, iEdge, iladderblade);   
-          TH1F* temp = new TH1F (name.Data(), "mc", 100, 0, 10);  
+          TH1F* temp = new TH1F (name.Data(), "mc", NBIN, minBIN, maxBIN);  
           setupHisto(temp, iRun);
           v_h_BPIX.push_back ( temp );
           
           
           name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX_mc", iRun, ilayer, iEdge, iladderblade);   
-          TH1F* temp2 = new TH1F (name.Data(), "mc", 100, 0, 10);  
+          TH1F* temp2 = new TH1F (name.Data(), "mc", NBIN, minBIN, maxBIN);  
           setupHisto(temp2, iRun);
           v_h_FPIX.push_back ( temp2 );
           
@@ -340,12 +358,12 @@ int main(int argc, char** argv) {
       
       TString name;      
       name = Form ("h_ilayer_%d__iEdge_%d__dedxById_BPIX_mc", ilayer, iEdge);   
-      TH1F* temp = new TH1F (name.Data(), "mc", 100, 0, 10);  
+      TH1F* temp = new TH1F (name.Data(), "mc", NBIN, minBIN, maxBIN);  
       setupHisto(temp, iEdge +1 );
       v_h_BPIX.push_back ( temp );
       
       name = Form ("h_ilayer_%d__iEdge_%d__dedxById_FPIX_mc", ilayer, iEdge);   
-      TH1F* temp2 = new TH1F (name.Data(), "mc", 100, 0, 10);  
+      TH1F* temp2 = new TH1F (name.Data(), "mc", NBIN, minBIN, maxBIN);  
       setupHisto(temp2, iEdge +1 );
       v_h_FPIX.push_back ( temp2 );
       
@@ -365,8 +383,8 @@ int main(int argc, char** argv) {
 //   std::string by_what = "ByHit";
   std::string by_what = "ByLayer";
   
-  std::string variable_dedx         = "IsoTrack_dedxUnSmeared" + by_what ;
-//   std::string variable_dedx         = "IsoTrack_dedx" + by_what ;
+//   std::string variable_dedx         = "IsoTrack_dedxUnSmeared" + by_what ;
+  std::string variable_dedx         = "IsoTrack_dedx" + by_what ;
   
   std::string variable_layer        = "IsoTrack_layerOrSide" + by_what ;
   std::string variable_ladder_blade = "IsoTrack_ladderOrBlade" + by_what;
@@ -502,12 +520,28 @@ int main(int argc, char** argv) {
     }
   }
   
+  TCanvas* cc_summary = new TCanvas ("summary","",800,600);
   for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
     for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {    
       map_h_BPIX_reduced_data[ilayer][iEdge] -> Write ();
       map_h_FPIX_reduced_data[ilayer][iEdge] -> Write ();
       map_h_BPIX_reduced_mc[ilayer][iEdge]   -> Write ();
       map_h_FPIX_reduced_mc[ilayer][iEdge]   -> Write ();
+
+      TString name;
+      
+      map_h_BPIX_reduced_data[ilayer][iEdge]->DrawNormalized();
+      map_h_BPIX_reduced_mc[ilayer][iEdge]->DrawNormalized("same");
+      name = Form ("plots_summary/cc_summary_layer_%d_eta_%d_BPIX.png" , ilayer, iEdge); 
+      cc_summary->SaveAs(name.Data());
+    
+      
+      map_h_FPIX_reduced_data[ilayer][iEdge]->DrawNormalized();
+      map_h_FPIX_reduced_mc[ilayer][iEdge]->DrawNormalized("same");
+      name = Form ("plots_summary/cc_summary_layer_%d_eta_%d_FPIX.png" , ilayer, iEdge); 
+      cc_summary->SaveAs(name.Data());
+      
+      
     }
   }
   
