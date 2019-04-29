@@ -531,13 +531,13 @@ int main(int argc, char** argv) {
       TString name;
       
       map_h_BPIX_reduced_data[ilayer][iEdge]->DrawNormalized();
-      map_h_BPIX_reduced_mc[ilayer][iEdge]->DrawNormalized("same");
+      map_h_BPIX_reduced_mc[ilayer][iEdge]->DrawNormalized("same E");
       name = Form ("plots_summary/cc_summary_layer_%d_eta_%d_BPIX.png" , ilayer, iEdge); 
       cc_summary->SaveAs(name.Data());
     
       
       map_h_FPIX_reduced_data[ilayer][iEdge]->DrawNormalized();
-      map_h_FPIX_reduced_mc[ilayer][iEdge]->DrawNormalized("same");
+      map_h_FPIX_reduced_mc[ilayer][iEdge]->DrawNormalized("same E");
       name = Form ("plots_summary/cc_summary_layer_%d_eta_%d_FPIX.png" , ilayer, iEdge); 
       cc_summary->SaveAs(name.Data());
       
