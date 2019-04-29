@@ -10,3 +10,8 @@ Generic plotting utilities
 
     data_calibration/22Mar2019/tree_filtered_DYJetsM50_2018.root
 
+
+    
+    
+    
+    g++ -o draw_integral_ttree.exe draw_integral_ttree.cpp `root-config --cflags --glibs`
