@@ -6,7 +6,7 @@
 //
 //
 
-#include <ROOT/RDataFrame.hxx>
+// #include <ROOT/RDataFrame.hxx>
 
 
 #include <iostream>
@@ -22,6 +22,16 @@
 #include "TLegend.h"
 #include "TLorentzVector.h"
 #include "TStyle.h"
+
+
+
+int FindInterval(int run, int minRun, int deltaRun) {
+  
+  return int ((run - minRun) / deltaRun);
+  
+}
+
+
 
 
 void Normalize(TH1F* histo) {
@@ -155,17 +165,35 @@ int main(int argc, char** argv) {
   
   
   int num_run_intervals = 10;
-  if (argc>=4) {
-    num_run_intervals = atoi(argv[3]);
+  if (argc>=5) {
+    num_run_intervals = atoi(argv[4]);
   }
   std::cout << " num_run_intervals = " << num_run_intervals << std::endl;
   
   int num_max_layer = 5; // 20
-  if (argc>=5) {
-    num_max_layer = atoi(argv[4]);
+  if (argc>=6) {
+    num_max_layer = atoi(argv[5]);
   }
   std::cout << " num_max_layer = " << num_max_layer << std::endl;
   
+
+  int num_max_hit = 10;
+  if (argc>=7) {
+    num_max_hit = atoi(argv[6]);
+  }
+  std::cout << " num_max_hit = " << num_max_hit << std::endl;
+  
+  
+  int num_max_labberblade = 40;
+  if (argc>=8) {
+    num_max_labberblade = atoi(argv[7]);
+  }
+  std::cout << " num_max_labberblade = " << num_max_labberblade << std::endl;
+  
+  
+  int minRun = inputTree_data->GetMinimum ("run");
+  int maxRun = inputTree_data->GetMaximum ("run") + 1;
+  int deltaRun = ceil( 1. * (maxRun-minRun) / num_run_intervals );
   
   
   
@@ -183,7 +211,7 @@ int main(int argc, char** argv) {
   //---- ladderblade 
   //----
   std::vector<int> ladderbladeId;
-  for (int iladderblade = 0; iladderblade<40; iladderblade++) {
+  for (int iladderblade = 0; iladderblade<num_max_labberblade; iladderblade++) {
     ladderbladeId.push_back(iladderblade);
   }
   
@@ -346,12 +374,15 @@ int main(int argc, char** argv) {
   std::string variable_eta          = "IsoTrack_eta";
   std::string variable_pt           = "IsoTrack_pt";
   
+  std::string variable_pix           = "IsoTrack_pix" + by_what;
+  
+  
   
   output_file_plots->cd();
  
   //---- iterate over the hits
-  for (int iHit = 0; iHit<14; iHit++) {
-    std::cout << " iHit = " << iHit << " :: 14 " << std::endl;
+  for (int iHit = 0; iHit<num_max_hit; iHit++) {
+    std::cout << " iHit = " << iHit << " :: " << num_max_hit << std::endl;
     //---- iterate over the hits
     for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
       std::cout << " ilayer = " << ilayer << std::endl;
@@ -362,38 +393,77 @@ int main(int argc, char** argv) {
         for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
           std::cout << " iladderblade = " << iladderblade << std::endl;
           //---- iterate over the run
-          for (int iRun = 0; iRun<num_run_intervals; iRun++) {
-            
-            
-          std::string cutToDraw  = "(" + variable_layer + std::to_string(iHit) + "[best_track] == " + std::to_string(ilayer) + ")" + \
-                                   "(" + variable_ladder_blade + std::to_string(iHit) + "[best_track] == " + std::to_string(iladderblade) + ")" + \
-                                   " ";
-          
-//                                    "(" + iRun + ")" + \
-                                   "(" + iEdge + ")" + \
-                                   "(" + FPIX + ")" + \
-          
-//           int iRun = FindInterval(run, minRun, deltaRun);
-          
           std::string whatToDraw;
           TString name;   
           
-          // then same for BPIX
+          std::string cutToDraw ;
+
+          for (int iRun = 0; iRun<num_run_intervals; iRun++) {
           
+            
+            // BPIX
+            cutToDraw  = "(" + variable_layer + std::to_string(iHit) + "[best_track] == " + std::to_string(ilayer) + ") && " + \
+                          "(" + variable_ladder_blade + std::to_string(iHit) + "[best_track] == " + std::to_string(iladderblade) + ") && " + \
+                          "(" + variable_pix + std::to_string(iHit) + "[best_track] == 1 ) && " + \
+                          "( (run >= " + std::to_string(minRun+iRun*deltaRun) + ") && (run < " + std::to_string(minRun+(iRun+1)*deltaRun) + ")  ) && " + \
+                          "( (  abs(" + variable_eta  + "[best_track] ) >="  + std::to_string( eta_edges.at(iEdge) ) + ") && (  abs(" + variable_eta  + "[best_track] ) <"  + std::to_string( eta_edges.at(iEdge+1) ) + ")   )" + \
+                          " ";
           
-          name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_data", iRun, ilayer, iEdge, iladderblade);   
-          whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
-                             
-          inputTree_data -> Draw(whatToDraw.c_str(), cutToDraw.c_str());
-        
+            name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_data", iRun, ilayer, iEdge, iladderblade);   
+            whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
+            
+            std::cout << " whatToDraw = " << whatToDraw << std::endl;
+            std::cout << " cutToDraw  = " << cutToDraw << std::endl;
+            inputTree_data -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");
+            
+
+            // FPIX
+            cutToDraw  = "(" + variable_layer + std::to_string(iHit) + "[best_track] == " + std::to_string(ilayer) + ") && " + \
+                          "(" + variable_ladder_blade + std::to_string(iHit) + "[best_track] == " + std::to_string(iladderblade) + ") && " + \
+                          "(" + variable_pix + std::to_string(iHit) + "[best_track] != 1 ) && " + \
+                          "( (run >= " + std::to_string(minRun+iRun*deltaRun) + ") && (run < " + std::to_string(minRun+(iRun+1)*deltaRun) + ")  ) && " + \
+                          "( (  abs(" + variable_eta  + "[best_track] ) >="  + std::to_string( eta_edges.at(iEdge) ) + ") && (  abs(" + variable_eta  + "[best_track] ) <"  + std::to_string( eta_edges.at(iEdge+1) ) + ")   )" + \
+                          " ";
           
-          name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_mc", iRun, ilayer, iEdge, iladderblade);   
-          whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
-          
-          inputTree_mc   -> Draw(whatToDraw.c_str(), cutToDraw.c_str());
-          
-                                                                                      
+            name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX_data", iRun, ilayer, iEdge, iladderblade);   
+            whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
+            
+            std::cout << " whatToDraw = " << whatToDraw << std::endl;
+            inputTree_data -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");
+            
+            
           }
+          
+         //
+         // MC
+         //
+         // BPIX
+         cutToDraw  = "(" + variable_layer + std::to_string(iHit) + "[best_track] == " + std::to_string(ilayer) + ") && " + \
+                       "(" + variable_ladder_blade + std::to_string(iHit) + "[best_track] == " + std::to_string(iladderblade) + ") && " + \
+                       "(" + variable_pix + std::to_string(iHit) + "[best_track] == 1 ) && " + \
+                       "( (  abs(" + variable_eta  + "[best_track] ) >="  + std::to_string( eta_edges.at(iEdge) ) + ") && (  abs(" + variable_eta  + "[best_track] ) <"  + std::to_string( eta_edges.at(iEdge+1) ) + ")   )" + \
+                       " ";
+         
+         name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_mc", 0, ilayer, iEdge, iladderblade);   
+         whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
+         
+         std::cout << " whatToDraw = " << whatToDraw << std::endl;
+         inputTree_mc -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");
+         
+
+         // FPIX
+         cutToDraw  = "(" + variable_layer + std::to_string(iHit) + "[best_track] == " + std::to_string(ilayer) + ") && " + \
+                       "(" + variable_ladder_blade + std::to_string(iHit) + "[best_track] == " + std::to_string(iladderblade) + ") && " + \
+                       "(" + variable_pix + std::to_string(iHit) + "[best_track] != 1 ) && " + \
+                       "( (  abs(" + variable_eta  + "[best_track] ) >="  + std::to_string( eta_edges.at(iEdge) ) + ") && (  abs(" + variable_eta  + "[best_track] ) <"  + std::to_string( eta_edges.at(iEdge+1) ) + ")   )" + \
+                       " ";
+         
+         name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX_mc", 0, ilayer, iEdge, iladderblade);   
+         whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
+         
+         std::cout << " whatToDraw = " << whatToDraw << std::endl;
+         inputTree_mc -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");
+                                                                           
         }
       }
     }
