@@ -23,21 +23,21 @@ Generic plotting utilities
     ./draw_integral_ttree.exe    tree_filtered_data_SingleMuon_31Mar2018.root    tree_filtered_DYJetsM50_2018.root     outplots.root
 
     
-                                                                                                                             max       run    layer  hit ladder
-    ./draw_integral_ttree.exe    tree_filtered_data_SingleMuon_31Mar2018.root    tree_filtered_DYJetsM50_2018.root     outplots.root    1      2      2     3      ---> just to test
-    ./draw_integral_ttree.exe    tree_filtered_data_SingleMuon_31Mar2018.root    tree_filtered_DYJetsM50_2018.root     outplots.root    1      5      4     10
-    
-
+                                                                                                                             max       run    layer  hit ladder    by_what
+    ./draw_integral_ttree.exe    tree_filtered_data_SingleMuon_31Mar2018.root    tree_filtered_DYJetsM50_2018.root     outplots.root    1      2      2     3        0 ---> just to test
+    ./draw_integral_ttree.exe    tree_filtered_data_SingleMuon_31Mar2018.root    tree_filtered_DYJetsM50_2018.root     outplots.root    1      5      4     10       0
     
     
-     cutToDraw  = (IsoTrack_layerOrSideByLayer0[best_track] == 0) && (IsoTrack_ladderOrBladeByLayer0[best_track] == 0) && (IsoTrack_pixByLayer0[best_track] == 1 ) && ( (run >= 297050) && (run < 306461)  ) && ( (  abs(IsoTrack_eta[best_track] ) >=0.000000) && (  abs(IsoTrack_eta[best_track] ) <0.300000)   ) 
+    
+    
+    /eos/cms/store/group/phys_exotica/xtracks/23April2019_Samples2018_Hadded/DYJetsM50_HT100to200/treeProducerXtracks/tree.root
+    ../PixelGeometry/filterTree.exe    data_calibration/29Apr2019/MC2018/tree_DYJetsM50_HT100to200.root   data_calibration/29Apr2019/MC2018/tree_filtered_DYJetsM50_HT100to200.root
 
-     (IsoTrack_ladderOrBladeByLayer0[best_track] == 0) && (IsoTrack_pixByLayer0[best_track] == 1 ) && ( (run >= 297050) && (run < 306461)  ) && ( (  abs(IsoTrack_eta[best_track] ) >=0.000000) && (  abs(IsoTrack_eta[best_track] ) <0.300000)   )
-     
-     (IsoTrack_ladderOrBladeByLayer0[best_track] == 1) && (IsoTrack_pixByLayer0[best_track] == 1 ) && ( (run >= 297050) && (run < 306461)  ) && ( (  abs(IsoTrack_eta[best_track] ) >=0.000000) && (  abs(IsoTrack_eta[best_track] ) <0.300000)   )
-     
-     (IsoTrack_pixByLayer0[best_track] == 1 ) && ( (run >= 297050) && (run < 306461)  ) && ( (  abs(IsoTrack_eta[best_track] ) >=0.000000) && (  abs(IsoTrack_eta[best_track] ) <0.300000)   )
-
+    ../PixelGeometry/filterTree.exe    data_calibration/29Apr2019/MC2018/tree_DYJetsM50_HT100to200_simpleHadd.root   data_calibration/29Apr2019/MC2018/tree_filtered_DYJetsM50_HT100to200_simpleHadd.root
+    
+    
+    ./draw_integral_ttree.exe    data_calibration/29Apr2019/Data2019/tree_filtered_SingleMuon_Run2018A.root    data_calibration/29Apr2019/MC2018/tree_filtered_DYJetsM50_HT100to200.root    outplots_2018data.root    1      5      4     10     1
+    
      
 Get 2018 data:
 

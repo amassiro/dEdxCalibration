@@ -200,6 +200,21 @@ int main(int argc, char** argv) {
     num_max_labberblade = atoi(argv[7]);
   }
   std::cout << " num_max_labberblade = " << num_max_labberblade << std::endl;
+
+
+  int new_by_what = 0;
+  if (argc>=9) {
+    new_by_what = atoi(argv[8]);
+  }
+  
+  std::string by_what;
+  
+  if (new_by_what == 1) by_what = "ByHit";
+  else                  by_what = "ByLayer";
+  
+  std::cout << " new_by_what = " << new_by_what;
+  std::cout << "   --> by_what = " << by_what << std::endl;
+  
   
   
   int minRun = inputTree_data->GetMinimum ("run");
@@ -379,9 +394,6 @@ int main(int argc, char** argv) {
   //---- variables definition
   //---- 
   
-  
-//   std::string by_what = "ByHit";
-  std::string by_what = "ByLayer";
   
 //   std::string variable_dedx         = "IsoTrack_dedxUnSmeared" + by_what ;
   std::string variable_dedx         = "IsoTrack_dedx" + by_what ;
