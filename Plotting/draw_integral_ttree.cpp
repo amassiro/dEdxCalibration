@@ -508,9 +508,7 @@ int main(int argc, char** argv) {
               whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
               
               std::cout << " whatToDraw = " << whatToDraw << std::endl;
-              std::cout << " cutToDraw  = " << cutToDraw << std::endl;
-              inputTree_mc -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");
-  
+              inputTree_mc -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");  
   
             }
             
