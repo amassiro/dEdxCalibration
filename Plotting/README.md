@@ -61,6 +61,55 @@ Get 2018 data:
 
     
     ../PixelGeometry/filterTree.exe    data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018A_17Sep2018/treeProducerXtracks/tree.root  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018A_17Sep2018/treeProducerXtracks/tree_filtered.root
-    ../PixelGeometry/filterTree.exe    data_calibration/29Apr2019/Data2019/tree_SingleMuon_Run2018A.root   data_calibration/29Apr2019/Data2019/tree_filtered_SingleMuon_Run2018A.root
+    ../PixelGeometry/filterTree.exe    data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018B_17Sep2018/treeProducerXtracks/tree.root  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018B_17Sep2018/treeProducerXtracks/tree_filtered.root
+    ../PixelGeometry/filterTree.exe    data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018C_17Sep2018/treeProducerXtracks/tree.root  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018C_17Sep2018/treeProducerXtracks/tree_filtered.root
+    ../PixelGeometry/filterTree.exe    data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree.root  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree_filtered.root
+    
+    ../PixelGeometry/filterTree.exe   data_calibration/1May2019/MC-CR-2018-Hadded/DYJetsToLL_M50_HT100to200/treeProducerXtracks/tree.root     data_calibration/1May2019/MC-CR-2018-Hadded/DYJetsToLL_M50_HT100to200/treeProducerXtracks/tree_filtered.root
+
+
+    
+    
+    g++ -o draw_integral_ttree.exe draw_integral_ttree.cpp `root-config --cflags --glibs`
+    
+                                               num_run_intervals       num_max_layer(min_layer+this number)     num_max_hit   num_max_labberblade    new_by_what(1=byHit,0=byLayer)       min_layer
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree_filtered.root        data_calibration/29Apr2019/MC2018/tree_filtered_DYJetsM50_HT100to200.root    outplots_2018data.root    1      4      4     65     1
+    
+    
+    IsoTrack_pixByHit0   1 -> BPIX
+                         2 -> FPIX
+                         
+                         
+    tree->Draw("IsoTrack_ladderOrBladeByHit0:IsoTrack_layerOrSideByHit0", "IsoTrack_pixByHit0==1", "colz")
+    tree->Draw("IsoTrack_ladderOrBladeByHit0:IsoTrack_layerOrSideByHit0", "IsoTrack_pixByHit0==2", "colz")
+    
+    tree->Draw("IsoTrack_ladderOrBladeByHit3:IsoTrack_layerOrSideByHit3", "IsoTrack_pixByHit3==1", "colz")
+    tree->Draw("IsoTrack_ladderOrBladeByHit3:IsoTrack_layerOrSideByHit3", "IsoTrack_pixByHit3==2", "colz")
+    
+    
+    BPIX:
+    IsoTrack_ladderOrBladeByHit0: [1 .. 12], [1 .. 28], [1 .. 44], [1 .. 64]
+    IsoTrack_layerOrSideByHit0 : 1, 2, 3, 4
+    
+    
+    FPIX: 
+    IsoTrack_ladderOrBladeByHit0: [1 .. 56]
+    IsoTrack_layerOrSideByHit0 : 1, 2, 3
+    
+    
+    
+    
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree_filtered.root        data_calibration/29Apr2019/MC2018/tree_filtered_DYJetsM50_HT100to200.root    outplots_2018data.root    1      1      1     65     1     0
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     

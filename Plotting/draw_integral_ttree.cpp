@@ -163,15 +163,18 @@ int main(int argc, char** argv) {
 
 
 
-  eta_edges.push_back(0.0);
-//   eta_edges.push_back(0.3);  //--- exclude
-//   eta_edges.push_back(0.6);  //--- exclude
-//   eta_edges.push_back(1.0);  //--- exclude
-  eta_edges.push_back(1.3);
-//   eta_edges.push_back(1.6);  //--- exclude
-  eta_edges.push_back(2.1);
-  eta_edges.push_back(2.5);
+//   eta_edges.push_back(0.0);
+// //   eta_edges.push_back(0.3);  //--- exclude
+// //   eta_edges.push_back(0.6);  //--- exclude
+// //   eta_edges.push_back(1.0);  //--- exclude
+//   eta_edges.push_back(1.3);
+// //   eta_edges.push_back(1.6);  //--- exclude
+//   eta_edges.push_back(2.1);
+//   eta_edges.push_back(2.5);
   
+  
+  eta_edges.push_back(0.0);
+  eta_edges.push_back(2.5);
   
   
   
@@ -221,15 +224,28 @@ int main(int argc, char** argv) {
   int maxRun = inputTree_data->GetMaximum ("run") + 1;
   int deltaRun = ceil( 1. * (maxRun-minRun) / num_run_intervals );
   
+  std::cout << "        minRun   " << minRun << std::endl;
+  std::cout << "        maxRun   " << maxRun << std::endl;
+  std::cout << "        deltaRun " << deltaRun << std::endl;
+  std::cout << "        maxRun*  " << minRun+deltaRun*num_run_intervals << std::endl;
   
   
   
   //---- 
   //---- layer 
   //----
+  
+  int min_layer = 0; //---- start from the first layer!
+  if (argc>=10) {
+    min_layer = atoi(argv[9]);
+  }
+  
+  std::cout << " min_layer = " << min_layer << std::endl;  
+  
+  
   std::vector<int> layerId;
   for (int ilayer = 0; ilayer<num_max_layer; ilayer++) {
-    layerId.push_back(ilayer);
+    layerId.push_back(ilayer+1 + min_layer); // counting starts from 1
   }
   
   
@@ -238,7 +254,7 @@ int main(int argc, char** argv) {
   //----
   std::vector<int> ladderbladeId;
   for (int iladderblade = 0; iladderblade<num_max_labberblade; iladderblade++) {
-    ladderbladeId.push_back(iladderblade);
+    ladderbladeId.push_back(iladderblade+1); // counting starts from 1
   }
   
   
@@ -250,6 +266,34 @@ int main(int argc, char** argv) {
   int NBIN = 50;
   float minBIN = 0;
   float maxBIN = 10;
+  
+  
+  // it is useless to have many ladders in first layers, while removing ladders in last layers
+  //
+  //    BPIX:
+  //    IsoTrack_ladderOrBladeByHit0: [1 .. 12], [1 .. 28], [1 .. 44], [1 .. 64]
+  //    IsoTrack_layerOrSideByHit0 : 1, 2, 3, 4
+  //    
+  //    
+  //    FPIX: 
+  //    IsoTrack_ladderOrBladeByHit0: [1 .. 56]
+  //    IsoTrack_layerOrSideByHit0 : 1, 2, 3
+  //    
+  std::map<int, int> map_layer_max_ladders_BPIX;
+  std::map<int, int> map_layer_max_ladders_FPIX;
+  map_layer_max_ladders_BPIX[1] = 12;
+  map_layer_max_ladders_BPIX[2] = 28;
+  map_layer_max_ladders_BPIX[3] = 44;
+  map_layer_max_ladders_BPIX[4] = 64;
+
+  map_layer_max_ladders_FPIX[1] = 56;
+  map_layer_max_ladders_FPIX[2] = 56;
+  map_layer_max_ladders_FPIX[3] = 56;
+  map_layer_max_ladders_FPIX[4] = 0;
+  
+  
+       
+  
   
   
   //---- iRun       layer         eta        ladderblade     
@@ -271,13 +315,15 @@ int main(int argc, char** argv) {
         std::vector < TH1F* > v_h_BPIX;
         std::vector < TH1F* > v_h_FPIX;
         for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+
           TString name;      
-          name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_data", iRun, ilayer, iEdge, iladderblade);   
+          
+          name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_data", iRun, layerId.at(ilayer), iEdge, ladderbladeId.at(iladderblade));   
           TH1F* temp = new TH1F (name.Data(), "data", NBIN, minBIN, maxBIN);  
           setupHisto(temp, iRun);
           v_h_BPIX.push_back ( temp );
           
-          name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX_data", iRun, ilayer, iEdge, iladderblade);   
+          name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX_data", iRun, layerId.at(ilayer), iEdge, ladderbladeId.at(iladderblade));   
           TH1F* temp2 = new TH1F (name.Data(), "data", NBIN, minBIN, maxBIN);  
           setupHisto(temp2, iRun);
           v_h_FPIX.push_back ( temp2 );
@@ -301,12 +347,12 @@ int main(int argc, char** argv) {
     for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
       
       TString name;      
-      name = Form ("h_ilayer_%d__iEdge_%d__dedxById_BPIX_data", ilayer, iEdge);   
+      name = Form ("h_ilayer_%d__iEdge_%d__dedxById_BPIX_data", layerId.at(ilayer), iEdge);   
       TH1F* temp = new TH1F (name.Data(), "data", NBIN, minBIN, maxBIN);  
       setupHisto(temp, iEdge);
       v_h_BPIX.push_back ( temp );
       
-      name = Form ("h_ilayer_%d__iEdge_%d__dedxById_FPIX_data", ilayer, iEdge);   
+      name = Form ("h_ilayer_%d__iEdge_%d__dedxById_FPIX_data", layerId.at(ilayer), iEdge);   
       TH1F* temp2 = new TH1F (name.Data(), "data", NBIN, minBIN, maxBIN);  
       setupHisto(temp2, iEdge);
       v_h_FPIX.push_back ( temp2 );
@@ -341,13 +387,13 @@ int main(int argc, char** argv) {
         std::vector < TH1F* > v_h_FPIX;
         for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
           TString name;      
-          name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_mc", iRun, ilayer, iEdge, iladderblade);   
+          name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_mc", iRun, layerId.at(ilayer), iEdge, ladderbladeId.at(iladderblade));   
           TH1F* temp = new TH1F (name.Data(), "mc", NBIN, minBIN, maxBIN);  
           setupHisto(temp, iRun);
           v_h_BPIX.push_back ( temp );
           
           
-          name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX_mc", iRun, ilayer, iEdge, iladderblade);   
+          name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX_mc", iRun, layerId.at(ilayer), iEdge, ladderbladeId.at(iladderblade));   
           TH1F* temp2 = new TH1F (name.Data(), "mc", NBIN, minBIN, maxBIN);  
           setupHisto(temp2, iRun);
           v_h_FPIX.push_back ( temp2 );
@@ -372,12 +418,12 @@ int main(int argc, char** argv) {
     for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
       
       TString name;      
-      name = Form ("h_ilayer_%d__iEdge_%d__dedxById_BPIX_mc", ilayer, iEdge);   
+      name = Form ("h_ilayer_%d__iEdge_%d__dedxById_BPIX_mc", layerId.at(ilayer), iEdge);   
       TH1F* temp = new TH1F (name.Data(), "mc", NBIN, minBIN, maxBIN);  
       setupHisto(temp, iEdge +1 );
       v_h_BPIX.push_back ( temp );
       
-      name = Form ("h_ilayer_%d__iEdge_%d__dedxById_FPIX_mc", ilayer, iEdge);   
+      name = Form ("h_ilayer_%d__iEdge_%d__dedxById_FPIX_mc", layerId.at(ilayer), iEdge);   
       TH1F* temp2 = new TH1F (name.Data(), "mc", NBIN, minBIN, maxBIN);  
       setupHisto(temp2, iEdge +1 );
       v_h_FPIX.push_back ( temp2 );
@@ -415,85 +461,98 @@ int main(int argc, char** argv) {
     std::cout << " iHit = " << iHit << " :: " << num_max_hit << std::endl;
     //---- iterate over the hits
     for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
-      std::cout << " ilayer = " << ilayer << std::endl;
+      std::cout << " layerId.at(ilayer) = " << layerId.at(ilayer) << std::endl;
       //---- iterate over the eta regions
       for (int iEdge = 0; iEdge<eta_edges.size()-1; iEdge++) {
         std::cout << " iEdge = " << iEdge << std::endl;
-        //---- iterate over the ladder (BPIX) and blade (FPIX)
-        for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
-          std::cout << " iladderblade = " << iladderblade << std::endl;
-          //---- iterate over the run
-          std::string whatToDraw;
-          TString name;   
-          
-          std::string cutToDraw ;
-
-          for (int iRun = 0; iRun<num_run_intervals; iRun++) {
-          
+        //---- iterate over the run
+        for (int iRun = 0; iRun<num_run_intervals; iRun++) {
+          //---- iterate over the ladder (BPIX) and blade (FPIX)
+          for (int iladderblade = 0; iladderblade<ladderbladeId.size(); iladderblade++) {     
+            std::cout << " ladderbladeId.at(iladderblade) = " << ladderbladeId.at(iladderblade) << std::endl;
+            std::string whatToDraw;
+            TString name;   
+            std::string cutToDraw ;
             
-            // BPIX
-            cutToDraw  = "(" + variable_layer + std::to_string(iHit) + "[best_track] == " + std::to_string(ilayer) + ") && " + \
-                          "(" + variable_ladder_blade + std::to_string(iHit) + "[best_track] == " + std::to_string(iladderblade) + ") && " + \
-                          "(" + variable_pix + std::to_string(iHit) + "[best_track] == 1 ) && " + \
-                          "( (run >= " + std::to_string(minRun+iRun*deltaRun) + ") && (run < " + std::to_string(minRun+(iRun+1)*deltaRun) + ")  ) && " + \
-                          "( (  abs(" + variable_eta  + "[best_track] ) >="  + std::to_string( eta_edges.at(iEdge) ) + ") && (  abs(" + variable_eta  + "[best_track] ) <"  + std::to_string( eta_edges.at(iEdge+1) ) + ")   )" + \
-                          " ";
-          
-            name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_data", iRun, ilayer, iEdge, iladderblade);   
-            whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
+            if ( ladderbladeId.at(iladderblade) <= map_layer_max_ladders_BPIX[layerId.at(ilayer)] ) {  // optimization
+              //
+              // Data
+              //
+              // BPIX
+              cutToDraw  = "(" + variable_layer + std::to_string(iHit) + "[best_track] == " + std::to_string(layerId.at(ilayer)) + ") && " + \
+                           "(" + variable_ladder_blade + std::to_string(iHit) + "[best_track] == " + std::to_string(ladderbladeId.at(iladderblade)) + ") && " + \
+                           "(" + variable_pix + std::to_string(iHit) + "[best_track] == 1 ) && " + \
+                           "( (run >= " + std::to_string(minRun+iRun*deltaRun) + ") && (run < " + std::to_string(minRun+(iRun+1)*deltaRun) + ")  ) && " + \
+                           "( (  abs(" + variable_eta  + "[best_track] ) >="  + std::to_string( eta_edges.at(iEdge) ) + ") && (  abs(" + variable_eta  + "[best_track] ) <"  + std::to_string( eta_edges.at(iEdge+1) ) + ")   )" + \
+                           " ";
+  
+              name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_data", iRun, layerId.at(ilayer), iEdge, ladderbladeId.at(iladderblade));   
+              whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
+              
+              std::cout << " whatToDraw = " << whatToDraw << std::endl;
+              std::cout << " cutToDraw  = " << cutToDraw << std::endl;
+              inputTree_data -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");
+              
+              
+              //
+              // MC
+              //
+              // BPIX
+              cutToDraw  = "(" + variable_layer + std::to_string(iHit) + "[best_track] == " + std::to_string(layerId.at(ilayer)) + ") && " + \
+                           "(" + variable_ladder_blade + std::to_string(iHit) + "[best_track] == " + std::to_string(ladderbladeId.at(iladderblade)) + ") && " + \
+                           "(" + variable_pix + std::to_string(iHit) + "[best_track] == 1 ) && " + \
+                           "( (  abs(" + variable_eta  + "[best_track] ) >="  + std::to_string( eta_edges.at(iEdge) ) + ") && (  abs(" + variable_eta  + "[best_track] ) <"  + std::to_string( eta_edges.at(iEdge+1) ) + ")   )" + \
+                           " ";
+  
+              name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_mc", 0, layerId.at(ilayer), iEdge, ladderbladeId.at(iladderblade));   
+              whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
+              
+              std::cout << " whatToDraw = " << whatToDraw << std::endl;
+              std::cout << " cutToDraw  = " << cutToDraw << std::endl;
+              inputTree_mc -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");
+  
+  
+            }
             
-            std::cout << " whatToDraw = " << whatToDraw << std::endl;
-            std::cout << " cutToDraw  = " << cutToDraw << std::endl;
-            inputTree_data -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");
-            
-
-            // FPIX
-            cutToDraw  = "(" + variable_layer + std::to_string(iHit) + "[best_track] == " + std::to_string(ilayer) + ") && " + \
-                          "(" + variable_ladder_blade + std::to_string(iHit) + "[best_track] == " + std::to_string(iladderblade) + ") && " + \
-                          "(" + variable_pix + std::to_string(iHit) + "[best_track] != 1 ) && " + \
-                          "( (run >= " + std::to_string(minRun+iRun*deltaRun) + ") && (run < " + std::to_string(minRun+(iRun+1)*deltaRun) + ")  ) && " + \
-                          "( (  abs(" + variable_eta  + "[best_track] ) >="  + std::to_string( eta_edges.at(iEdge) ) + ") && (  abs(" + variable_eta  + "[best_track] ) <"  + std::to_string( eta_edges.at(iEdge+1) ) + ")   )" + \
-                          " ";
-          
-            name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX_data", iRun, ilayer, iEdge, iladderblade);   
-            whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
-            
-            std::cout << " whatToDraw = " << whatToDraw << std::endl;
-            inputTree_data -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");
-            
+            if ( ladderbladeId.at(iladderblade) <= map_layer_max_ladders_FPIX[layerId.at(ilayer)] ) {  // optimization  
+              //
+              // Data
+              //
+              // FPIX
+              cutToDraw  = "(" + variable_layer + std::to_string(iHit) + "[best_track] == " + std::to_string(layerId.at(ilayer)) + ") && " + \
+                           "(" + variable_ladder_blade + std::to_string(iHit) + "[best_track] == " + std::to_string(ladderbladeId.at(iladderblade)) + ") && " + \
+                           "(" + variable_pix + std::to_string(iHit) + "[best_track] == 2 ) && " + \
+                           "( (run >= " + std::to_string(minRun+iRun*deltaRun) + ") && (run < " + std::to_string(minRun+(iRun+1)*deltaRun) + ")  ) && " + \
+                           "( (  abs(" + variable_eta  + "[best_track] ) >="  + std::to_string( eta_edges.at(iEdge) ) + ") && (  abs(" + variable_eta  + "[best_track] ) <"  + std::to_string( eta_edges.at(iEdge+1) ) + ")   )" + \
+                           " ";
+  
+              name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX_data", iRun, layerId.at(ilayer), iEdge, ladderbladeId.at(iladderblade));   
+              whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
+              
+              std::cout << " whatToDraw = " << whatToDraw << std::endl;
+              std::cout << " cutToDraw  = " << cutToDraw << std::endl;
+              inputTree_data -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");
+              
+              
+              //
+              // MC
+              //
+              // FPIX
+              cutToDraw  = "(" + variable_layer + std::to_string(iHit) + "[best_track] == " + std::to_string(layerId.at(ilayer)) + ") && " + \
+                           "(" + variable_ladder_blade + std::to_string(iHit) + "[best_track] == " + std::to_string(ladderbladeId.at(iladderblade)) + ") && " + \
+                           "(" + variable_pix + std::to_string(iHit) + "[best_track] == 2 ) && " + \
+                           "( (  abs(" + variable_eta  + "[best_track] ) >="  + std::to_string( eta_edges.at(iEdge) ) + ") && (  abs(" + variable_eta  + "[best_track] ) <"  + std::to_string( eta_edges.at(iEdge+1) ) + ")   )" + \
+                           " ";
+  
+              name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX_mc", 0, layerId.at(ilayer), iEdge, ladderbladeId.at(iladderblade));   
+              whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
+              
+              std::cout << " whatToDraw = " << whatToDraw << std::endl;
+              inputTree_mc -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");
+  
+            }
             
           }
-          
-         //
-         // MC
-         //
-         // BPIX
-         cutToDraw  = "(" + variable_layer + std::to_string(iHit) + "[best_track] == " + std::to_string(ilayer) + ") && " + \
-                       "(" + variable_ladder_blade + std::to_string(iHit) + "[best_track] == " + std::to_string(iladderblade) + ") && " + \
-                       "(" + variable_pix + std::to_string(iHit) + "[best_track] == 1 ) && " + \
-                       "( (  abs(" + variable_eta  + "[best_track] ) >="  + std::to_string( eta_edges.at(iEdge) ) + ") && (  abs(" + variable_eta  + "[best_track] ) <"  + std::to_string( eta_edges.at(iEdge+1) ) + ")   )" + \
-                       " ";
-         
-         name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_mc", 0, ilayer, iEdge, iladderblade);   
-         whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
-         
-         std::cout << " whatToDraw = " << whatToDraw << std::endl;
-         inputTree_mc -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");
-         
-
-         // FPIX
-         cutToDraw  = "(" + variable_layer + std::to_string(iHit) + "[best_track] == " + std::to_string(ilayer) + ") && " + \
-                       "(" + variable_ladder_blade + std::to_string(iHit) + "[best_track] == " + std::to_string(iladderblade) + ") && " + \
-                       "(" + variable_pix + std::to_string(iHit) + "[best_track] != 1 ) && " + \
-                       "( (  abs(" + variable_eta  + "[best_track] ) >="  + std::to_string( eta_edges.at(iEdge) ) + ") && (  abs(" + variable_eta  + "[best_track] ) <"  + std::to_string( eta_edges.at(iEdge+1) ) + ")   )" + \
-                       " ";
-         
-         name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX_mc", 0, ilayer, iEdge, iladderblade);   
-         whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
-         
-         std::cout << " whatToDraw = " << whatToDraw << std::endl;
-         inputTree_mc -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");
-                                                                           
         }
       }
     }
@@ -544,13 +603,17 @@ int main(int argc, char** argv) {
       
       map_h_BPIX_reduced_data[ilayer][iEdge]->DrawNormalized();
       map_h_BPIX_reduced_mc[ilayer][iEdge]->DrawNormalized("same E");
-      name = Form ("plots_summary/cc_summary_layer_%d_eta_%d_BPIX.png" , ilayer, iEdge); 
+      name = Form ("plots_summary/cc_summary_layer_%d_eta_%d_BPIX.png" , layerId.at(ilayer), iEdge); 
       cc_summary->SaveAs(name.Data());
-    
+      name = Form ("plots_summary/cc_summary_layer_%d_eta_%d_BPIX.root" , layerId.at(ilayer), iEdge); 
+      cc_summary->SaveAs(name.Data());
+      
       
       map_h_FPIX_reduced_data[ilayer][iEdge]->DrawNormalized();
       map_h_FPIX_reduced_mc[ilayer][iEdge]->DrawNormalized("same E");
-      name = Form ("plots_summary/cc_summary_layer_%d_eta_%d_FPIX.png" , ilayer, iEdge); 
+      name = Form ("plots_summary/cc_summary_layer_%d_eta_%d_FPIX.png" , layerId.at(ilayer), iEdge); 
+      cc_summary->SaveAs(name.Data());
+      name = Form ("plots_summary/cc_summary_layer_%d_eta_%d_FPIX.root" , layerId.at(ilayer), iEdge); 
       cc_summary->SaveAs(name.Data());
       
       
