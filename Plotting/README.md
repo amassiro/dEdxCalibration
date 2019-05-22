@@ -50,3 +50,17 @@ Get 2018 data:
     ../PixelGeometry/filterTree.exe    data_calibration/29Apr2019/Data2019/tree_SingleMuon_Run2018B.root   data_calibration/29Apr2019/Data2019/tree_filtered_SingleMuon_Run2018B.root
     ../PixelGeometry/filterTree.exe    data_calibration/29Apr2019/Data2019/tree_SingleMuon_Run2018C.root   data_calibration/29Apr2019/Data2019/tree_filtered_SingleMuon_Run2018C.root
     
+    
+    
+10_4_X CMSSW release:
+    
+    data_calibration/1May2019/
+    
+    scp -r amassiro@lxplus.cern.ch:/eos/cms/store/group/phys_exotica/xtracks/1May2019/MC-CR-2018-Hadded/ data_calibration/1May2019/
+    scp -r amassiro@lxplus.cern.ch:/eos/cms/store/group/phys_exotica/xtracks/1May2019/DATA-CR-2018-Hadded/ data_calibration/1May2019/
+
+    
+    ../PixelGeometry/filterTree.exe    data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018A_17Sep2018/treeProducerXtracks/tree.root  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018A_17Sep2018/treeProducerXtracks/tree_filtered.root
+    ../PixelGeometry/filterTree.exe    data_calibration/29Apr2019/Data2019/tree_SingleMuon_Run2018A.root   data_calibration/29Apr2019/Data2019/tree_filtered_SingleMuon_Run2018A.root
+    
+    
