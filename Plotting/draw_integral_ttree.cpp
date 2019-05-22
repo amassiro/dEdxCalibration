@@ -552,11 +552,11 @@ int main(int argc, char** argv) {
   
             }
             
-          }
-        }
-      }
-    }
-  }
+          } // ladder
+        } // run 
+      } // edge eta
+    } // layer
+  } // hit
   
   
   
