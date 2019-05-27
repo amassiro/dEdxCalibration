@@ -493,7 +493,7 @@ int main(int argc, char** argv) {
               std::cout << " cutToDraw  = " << cutToDraw << std::endl;
               inputTree_data -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");
               
-              std::cout << " > Get Entries: " << inputTree_data -> GetEntries(cutToDraw.c_str()) << std::endl;
+              //               std::cout << " > Get Entries: " << inputTree_data -> GetEntries(cutToDraw.c_str()) << std::endl;
               
               //
               // MC
