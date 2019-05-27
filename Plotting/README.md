@@ -111,11 +111,20 @@ Draw 1 layer at a time:
     
     
     
+    tree->Draw ("IsoTrack_dedxByHit1[best_track]", "(IsoTrack_layerOrSideByHit1[best_track] == 1) && (IsoTrack_ladderOrBladeByHit1[best_track] == 1) && (IsoTrack_pixByHit1[best_track] == 1 ) && ( (run >= 320673) && (run < 325173)  ) && ( (  abs(IsoTrack_eta[best_track] ) >=0.000000) && (  abs(IsoTrack_eta[best_track] ) <2.500000)   ) " )
     
-    tree->Draw("IsoTrack_eta", "(IsoTrack_layerOrSideByHit0[best_track] == 1) && (IsoTrack_ladderOrBladeByHit0[best_track] == 1) && (IsoTrack_pixByHit0[best_track] == 1 ) && ( (run >= 320673) && (run < 325173)  ) && ( (  abs(IsoTrack_eta[best_track] ) >=0.000000) && (  abs(IsoTrack_eta[best_track] ) <2.500000)   ) ")
+    tree->Draw ("IsoTrack_dedxByHit2[best_track]", "(IsoTrack_layerOrSideByHit2[best_track] == 1) && (IsoTrack_ladderOrBladeByHit2[best_track] == 1) && (IsoTrack_pixByHit2[best_track] == 1 ) && ( (run >= 320673) && (run < 325173)  ) && ( (  abs(IsoTrack_eta[best_track] ) >=0.000000) && (  abs(IsoTrack_eta[best_track] ) <2.500000)   ) " )
+
+    tree->Draw ("IsoTrack_dedxByHit3[best_track]", "(IsoTrack_layerOrSideByHit3[best_track] == 1) && (IsoTrack_ladderOrBladeByHit3[best_track] == 1) && (IsoTrack_pixByHit3[best_track] == 1 ) && ( (run >= 320673) && (run < 325173)  ) && ( (  abs(IsoTrack_eta[best_track] ) >=0.000000) && (  abs(IsoTrack_eta[best_track] ) <2.500000)   ) " )
     
-    
-    
+    tree->Draw ("IsoTrack_dedxByHit0[best_track]", "(IsoTrack_layerOrSideByHit0[best_track] == 1) && (IsoTrack_ladderOrBladeByHit0[best_track] == 1) && (IsoTrack_pixByHit0[best_track] == 1 ) && ( (run >= 320673) && (run < 325173)  ) && ( (  abs(IsoTrack_eta[best_track] ) >=0.000000) && (  abs(IsoTrack_eta[best_track] ) <2.500000)   ) " )
+                 
+    whatToDraw = IsoTrack_dedxByHit0[best_track] >> h_iRun_0__ilayer_1__iEdge_0__ladderblade_1__dedxById_BPIX_data
+    cutToDraw  = (IsoTrack_layerOrSideByHit0[best_track] == 1) && (IsoTrack_ladderOrBladeByHit0[best_track] == 1) && (IsoTrack_pixByHit0[best_track] == 1 ) && ( (run >= 320673) && (run < 325173)  ) && ( (  abs(IsoTrack_eta[best_track] ) >=0.000000) && (  abs(IsoTrack_eta[best_track] ) <2.500000)   ) 
+
+ 
+ 
+ 
     
     
     

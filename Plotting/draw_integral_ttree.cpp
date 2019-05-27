@@ -487,12 +487,13 @@ int main(int argc, char** argv) {
                            " ";
   
               name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_data", iRun, layerId.at(ilayer), iEdge, ladderbladeId.at(iladderblade));   
-              whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
+              whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >>+ " + name.Data();
               
               std::cout << " whatToDraw = " << whatToDraw << std::endl;
               std::cout << " cutToDraw  = " << cutToDraw << std::endl;
               inputTree_data -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");
               
+              std::cout << " > Get Entries: " << inputTree_data -> GetEntries(cutToDraw.c_str()) << std::endl;
               
               //
               // MC
@@ -505,7 +506,7 @@ int main(int argc, char** argv) {
                            " ";
   
               name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_mc", 0, layerId.at(ilayer), iEdge, ladderbladeId.at(iladderblade));   
-              whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
+              whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >>+ " + name.Data();
               
               std::cout << " whatToDraw = " << whatToDraw << std::endl;
               inputTree_mc -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");  
@@ -525,7 +526,7 @@ int main(int argc, char** argv) {
                            " ";
   
               name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX_data", iRun, layerId.at(ilayer), iEdge, ladderbladeId.at(iladderblade));   
-              whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
+              whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >>+ " + name.Data();
               
               std::cout << " whatToDraw = " << whatToDraw << std::endl;
               std::cout << " cutToDraw  = " << cutToDraw << std::endl;
@@ -543,7 +544,7 @@ int main(int argc, char** argv) {
                            " ";
   
               name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_FPIX_mc", 0, layerId.at(ilayer), iEdge, ladderbladeId.at(iladderblade));   
-              whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >> " + name.Data();
+              whatToDraw = variable_dedx+ std::to_string(iHit) + "[best_track] >>+ " + name.Data();
               
               std::cout << " whatToDraw = " << whatToDraw << std::endl;
               inputTree_mc -> Draw(whatToDraw.c_str(), cutToDraw.c_str(), "goff");
