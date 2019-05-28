@@ -125,6 +125,9 @@ Draw 1 layer at a time:
  
  
  
+    tree->Draw ("IsoTrack_dedxByHit1[best_track]/IsoTrack_dedxUnSmearedByHit1[best_track]", "" )
+    
+ 
 
 Draw after calibration
 ====
