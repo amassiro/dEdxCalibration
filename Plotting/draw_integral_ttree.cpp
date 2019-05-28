@@ -259,6 +259,25 @@ int main(int argc, char** argv) {
   
   
   
+  //---- 
+  //---- variable to plot: want to use the smeared version? 
+  //----
+  
+  int want_to_use_the_smeared = 1; //----  1 = use "dedx" ;    0 = use "dedxUnSmeared"
+  if (argc>=11) {
+    want_to_use_the_smeared = atoi(argv[10]);
+  }
+  
+  std::string variable_dedx;
+  if (want_to_use_the_smeared == 1) {
+    variable_dedx = "IsoTrack_dedx" + by_what ;
+  }
+  else {
+    variable_dedx = "IsoTrack_dedxUnSmeared" + by_what ;  
+  }
+  
+  
+  
 //   
 //   NBIN, minBIN, maxBIN
 //   
@@ -442,7 +461,7 @@ int main(int argc, char** argv) {
   
   
 //   std::string variable_dedx         = "IsoTrack_dedxUnSmeared" + by_what ;
-  std::string variable_dedx         = "IsoTrack_dedx" + by_what ;
+//   std::string variable_dedx         = "IsoTrack_dedx" + by_what ;
   
   std::string variable_layer        = "IsoTrack_layerOrSide" + by_what ;
   std::string variable_ladder_blade = "IsoTrack_ladderOrBlade" + by_what;
