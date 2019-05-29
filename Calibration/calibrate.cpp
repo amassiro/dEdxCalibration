@@ -26,8 +26,23 @@ int main(int argc, char** argv) {
   myfile_RMS_BPIX.open ("smear_BPIX_pixels_run_ranges.txt");
   std::ofstream myfile_RMS_FPIX;
   myfile_RMS_FPIX.open ("smear_FPIX_pixels_run_ranges.txt");
-
-
+  
+  std::ofstream myfile_RMS_BPIX_reduced;
+  myfile_RMS_BPIX_reduced.open ("smear_BPIX_pixels.txt");
+  std::ofstream myfile_RMS_FPIX_reduced;
+  myfile_RMS_FPIX_reduced.open ("smear_FPIX_pixels.txt");
+  
+  
+  std::map < std::string, float > map_rms_data_BPIX;
+  std::map < std::string, float > map_rms_data_FPIX;
+  std::map < std::string, float > map_rms_mc_BPIX;
+  std::map < std::string, float > map_rms_mc_FPIX;
+  std::map < std::string, int > map_num_rms_BPIX;
+  std::map < std::string, int > map_num_rms_FPIX;
+  //---- index_key = std::to_string(iEdge) + "_" + std::to_string(num_layerId) + "_" + std::to_string(num_ladderbladeId);
+  
+  
+  
   
   std::string name_input_file_data = "out.root"; 
   if (argc>=2) {
@@ -147,15 +162,41 @@ int main(int argc, char** argv) {
         
         if (rms_data != 0) {
           if ( fabs(rms_mc / rms_data -1) > 0.05) { //---- only if smearing is > 5%
+            
+            std::string index_key; // iEdge_num_layerId_num_ladderbladeId
+            index_key = std::to_string(iEdge) + "_" + std::to_string(num_layerId) + "_" + std::to_string(num_ladderbladeId);
+            
             if (found_BPIX!=std::string::npos) {
               myfile_RMS_BPIX << " " << iEdge << " " << num_layerId << " " << num_ladderbladeId << "     "  << iRun << "     " ;
               myfile_RMS_BPIX << "          " << rms_mc / rms_data << "        " << rms_data << "        " << rms_mc;
               myfile_RMS_BPIX << std::endl;
+                          
+              if (map_rms_data_BPIX.find( index_key ) != map_rms_data_BPIX.end()) {
+                map_rms_data_BPIX[index_key] += rms_data; 
+                map_num_rms_BPIX[index_key] += 1; 
+              }
+              else {
+                map_rms_data_BPIX[index_key] = rms_data; 
+                map_num_rms_BPIX[index_key] = 1;                 
+              } 
+              map_rms_mc_BPIX[index_key] = rms_mc;
+              
             }
             else {
               myfile_RMS_FPIX << " " << iEdge << " " << num_layerId << " " << num_ladderbladeId << "     "  << iRun << "     " ;
               myfile_RMS_FPIX << "          " << rms_mc / rms_data << "        " << rms_data << "        " << rms_mc;
               myfile_RMS_FPIX << std::endl;
+              
+              if (map_rms_data_FPIX.find( index_key ) != map_rms_data_FPIX.end()) {
+                map_rms_data_FPIX[index_key] += rms_data; 
+                map_num_rms_FPIX[index_key] += 1; 
+              }
+              else {
+                map_rms_data_FPIX[index_key] = rms_data; 
+                map_num_rms_FPIX[index_key] = 1;                 
+              } 
+              map_rms_mc_FPIX[index_key] = rms_mc;
+              
             }
           }
         }
@@ -168,13 +209,72 @@ int main(int argc, char** argv) {
   
 //   name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_mc", iRun, layerId.at(ilayer), iEdge, ladderbladeId.at(iladderblade))
   
+  std::map<std::string, float>::iterator it_map;
   
+  for ( it_map = map_rms_data_BPIX.begin(); it_map != map_rms_data_BPIX.end(); it_map++ ) {
+    int num_layerId;
+    int iEdge;
+    int num_ladderbladeId;
+    
+    std::string index_key = it_map->first;
+    //     index_key = std::to_string(iEdge) + "_" + std::to_string(num_layerId) + "_" + std::to_string(num_ladderbladeId);
+    
+    std::vector<int> indices;
+    std::stringstream ss(index_key);
+    std::string token;
+    while (std::getline(ss, token, '_')) {
+      indices.push_back( std::stoi( token ) );
+    }
+    iEdge = indices.at(0);
+    num_layerId = indices.at(1);
+    num_ladderbladeId = indices.at(2);
+    
+    float rms_mc = map_rms_mc_BPIX[index_key];
+    float rms_data = it_map->second   / map_num_rms_BPIX[index_key]; // ---- average rms
+    
+    myfile_RMS_BPIX_reduced << " " << iEdge << " " << num_layerId << " " << num_ladderbladeId << "     "  ;
+    myfile_RMS_BPIX_reduced << "          " << rms_mc / rms_data << "        " << rms_data << "        " << rms_mc;
+    myfile_RMS_BPIX_reduced << std::endl ;
+    
+  }
+  
+  
+  for ( it_map = map_rms_data_FPIX.begin(); it_map != map_rms_data_FPIX.end(); it_map++ ) {
+    int num_layerId;
+    int iEdge;
+    int num_ladderbladeId;
+    
+    std::string index_key = it_map->first;
+    //     index_key = std::to_string(iEdge) + "_" + std::to_string(num_layerId) + "_" + std::to_string(num_ladderbladeId);
+    
+    std::vector<int> indices;
+    std::stringstream ss(index_key);
+    std::string token;
+    while (std::getline(ss, token, '_')) {
+      indices.push_back( std::stoi( token ) );
+    }
+    iEdge = indices.at(0);
+    num_layerId = indices.at(1);
+    num_ladderbladeId = indices.at(2);
+    
+    float rms_mc = map_rms_mc_FPIX[index_key];
+    float rms_data = it_map->second   / map_num_rms_FPIX[index_key]; // ---- average rms
+    
+    myfile_RMS_FPIX_reduced << " " << iEdge << " " << num_layerId << " " << num_ladderbladeId << "     "  ;
+    myfile_RMS_FPIX_reduced << "          " << rms_mc / rms_data << "        " << rms_data << "        " << rms_mc;
+    myfile_RMS_FPIX_reduced << std::endl ;
+    
+  }
+  
+    
   myfile_BPIX.close();
   myfile_FPIX.close();
   
   myfile_RMS_BPIX.close();
   myfile_RMS_FPIX.close();
   
+  myfile_RMS_BPIX_reduced.close();
+  myfile_RMS_FPIX_reduced.close();
   
   
 }
