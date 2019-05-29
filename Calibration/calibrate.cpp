@@ -22,6 +22,12 @@ int main(int argc, char** argv) {
   myfile_FPIX.open ("scale_FPIX_pixels_run_ranges.txt");
   
   
+  std::ofstream myfile_RMS_BPIX;
+  myfile_RMS_BPIX.open ("smear_BPIX_pixels_run_ranges.txt");
+  std::ofstream myfile_RMS_FPIX;
+  myfile_RMS_FPIX.open ("smear_FPIX_pixels_run_ranges.txt");
+
+
   
   std::string name_input_file_data = "out.root"; 
   if (argc>=2) {
@@ -106,6 +112,7 @@ int main(int argc, char** argv) {
         //----
         
         float mean_mc   = ((TH1F*) obj ) -> GetMean();
+        float rms_mc   = ((TH1F*) obj )  -> GetRMS();
         
         std::size_t found_BPIX = name.find("_BPIX_");
         std::string isBPIX = "BPIX";
@@ -134,6 +141,25 @@ int main(int argc, char** argv) {
           }
         }
         
+        
+        //---- rms for smearing
+        float rms_data = ((TH1F*) inputFile_data->Get(name_data.Data()) ) -> GetRMS();
+        
+        if (rms_data != 0) {
+          if ( fabs(rms_mc / rms_data -1) > 0.05) { //---- only if smearing is > 5%
+            if (found_BPIX!=std::string::npos) {
+              myfile_RMS_BPIX << " " << iEdge << " " << num_layerId << " " << num_ladderbladeId << "     "  << iRun << "     " ;
+              myfile_RMS_BPIX << "          " << rms_mc / rms_data << "        " << rms_data << "        " << rms_mc;
+              myfile_RMS_BPIX << std::endl;
+            }
+            else {
+              myfile_RMS_FPIX << " " << iEdge << " " << num_layerId << " " << num_ladderbladeId << "     "  << iRun << "     " ;
+              myfile_RMS_FPIX << "          " << rms_mc / rms_data << "        " << rms_data << "        " << rms_mc;
+              myfile_RMS_FPIX << std::endl;
+            }
+          }
+        }
+        
       }
       
     }
@@ -145,6 +171,9 @@ int main(int argc, char** argv) {
   
   myfile_BPIX.close();
   myfile_FPIX.close();
+  
+  myfile_RMS_BPIX.close();
+  myfile_RMS_FPIX.close();
   
   
   
