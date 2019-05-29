@@ -154,7 +154,20 @@ Draw 1 layer at a time:
     
     
     
+
+
+Smear the MC
+====
+
+Smear the MC according to RMS ratio
     
+    g++ -o smear_tree.exe smear_tree.cpp `root-config --cflags --glibs`
     
+Run:
+
+    ./smear_tree.exe   data_calibration/29Apr2019/MC2018/tree_filtered_DYJetsM50_HT100to200.root      data_calibration/29Apr2019/MC2018/tree_filtered_smeared_DYJetsM50_HT100to200.root
+
+
+
     
     
