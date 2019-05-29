@@ -249,17 +249,20 @@ int main(int argc, char** argv) {
     if (!(iEntry%50000)) std::cout << "   " << iEntry << " ; nIsoTrack = "  << nIsoTrack << std::endl;
     inputTree->GetEntry(iEntry);
     
-    int ilayer = IsoTrack_layerOrSide_1[best_track] - 1;
-    int iEdge  = FindEdgeAbs (IsoTrack_eta[best_track], eta_edges);
+    int ilayer;
+    int iEdge;
+    iEdge  = FindEdgeAbs (IsoTrack_eta[best_track], eta_edges);
     
-    std::cout << " ilayer = " << ilayer << " iEdge = " << iEdge << " [IsoTrack_eta[" << best_track << "] = " << IsoTrack_eta[best_track] << " ]" << std::endl;
+//     std::cout << " ilayer = " << ilayer << " iEdge = " << iEdge << " [IsoTrack_eta[" << best_track << "] = " << IsoTrack_eta[best_track] << " ]" << std::endl;
     
-    
+    float dedx_temp; 
     float additional_smearing = 1.0;
     
 //     IsoTrack_pix
 //     == 1 BPIX
 //     == 2 FPIX
+    
+    ilayer = IsoTrack_layerOrSide_1[best_track] - 1;
     
     if (IsoTrack_pix_1[best_track] == 1) {
       if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
@@ -276,10 +279,137 @@ int main(int argc, char** argv) {
         if (additional_smearing <=0) additional_smearing = 1.0;
       }  
     }
-
-    float dedx_temp = IsoTrack_dedxUnsmeared_1[best_track];
+    
+    dedx_temp = IsoTrack_dedxUnsmeared_1[best_track];
     IsoTrack_dedxUnsmeared_1[best_track] = dedx_temp * additional_smearing;
     
+
+
+    //  Hit_2
+    
+    ilayer = IsoTrack_layerOrSide_2[best_track] - 1;
+    
+    if (IsoTrack_pix_2[best_track] == 1) {
+      if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+        f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
+        additional_smearing = f_smearing->GetRandom();
+        if (additional_smearing <=0) additional_smearing = 1.0;
+      }
+    }
+    
+    if (IsoTrack_pix_2[best_track] == 2) {
+      if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+        f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
+        additional_smearing = f_smearing->GetRandom();
+        if (additional_smearing <=0) additional_smearing = 1.0;
+      }  
+    }
+    
+    dedx_temp = IsoTrack_dedxUnsmeared_2[best_track];
+    IsoTrack_dedxUnsmeared_2[best_track] = dedx_temp * additional_smearing;
+    
+ 
+    
+    //  Hit_3
+    
+    ilayer = IsoTrack_layerOrSide_3[best_track] - 1;
+    
+    if (IsoTrack_pix_3[best_track] == 1) {
+      if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+        f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
+        additional_smearing = f_smearing->GetRandom();
+        if (additional_smearing <=0) additional_smearing = 1.0;
+      }
+    }
+    
+    if (IsoTrack_pix_3[best_track] == 2) {
+      if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+        f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
+        additional_smearing = f_smearing->GetRandom();
+        if (additional_smearing <=0) additional_smearing = 1.0;
+      }  
+    }
+    
+    dedx_temp = IsoTrack_dedxUnsmeared_3[best_track];
+    IsoTrack_dedxUnsmeared_3[best_track] = dedx_temp * additional_smearing;
+    
+    
+    //  Hit_4
+    
+    ilayer = IsoTrack_layerOrSide_4[best_track] - 1;
+    
+    if (IsoTrack_pix_4[best_track] == 1) {
+      if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+        f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
+        additional_smearing = f_smearing->GetRandom();
+        if (additional_smearing <=0) additional_smearing = 1.0;
+      }
+    }
+    
+    if (IsoTrack_pix_4[best_track] == 2) {
+      if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+        f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
+        additional_smearing = f_smearing->GetRandom();
+        if (additional_smearing <=0) additional_smearing = 1.0;
+      }  
+    }
+    
+    dedx_temp = IsoTrack_dedxUnsmeared_4[best_track];
+    IsoTrack_dedxUnsmeared_4[best_track] = dedx_temp * additional_smearing;
+    
+    
+    //  Hit_5
+    
+    ilayer = IsoTrack_layerOrSide_5[best_track] - 1;
+    
+    if (IsoTrack_pix_5[best_track] == 1) {
+      if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+        f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
+        additional_smearing = f_smearing->GetRandom();
+        if (additional_smearing <=0) additional_smearing = 1.0;
+      }
+    }
+    
+    if (IsoTrack_pix_5[best_track] == 2) {
+      if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+        f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
+        additional_smearing = f_smearing->GetRandom();
+        if (additional_smearing <=0) additional_smearing = 1.0;
+      }  
+    }
+    
+    dedx_temp = IsoTrack_dedxUnsmeared_5[best_track];
+    IsoTrack_dedxUnsmeared_5[best_track] = dedx_temp * additional_smearing;
+    
+    
+    //  Hit_6
+    
+    ilayer = IsoTrack_layerOrSide_6[best_track] - 1;
+    
+    if (IsoTrack_pix_6[best_track] == 1) {
+      if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+        f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
+        additional_smearing = f_smearing->GetRandom();
+        if (additional_smearing <=0) additional_smearing = 1.0;
+      }
+    }
+    
+    if (IsoTrack_pix_6[best_track] == 2) {
+      if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+        f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
+        additional_smearing = f_smearing->GetRandom();
+        if (additional_smearing <=0) additional_smearing = 1.0;
+      }  
+    }
+    
+    dedx_temp = IsoTrack_dedxUnsmeared_6[best_track];
+    IsoTrack_dedxUnsmeared_6[best_track] = dedx_temp * additional_smearing;
+    
+    
+
+    
+    
+
     outputTree->Fill();     
     
   }
