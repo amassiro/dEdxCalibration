@@ -233,17 +233,26 @@ int main(int argc, char** argv) {
   inputTree->SetBranchAddress( (variable_pix + "5").c_str(),  IsoTrack_pix_5);
   inputTree->SetBranchAddress( (variable_pix + "6").c_str(),  IsoTrack_pix_6);
   
-  inputTree->Branch( (variable_dedxUnsmeared + "1").c_str(),  IsoTrack_dedxUnsmeared_1);
-  inputTree->Branch( (variable_dedxUnsmeared + "2").c_str(),  IsoTrack_dedxUnsmeared_2);
-  inputTree->Branch( (variable_dedxUnsmeared + "3").c_str(),  IsoTrack_dedxUnsmeared_3);
-  inputTree->Branch( (variable_dedxUnsmeared + "4").c_str(),  IsoTrack_dedxUnsmeared_4);
-  inputTree->Branch( (variable_dedxUnsmeared + "5").c_str(),  IsoTrack_dedxUnsmeared_5);
-  inputTree->Branch( (variable_dedxUnsmeared + "6").c_str(),  IsoTrack_dedxUnsmeared_6);
-  
-  
+  inputTree->SetBranchAddress( (variable_dedxUnsmeared + "1").c_str(),  IsoTrack_dedxUnsmeared_1);
+  inputTree->SetBranchAddress( (variable_dedxUnsmeared + "2").c_str(),  IsoTrack_dedxUnsmeared_2);
+  inputTree->SetBranchAddress( (variable_dedxUnsmeared + "3").c_str(),  IsoTrack_dedxUnsmeared_3);
+  inputTree->SetBranchAddress( (variable_dedxUnsmeared + "4").c_str(),  IsoTrack_dedxUnsmeared_4);
+  inputTree->SetBranchAddress( (variable_dedxUnsmeared + "5").c_str(),  IsoTrack_dedxUnsmeared_5);
+  inputTree->SetBranchAddress( (variable_dedxUnsmeared + "6").c_str(),  IsoTrack_dedxUnsmeared_6);
+
+   
   
   TFile* outputFile = new TFile (name_output_file.c_str(), "RECREATE");   
   TTree *outputTree = inputTree->CloneTree(0);
+ 
+  //---- to be changed
+  outputTree->SetBranchAddress( (variable_dedxUnsmeared + "1").c_str(),  IsoTrack_dedxUnsmeared_1);
+  outputTree->SetBranchAddress( (variable_dedxUnsmeared + "2").c_str(),  IsoTrack_dedxUnsmeared_2);
+  outputTree->SetBranchAddress( (variable_dedxUnsmeared + "3").c_str(),  IsoTrack_dedxUnsmeared_3);
+  outputTree->SetBranchAddress( (variable_dedxUnsmeared + "4").c_str(),  IsoTrack_dedxUnsmeared_4);
+  outputTree->SetBranchAddress( (variable_dedxUnsmeared + "5").c_str(),  IsoTrack_dedxUnsmeared_5);
+  outputTree->SetBranchAddress( (variable_dedxUnsmeared + "6").c_str(),  IsoTrack_dedxUnsmeared_6);
+  
   
   for (int iEntry=0; iEntry<inputTree->GetEntries(); iEntry++) {
     if (!(iEntry%50000)) std::cout << "   " << iEntry << " ; nIsoTrack = "  << nIsoTrack << std::endl;
@@ -280,6 +289,7 @@ int main(int argc, char** argv) {
       }  
     }
     
+//     std::cout << " additional_smearing = " << additional_smearing << std::endl;
     dedx_temp = IsoTrack_dedxUnsmeared_1[best_track];
     IsoTrack_dedxUnsmeared_1[best_track] = dedx_temp * additional_smearing;
     
