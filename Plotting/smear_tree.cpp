@@ -241,16 +241,6 @@ int main(int argc, char** argv) {
   inputTree->SetBranchAddress( (variable_dedxUnsmeared + "6").c_str(),  IsoTrack_dedxUnsmeared_6);
 
    
-
-  //---- not to be saved in new ttree  
-//   inputTree->SetBranchStatus((variable_dedxUnsmeared + "1").c_str(), 0 );
-//   inputTree->SetBranchStatus((variable_dedxUnsmeared + "2").c_str(), 0 );
-//   inputTree->SetBranchStatus((variable_dedxUnsmeared + "3").c_str(), 0 );
-//   inputTree->SetBranchStatus((variable_dedxUnsmeared + "4").c_str(), 0 );
-//   inputTree->SetBranchStatus((variable_dedxUnsmeared + "5").c_str(), 0 );
-//   inputTree->SetBranchStatus((variable_dedxUnsmeared + "6").c_str(), 0 );
-  
-  
   TFile* outputFile = new TFile (name_output_file.c_str(), "RECREATE");   
   TTree *outputTree = inputTree->CloneTree(0);
  
@@ -262,13 +252,6 @@ int main(int argc, char** argv) {
   outputTree->SetBranchAddress ( (variable_dedxUnsmeared + "5").c_str(),  IsoTrack_dedxUnsmeared_5);
   outputTree->SetBranchAddress ( (variable_dedxUnsmeared + "6").c_str(),  IsoTrack_dedxUnsmeared_6);
 
-//  outputTree->Branch ( (variable_dedxUnsmeared + "1").c_str(),  IsoTrack_dedxUnsmeared_1, ( (variable_dedxUnsmeared + "1") + "[1000]" ) .c_str() );
-//  outputTree->Branch ( (variable_dedxUnsmeared + "2").c_str(),  IsoTrack_dedxUnsmeared_2, ( (variable_dedxUnsmeared + "2") + "[1000]" ) .c_str() );
-//  outputTree->Branch ( (variable_dedxUnsmeared + "3").c_str(),  IsoTrack_dedxUnsmeared_3, ( (variable_dedxUnsmeared + "3") + "[1000]" ) .c_str() );
-//  outputTree->Branch ( (variable_dedxUnsmeared + "4").c_str(),  IsoTrack_dedxUnsmeared_4, ( (variable_dedxUnsmeared + "4") + "[1000]" ) .c_str() );
-//  outputTree->Branch ( (variable_dedxUnsmeared + "5").c_str(),  IsoTrack_dedxUnsmeared_5, ( (variable_dedxUnsmeared + "5") + "[1000]" ) .c_str() );
-//  outputTree->Branch ( (variable_dedxUnsmeared + "6").c_str(),  IsoTrack_dedxUnsmeared_6, ( (variable_dedxUnsmeared + "6") + "[1000]" ) .c_str() );
-  
   
   for (int iEntry=0; iEntry<inputTree->GetEntries(); iEntry++) {
     if (!(iEntry%50000)) std::cout << "   " << iEntry << " ; nIsoTrack = "  << nIsoTrack << std::endl;

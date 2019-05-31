@@ -34,4 +34,7 @@ Run:
     ./calibrate.exe  ../Plotting/outplots_2018data_all.root
     
     
+    RMS
+    4.53758e-01 --> MC
+    9.24676e-01 --> Data
     

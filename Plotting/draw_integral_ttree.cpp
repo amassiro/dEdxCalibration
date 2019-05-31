@@ -284,7 +284,8 @@ int main(int argc, char** argv) {
 
   int NBIN = 50;
   float minBIN = 0;
-  float maxBIN = 10;
+  float maxBIN = 5;
+  //   float maxBIN = 10;  ---> too big, although nice for plot, not good for RMS calculation
   
   
   // it is useless to have many ladders in first layers, while removing ladders in last layers
