@@ -168,6 +168,15 @@ Run:
     ./smear_tree.exe   data_calibration/29Apr2019/MC2018/tree_filtered_DYJetsM50_HT100to200.root      data_calibration/29Apr2019/MC2018/tree_filtered_smeared_DYJetsM50_HT100to200.root
 
 
+Test:
+
+    TTree* tree1 = (TTree*) _file1->Get("tree")
+    TTree* tree0 = (TTree*) _file0->Get("tree")
+    tree1->Draw("IsoTrack_dedxUnSmearedByHit1[best_track]", "IsoTrack_layerOrSideByHit1[best_track] == 1 && (IsoTrack_pixByHit1[best_track] == 1 ) ")
+    tree0->Draw("IsoTrack_dedxUnSmearedByHit1[best_track]", "IsoTrack_layerOrSideByHit1[best_track] == 1 && (IsoTrack_pixByHit1[best_track] == 1 ) ", "same")
+
+
+    
 And plot:
 
 

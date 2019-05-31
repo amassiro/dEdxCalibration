@@ -62,7 +62,7 @@ int main(int argc, char** argv) {
       // std::cout << " found: " << obj->GetName() << " ---> " << obj->GetTitle() << std::endl;
       //       "mc" or "data"
       
-      if (std::string(obj->GetTitle()) == "mc") {
+      if (std::string(obj->GetTitle()) == "data") {  //---- data is more granular because it has also time dependence
         
         //---- get the "coordinates"
         
@@ -71,8 +71,8 @@ int main(int argc, char** argv) {
         int iEdge;
         int num_ladderbladeId;
         
-//         name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_mc", iRun, layerId.at(layerId), iEdge, ladderbladeId.at(iladderblade))
-//         name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_mc", iRun, num_layerId        , iEdge, num_ladderbladeId             )
+//         name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_data", iRun, layerId.at(layerId), iEdge, ladderbladeId.at(iladderblade))
+//         name = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_BPIX_data", iRun, num_layerId        , iEdge, num_ladderbladeId             )
         
         std::string name = obj->GetName();
         
@@ -126,9 +126,6 @@ int main(int argc, char** argv) {
         //---- now get the values
         //----
         
-        float mean_mc   = ((TH1F*) obj ) -> GetMean();
-        float rms_mc   = ((TH1F*) obj )  -> GetRMS();
-        
         std::size_t found_BPIX = name.find("_BPIX_");
         std::string isBPIX = "BPIX";
         if (found_BPIX!=std::string::npos) {
@@ -139,7 +136,13 @@ int main(int argc, char** argv) {
         }
         
         TString name_data = Form ("h_iRun_%d__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_%s_data", iRun, num_layerId, iEdge, num_ladderbladeId, isBPIX.c_str());
-        float mean_data = ((TH1F*) inputFile_data->Get(name_data.Data()) ) -> GetMean();
+        float mean_data = ((TH1F*) obj ) -> GetMean();
+
+
+        TString name_mc   = Form ("h_iRun_0__ilayer_%d__iEdge_%d__ladderblade_%d__dedxById_%s_mc", num_layerId, iEdge, num_ladderbladeId, isBPIX.c_str());
+        float mean_mc   = ((TH1F*) inputFile_data->Get(name_mc.Data()) )  -> GetMean();
+        
+
         
         std::cout << " data : mc = " << mean_data << " ; " << mean_mc << std::endl;
         
@@ -158,44 +161,52 @@ int main(int argc, char** argv) {
         
         
         //---- rms for smearing
-        float rms_data = ((TH1F*) inputFile_data->Get(name_data.Data()) ) -> GetRMS();
+        float rms_data = ((TH1F*) obj ) -> GetRMS();
+        float rms_mc   = ((TH1F*) inputFile_data->Get(name_mc.Data()) )  -> GetRMS();
+//         std::cout << " rms_mc : rms_data = " << rms_mc << " : " << rms_data << std::endl;
         
-        if (rms_data != 0) {
-          if ( fabs(rms_mc / rms_data -1) > 0.05) { //---- only if smearing is > 5%
+        if (rms_mc != 0) {
+          //----
+          rms_data = rms_data * mean_mc / mean_data;  // ----> data have been scaled!
+          //----
+          
+          if ( fabs(rms_data / rms_mc -1) > 0.02) { //---- only if smearing is > 2%
             
             std::string index_key; // iEdge_num_layerId_num_ladderbladeId
             index_key = std::to_string(iEdge) + "_" + std::to_string(num_layerId);
             
             if (found_BPIX!=std::string::npos) {
               myfile_RMS_BPIX << " " << iEdge << " " << num_layerId << " " << num_ladderbladeId << "     "  << iRun << "     " ;
-              myfile_RMS_BPIX << "          " << rms_mc / rms_data - 1 << "        " << rms_data << "        " << rms_mc;
+              myfile_RMS_BPIX << "          " << rms_data / rms_mc - 1 << "        " << rms_data << "        " << rms_mc;
               myfile_RMS_BPIX << std::endl;
                           
               if (map_rms_data_BPIX.find( index_key ) != map_rms_data_BPIX.end()) {
                 map_rms_data_BPIX[index_key] += rms_data; 
+                map_rms_mc_BPIX[index_key]   += rms_mc; 
                 map_num_rms_BPIX[index_key] += 1; 
               }
               else {
                 map_rms_data_BPIX[index_key] = rms_data; 
+                map_rms_mc_BPIX[index_key]   = rms_mc; 
                 map_num_rms_BPIX[index_key] = 1;                 
               } 
-              map_rms_mc_BPIX[index_key] = rms_mc;
               
             }
             else {
               myfile_RMS_FPIX << " " << iEdge << " " << num_layerId << " " << num_ladderbladeId << "     "  << iRun << "     " ;
-              myfile_RMS_FPIX << "          " << rms_mc / rms_data - 1 << "        " << rms_data << "        " << rms_mc;
+              myfile_RMS_FPIX << "          " << rms_data / rms_mc - 1 << "        " << rms_data << "        " << rms_mc;
               myfile_RMS_FPIX << std::endl;
               
               if (map_rms_data_FPIX.find( index_key ) != map_rms_data_FPIX.end()) {
                 map_rms_data_FPIX[index_key] += rms_data; 
+                map_rms_mc_FPIX[index_key]   += rms_mc; 
                 map_num_rms_FPIX[index_key] += 1; 
               }
               else {
                 map_rms_data_FPIX[index_key] = rms_data; 
+                map_rms_mc_FPIX[index_key]   = rms_mc; 
                 map_num_rms_FPIX[index_key] = 1;                 
               } 
-              map_rms_mc_FPIX[index_key] = rms_mc;
               
             }
           }
@@ -227,11 +238,11 @@ int main(int argc, char** argv) {
     iEdge = indices.at(0);
     num_layerId = indices.at(1);
     
-    float rms_mc = map_rms_mc_BPIX[index_key];
-    float rms_data = it_map->second   / map_num_rms_BPIX[index_key]; // ---- average rms
+    float rms_mc = map_rms_mc_BPIX[index_key] / map_num_rms_BPIX[index_key]; // ---- average rms
+    float rms_data = it_map->second           / map_num_rms_BPIX[index_key]; // ---- average rms
     
     myfile_RMS_BPIX_reduced << " " << iEdge << " " << num_layerId << " " ;
-    myfile_RMS_BPIX_reduced << "          " << rms_mc / rms_data - 1 << "        " << rms_data << "        " << rms_mc;
+    myfile_RMS_BPIX_reduced << "          " << rms_data / rms_mc - 1 << "        " << rms_data << "        " << rms_mc;
     myfile_RMS_BPIX_reduced << std::endl ;
     
   }
@@ -253,11 +264,11 @@ int main(int argc, char** argv) {
     iEdge = indices.at(0);
     num_layerId = indices.at(1);
     
-    float rms_mc = map_rms_mc_FPIX[index_key];
-    float rms_data = it_map->second   / map_num_rms_FPIX[index_key]; // ---- average rms
+    float rms_mc = map_rms_mc_FPIX[index_key] / map_num_rms_FPIX[index_key]; // ---- average rms
+    float rms_data = it_map->second           / map_num_rms_FPIX[index_key]; // ---- average rms
     
     myfile_RMS_FPIX_reduced << " " << iEdge << " " << num_layerId << " " ;
-    myfile_RMS_FPIX_reduced << "          " << rms_mc / rms_data - 1 << "        " << rms_data << "        " << rms_mc;
+    myfile_RMS_FPIX_reduced << "          " << rms_data / rms_mc - 1 << "        " << rms_data << "        " << rms_mc;
     myfile_RMS_FPIX_reduced << std::endl ;
     
   }
