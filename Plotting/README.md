@@ -166,6 +166,7 @@ Smear the MC according to RMS ratio
 Run:
 
     ./smear_tree.exe   data_calibration/29Apr2019/MC2018/tree_filtered_DYJetsM50_HT100to200.root      data_calibration/29Apr2019/MC2018/tree_filtered_smeared_DYJetsM50_HT100to200.root
+    ./smear_tree.exe   data_calibration/29Apr2019/MC2018/tree_filtered_DYJetsM50_HT100to200.root      data_calibration/29Apr2019/MC2018/tree_filtered_smeared_DEFAULT_DYJetsM50_HT100to200.root
 
 
 Test:
