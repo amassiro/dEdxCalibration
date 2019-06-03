@@ -291,7 +291,6 @@ int main(int argc, char** argv) {
 //     std::cout << " additional_smearing = " << additional_smearing << std::endl;
     dedx_temp = IsoTrack_dedxUnsmeared_1[best_track];
     IsoTrack_dedxUnsmeared_1[best_track] = dedx_temp * additional_smearing;
-//     IsoTrack_dedxUnsmeared_1[best_track] = 5.0; // TEST
     
 
 

@@ -98,7 +98,7 @@ Get 2018 data:
     
     
     
-Draw 1 layer at a time:
+Draw 1 layer at a time (before calibration):
     
     ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree_filtered.root        data_calibration/29Apr2019/MC2018/tree_filtered_DYJetsM50_HT100to200.root    outplots_2018data_layer1.root    1      1      4     65     1     0       0
     

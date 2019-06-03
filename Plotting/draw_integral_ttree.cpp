@@ -152,29 +152,18 @@ int main(int argc, char** argv) {
   
   std::vector<float> eta_edges;
   
-//   eta_edges.push_back(0.0);
-//   eta_edges.push_back(0.3);  //--- exclude
-//   eta_edges.push_back(0.6);  //--- exclude
-//   eta_edges.push_back(1.0);  //--- exclude
-//   eta_edges.push_back(1.3);
-//   eta_edges.push_back(1.6);  //--- exclude
-//   eta_edges.push_back(2.1);
-//   eta_edges.push_back(2.5);
-
-
-
-//   eta_edges.push_back(0.0);
-// //   eta_edges.push_back(0.3);  //--- exclude
-// //   eta_edges.push_back(0.6);  //--- exclude
-// //   eta_edges.push_back(1.0);  //--- exclude
-//   eta_edges.push_back(1.3);
-// //   eta_edges.push_back(1.6);  //--- exclude
-//   eta_edges.push_back(2.1);
-//   eta_edges.push_back(2.5);
-  
-  
   eta_edges.push_back(0.0);
+  eta_edges.push_back(0.3);  //--- exclude
+  eta_edges.push_back(0.6);  //--- exclude
+  eta_edges.push_back(1.0);  //--- exclude
+  eta_edges.push_back(1.3);
+  eta_edges.push_back(1.6);  //--- exclude
+  eta_edges.push_back(2.1);
   eta_edges.push_back(2.5);
+
+//---- simplified
+//   eta_edges.push_back(0.0);
+//   eta_edges.push_back(2.5);
   
   
   
@@ -282,9 +271,9 @@ int main(int argc, char** argv) {
 //   NBIN, minBIN, maxBIN
 //   
 
-  int NBIN = 50;
+  int NBIN = 70;
   float minBIN = 0;
-  float maxBIN = 5;
+  float maxBIN = 7;
   //   float maxBIN = 10;  ---> too big, although nice for plot, not good for RMS calculation
   
   
