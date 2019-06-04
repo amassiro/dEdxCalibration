@@ -43,6 +43,12 @@ int main(int argc, char** argv) {
   
   
   
+  myfile_RMS_BPIX << "#   iEdge      num_layerId        num_ladderbladeId          iRun        (rms_data / rms_mc - 1)           rms_data         rms_mc " << std::endl;
+  myfile_RMS_FPIX << "#   iEdge      num_layerId        num_ladderbladeId          iRun        (rms_data / rms_mc - 1)           rms_data         rms_mc " << std::endl;
+  
+  myfile_FPIX << "#   iEdge      num_layerId        num_ladderbladeId          iRun        (mean_mc / mean_data)           mean_data         mean_mc " << std::endl;
+  myfile_BPIX << "#   iEdge      num_layerId        num_ladderbladeId          iRun        (mean_mc / mean_data)           mean_data         mean_mc " << std::endl;
+  
   
   std::string name_input_file_data = "out.root"; 
   if (argc>=2) {
@@ -222,6 +228,8 @@ int main(int argc, char** argv) {
   
   std::map<std::string, float>::iterator it_map;
   
+  myfile_RMS_BPIX_reduced << "#   iEdge      num_layerId       (rms_data / rms_mc - 1)           rms_data         rms_mc " << std::endl;
+  
   for ( it_map = map_rms_data_BPIX.begin(); it_map != map_rms_data_BPIX.end(); it_map++ ) {
     int num_layerId;
     int iEdge;
@@ -248,6 +256,7 @@ int main(int argc, char** argv) {
   }
   
   
+  myfile_RMS_FPIX_reduced << "#   iEdge      num_layerId       (rms_data / rms_mc - 1)           rms_data         rms_mc " << std::endl;
   for ( it_map = map_rms_data_FPIX.begin(); it_map != map_rms_data_FPIX.end(); it_map++ ) {
     int num_layerId;
     int iEdge;
