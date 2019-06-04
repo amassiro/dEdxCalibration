@@ -33,6 +33,8 @@ Run:
 
     ./calibrate.exe  ../Plotting/outplots_2018data_all.root
     
+    ./calibrate.exe  ../Plotting/outplots_2018data_many_eta_bins.root
+    
     
     RMS
     4.53758e-01 --> MC

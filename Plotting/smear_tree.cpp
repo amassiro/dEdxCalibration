@@ -71,9 +71,20 @@ int main(int argc, char** argv) {
   
   
   std::vector<float> eta_edges;
-  
+   
   eta_edges.push_back(0.0);
+  eta_edges.push_back(0.3);  //--- exclude
+  eta_edges.push_back(0.6);  //--- exclude
+  eta_edges.push_back(1.0);  //--- exclude
+  eta_edges.push_back(1.3);
+  eta_edges.push_back(1.6);  //--- exclude
+  eta_edges.push_back(2.1);
   eta_edges.push_back(2.5);
+  
+  //---- simplified
+  //   eta_edges.push_back(0.0);
+  //   eta_edges.push_back(2.5);
+  
   
   
   
@@ -261,10 +272,15 @@ int main(int argc, char** argv) {
     int iEdge;
     iEdge  = FindEdgeAbs (IsoTrack_eta[best_track], eta_edges);
     
-//     std::cout << " ilayer = " << ilayer << " iEdge = " << iEdge << " [IsoTrack_eta[" << best_track << "] = " << IsoTrack_eta[best_track] << " ]" << std::endl;
+    if (iEdge < 0 || iEdge >= eta_edges.size()) {
+      std::cout << " ilayer = " << ilayer << " iEdge = " << iEdge << " [IsoTrack_eta[" << best_track << "] = " << IsoTrack_eta[best_track] << " ]" << std::endl;      
+    }
     
     float dedx_temp; 
     float additional_smearing = 1.0;
+    
+    
+    
     
 //     IsoTrack_pix
 //     == 1 BPIX
