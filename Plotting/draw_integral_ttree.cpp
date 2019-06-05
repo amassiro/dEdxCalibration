@@ -348,6 +348,8 @@ int main(int argc, char** argv) {
     map_h_BPIX_data.push_back( v_1_BPIX );
     map_h_FPIX_data.push_back( v_1_FPIX );
     
+//     [iRun][ilayer][iEdge][iladderblade]
+  
   }
   
   for (int ilayer = 0; ilayer<layerId.size(); ilayer++) {
