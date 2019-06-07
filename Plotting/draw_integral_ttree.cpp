@@ -611,6 +611,8 @@ int main(int argc, char** argv) {
 
       TString name;
       
+      cc_summary->cd();
+      cc_summary->Clear();
       map_h_BPIX_reduced_data[ilayer][iEdge]->DrawNormalized();
       map_h_BPIX_reduced_mc[ilayer][iEdge]->DrawNormalized("same E");
       name = Form ("plots_summary/cc_summary_layer_%d_eta_%d_BPIX.png" , layerId.at(ilayer), iEdge); 
@@ -619,6 +621,8 @@ int main(int argc, char** argv) {
       cc_summary->SaveAs(name.Data());
       
       
+      cc_summary->cd();
+      cc_summary->Clear();
       map_h_FPIX_reduced_data[ilayer][iEdge]->DrawNormalized();
       map_h_FPIX_reduced_mc[ilayer][iEdge]->DrawNormalized("same E");
       name = Form ("plots_summary/cc_summary_layer_%d_eta_%d_FPIX.png" , layerId.at(ilayer), iEdge); 
