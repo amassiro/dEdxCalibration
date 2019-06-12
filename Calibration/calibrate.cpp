@@ -173,7 +173,7 @@ int main(int argc, char** argv) {
         
         if (rms_mc != 0) {
           //----
-//           rms_data = rms_data * mean_mc / mean_data;  // ----> data will be scaled! 
+          rms_data = rms_data * mean_mc / mean_data;  // ----> data will be scaled! 
           //----
           
           if ( (rms_data / rms_mc -1) > 0.02) { //---- only if smearing is > 2%  (not "fabs" because we only allow oversmearing)
