@@ -39,4 +39,11 @@ Run:
     RMS
     4.53758e-01 --> MC
     9.24676e-01 --> Data
-    
+ 
+ 
+ 
+Prepare for lxplus/cmssw
+
+    g++ -o prepareTextPixelTime.exe prepareTextPixelTime.cpp `root-config --cflags --glibs`
+    ./prepareTextPixelTime.exe    scale_for_cmssw.txt    30       5    scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
+ 
