@@ -46,4 +46,11 @@ Prepare for lxplus/cmssw
 
     g++ -o prepareTextPixelTime.exe prepareTextPixelTime.cpp `root-config --cflags --glibs`
     ./prepareTextPixelTime.exe    scale_for_cmssw.txt    30       5    scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
+
+
  
+Get smearing:
+
+    python calculateRMS.py 
+    
+    
