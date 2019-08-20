@@ -69,6 +69,16 @@ Get 2018 data:
 
 
     
+Filter and skim
+====
+
+    g++ -o filterTreeSkim.exe filterTreeSkim.cpp `root-config --cflags --glibs`
+ 
+    ./filterTreeSkim.exe data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018A_17Sep2018/treeProducerXtracks/tree.root  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018A_17Sep2018/treeProducerXtracks/tree_filtered_skimmed.root
+    
+    
+
+    
     
     g++ -o draw_integral_ttree.exe draw_integral_ttree.cpp `root-config --cflags --glibs`
     
