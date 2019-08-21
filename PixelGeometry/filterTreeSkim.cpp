@@ -46,16 +46,7 @@ int main(int argc, char** argv) {
   
   std::cout << " entries = " << inputTree->GetEntries() << std::endl;
   
-//   
-//   IsoTrack_sizeXbyLayer2[0]:IsoTrack_subDetIdByLayer2[0]
-//   
-//   sizeXbyLayer is 0 for strips
-//                is != 0 for pixels
-//
-//   subDetIdByLayer is filled for strips and for pixels
-//                values: 0, 1, ... 5, 6, 7
-//
-  
+
   
   //---- muon
   const Int_t kMaxLepGood = 10;
@@ -133,12 +124,12 @@ int main(int argc, char** argv) {
     "LepGood_pdgId", 
     "nLepGood",  
 //     
-    "IsoTrack_layerOrSideByLayer*",  
-    "IsoTrack_ladderOrBladeByLayer*",  
-    "IsoTrack_dedxUnSmearedByLayer*",  
-    "IsoTrack_dedxByLayer*",  
-    "IsoTrack_pixByLayer*",  
-    "IsoTrack_subDetIdByLayer*"
+    "IsoTrack_layerOrSideByHit*",  
+    "IsoTrack_ladderOrBladeByHit*",  
+    "IsoTrack_dedxUnSmearedByHit*",  
+    "IsoTrack_dedxByHit*",  
+    "IsoTrack_pixByHit*",  
+    "IsoTrack_subDetIdByHit*"
   };
   
   

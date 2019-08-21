@@ -70,15 +70,27 @@ Get 2018 data:
 
     
 Filter and skim
-====
+
 
     g++ -o filterTreeSkim.exe filterTreeSkim.cpp `root-config --cflags --glibs`
  
-    ./filterTreeSkim.exe data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018A_17Sep2018/treeProducerXtracks/tree.root  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018A_17Sep2018/treeProducerXtracks/tree_filtered_skimmed.root
+    ../PixelGeometry/filterTreeSkim.exe data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018A_17Sep2018/treeProducerXtracks/tree.root  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018A_17Sep2018/treeProducerXtracks/tree_filtered_skimmed.root
+    ../PixelGeometry/filterTreeSkim.exe data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018B_17Sep2018/treeProducerXtracks/tree.root  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018B_17Sep2018/treeProducerXtracks/tree_filtered_skimmed.root
+    ../PixelGeometry/filterTreeSkim.exe data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018C_17Sep2018/treeProducerXtracks/tree.root  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018C_17Sep2018/treeProducerXtracks/tree_filtered_skimmed.root
+    ../PixelGeometry/filterTreeSkim.exe data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree.root  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree_filtered_skimmed.root
+    
+    ../PixelGeometry/filterTreeSkim.exe data_calibration/1May2019/MC-CR-2018-Hadded/DYJetsToLL_M50_HT100to200/treeProducerXtracks/tree.root     data_calibration/1May2019/MC-CR-2018-Hadded/DYJetsToLL_M50_HT100to200/treeProducerXtracks/tree_filtered_skimmed.root
+
+    ../PixelGeometry/filterTreeSkim.exe  data_calibration/29Apr2019/MC2018/tree_DYJetsM50_HT100to200.root   data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root
+
+      
+      
     
     
 
-    
+Plot
+
+
     
     g++ -o draw_integral_ttree.exe draw_integral_ttree.cpp `root-config --cflags --glibs`
     
@@ -117,6 +129,29 @@ Draw 1 layer at a time (before calibration):
     ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree_filtered.root        data_calibration/29Apr2019/MC2018/tree_filtered_DYJetsM50_HT100to200.root    outplots_2018data_layer3.root    1      1      4     65     1     2       0
     
     ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree_filtered.root        data_calibration/29Apr2019/MC2018/tree_filtered_DYJetsM50_HT100to200.root    outplots_2018data_layer4.root    1      1      4     65     1     3       0
+    
+    
+
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree_filtered_skimmed.root   \
+                               data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
+                               outplots_2018data_layer1.root    1      1      4     65     1     0       0
+    
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree_filtered_skimmed.root    \
+                               data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
+                               outplots_2018data_layer2.root    1      1      4     65     1     1       0
+    
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree_filtered_skimmed.root    \
+                               data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
+                               outplots_2018data_layer3.root    1      1      4     65     1     2       0
+    
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree_filtered_skimmed.root     \
+                               data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
+                               outplots_2018data_layer4.root    1      1      4     65     1     3       0
+
+    
+    
+    
+    
     
     
     
