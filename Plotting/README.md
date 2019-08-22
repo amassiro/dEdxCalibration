@@ -134,27 +134,79 @@ Draw 1 layer at a time (before calibration):
 
     ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree_filtered_skimmed.root   \
                                data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
-                               outplots_2018data_layer1.root    1      1      4     65     1     0       0
+                               outplots_2018data_RunD_layer1.root    1      1      4     65     1     0       0
     
     ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree_filtered_skimmed.root    \
                                data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
-                               outplots_2018data_layer2.root    1      1      4     65     1     1       0
+                               outplots_2018data_RunD_layer2.root    1      1      4     65     1     1       0
     
     ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree_filtered_skimmed.root    \
                                data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
-                               outplots_2018data_layer3.root    1      1      4     65     1     2       0
+                               outplots_2018data_RunD_layer3.root    1      1      4     65     1     2       0
     
     ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree_filtered_skimmed.root     \
                                data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
-                               outplots_2018data_layer4.root    1      1      4     65     1     3       0
+                               outplots_2018data_RunD_layer4.root    1      1      4     65     1     3       0
+
+    
 
     
     
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018C_17Sep2018/treeProducerXtracks/tree_filtered_skimmed.root   \
+                               data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
+                               outplots_2018data_RunC_layer1.root    1      1      4     65     1     0       0
+    
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018C_17Sep2018/treeProducerXtracks/tree_filtered_skimmed.root    \
+                               data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
+                               outplots_2018data_RunC_layer2.root    1      1      4     65     1     1       0
+    
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018C_17Sep2018/treeProducerXtracks/tree_filtered_skimmed.root    \
+                               data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
+                               outplots_2018data_RunC_layer3.root    1      1      4     65     1     2       0
+    
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018C_17Sep2018/treeProducerXtracks/tree_filtered_skimmed.root     \
+                               data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
+                               outplots_2018data_RunC_layer4.root    1      1      4     65     1     3       0
+
     
     
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018B_17Sep2018/treeProducerXtracks/tree_filtered_skimmed.root   \
+                               data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
+                               outplots_2018data_RunB_layer1.root    1      1      4     65     1     0       0
+    
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018B_17Sep2018/treeProducerXtracks/tree_filtered_skimmed.root    \
+                               data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
+                               outplots_2018data_RunB_layer2.root    1      1      4     65     1     1       0
+    
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018B_17Sep2018/treeProducerXtracks/tree_filtered_skimmed.root    \
+                               data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
+                               outplots_2018data_RunB_layer3.root    1      1      4     65     1     2       0
+    
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018B_17Sep2018/treeProducerXtracks/tree_filtered_skimmed.root     \
+                               data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
+                               outplots_2018data_RunB_layer4.root    1      1      4     65     1     3       0
     
     
+
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018A_17Sep2018/treeProducerXtracks/tree_filtered_skimmed.root   \
+                               data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
+                               outplots_2018data_RunA_layer1.root    1      1      4     65     1     0       0
     
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018A_17Sep2018/treeProducerXtracks/tree_filtered_skimmed.root    \
+                               data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
+                               outplots_2018data_RunA_layer2.root    1      1      4     65     1     1       0
+    
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018A_17Sep2018/treeProducerXtracks/tree_filtered_skimmed.root    \
+                               data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
+                               outplots_2018data_RunA_layer3.root    1      1      4     65     1     2       0
+    
+    ./draw_integral_ttree.exe  data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018A_17Sep2018/treeProducerXtracks/tree_filtered_skimmed.root     \
+                               data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root   \
+                               outplots_2018data_RunA_layer4.root    1      1      4     65     1     3       0
+
+                               
+                               
+                               
     
     tree->Draw ("IsoTrack_dedxByHit1[best_track]", "(IsoTrack_layerOrSideByHit1[best_track] == 1) && (IsoTrack_ladderOrBladeByHit1[best_track] == 1) && (IsoTrack_pixByHit1[best_track] == 1 ) && ( (run >= 320673) && (run < 325173)  ) && ( (  abs(IsoTrack_eta[best_track] ) >=0.000000) && (  abs(IsoTrack_eta[best_track] ) <2.500000)   ) " )
     
