@@ -19,6 +19,13 @@ Hadd:
 
     hadd outplots_2018data_all.root  outplots_2018data_layer*.root
     
+    
+    hadd outplots_2018data_RunA_all.root  outplots_2018data_RunA_layer*.root
+    hadd outplots_2018data_RunB_all.root  outplots_2018data_RunB_layer*.root
+    hadd outplots_2018data_RunC_all.root  outplots_2018data_RunC_layer*.root
+    hadd outplots_2018data_RunD_all.root  outplots_2018data_RunD_layer*.root
+    
+    
 
     
 Calibrate. The code will automatically read the histograms, and save the calibration constant for each region/time slice, exploiting the name of the histogram
@@ -34,6 +41,17 @@ Run:
     ./calibrate.exe  ../Plotting/outplots_2018data_all.root
     
     ./calibrate.exe  ../Plotting/outplots_2018data_many_eta_bins.root
+    
+
+    ./calibrate.exe  ../Plotting/outplots_2018data_RunA_all.root
+    ./calibrate.exe  ../Plotting/outplots_2018data_RunB_all.root
+    ./calibrate.exe  ../Plotting/outplots_2018data_RunC_all.root
+    ./calibrate.exe  ../Plotting/outplots_2018data_RunD_all.root
+
+    cp *.txt Run2018A/
+    cp *.txt Run2018B/
+    cp *.txt Run2018C/
+    cp *.txt Run2018D/
     
     
     RMS
