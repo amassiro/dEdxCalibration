@@ -54,21 +54,29 @@ Run:
     cp *.txt Run2018D/
     
     
-    RMS
-    4.53758e-01 --> MC
-    9.24676e-01 --> Data
- 
- 
- 
-Prepare for lxplus/cmssw
+    
+Prepare for lxplus/cmssw (old version)
 
     g++ -o prepareTextPixelTime.exe prepareTextPixelTime.cpp `root-config --cflags --glibs`
     ./prepareTextPixelTime.exe    scale_for_cmssw.txt    30       5    scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
+    
 
+    g++ -o prepareTextPixel.exe prepareTextPixel.cpp `root-config --cflags --glibs`
+    ./prepareTextPixel.exe    scale_for_cmssw.txt    4    scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
 
- 
+    
+    
+
 Get smearing:
 
     python calculateRMS.py 
+
+    
+    
+    
+    
+    
+
+ 
     
     
