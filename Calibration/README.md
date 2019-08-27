@@ -67,7 +67,7 @@ Prepare for lxplus/cmssw (old version)
     
     
 
-Get smearing:
+Get smearing (new and faster):
 
     python calculateRMS.py 
 
