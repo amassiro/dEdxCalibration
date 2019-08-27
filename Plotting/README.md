@@ -381,6 +381,9 @@ And plot:
 
     
     
+Automatic plotting:
+
+    sh script_post_smearing.sh
     
     
     
