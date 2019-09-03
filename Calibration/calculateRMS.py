@@ -85,11 +85,20 @@ for name_file in list_files:
   for histo in histograms:
     #print histo.GetName()
     
+    
     if "_mc" in histo.GetName(): 
+      #
+      # to get a more reasonable RMS, in particular for BPIX layer 1
+      histo.GetXaxis().SetRangeUser (0.5, 4.0);
+      #
       # this is the MC histogram 
       if histo.GetEntries() > 10:
         rms_mc = histo.GetRMS()
     if "_data" in histo.GetName(): 
+      #
+      # to get a more reasonable RMS, in particular for BPIX layer 1
+      histo.GetXaxis().SetRangeUser (0.5, 4.0);
+      #
       if histo.GetEntries() > 10:
         rms_data = histo.GetRMS()
 
