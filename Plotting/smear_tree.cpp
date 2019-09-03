@@ -213,6 +213,7 @@ int main(int argc, char** argv) {
   
   Float_t IsoTrack_eta[kMaxTracks];
   
+  Int_t IsoTrack_layerOrSide_0[kMaxTracks];        Int_t IsoTrack_pix_0[kMaxTracks];      Float_t IsoTrack_dedxUnsmeared_0[kMaxTracks];
   Int_t IsoTrack_layerOrSide_1[kMaxTracks];        Int_t IsoTrack_pix_1[kMaxTracks];      Float_t IsoTrack_dedxUnsmeared_1[kMaxTracks];
   Int_t IsoTrack_layerOrSide_2[kMaxTracks];        Int_t IsoTrack_pix_2[kMaxTracks];      Float_t IsoTrack_dedxUnsmeared_2[kMaxTracks];
   Int_t IsoTrack_layerOrSide_3[kMaxTracks];        Int_t IsoTrack_pix_3[kMaxTracks];      Float_t IsoTrack_dedxUnsmeared_3[kMaxTracks];
@@ -230,6 +231,7 @@ int main(int argc, char** argv) {
   inputTree->SetBranchAddress("IsoTrack_eta",  IsoTrack_eta);
   inputTree->SetBranchAddress("nIsoTrack",  &nIsoTrack);
   
+  inputTree->SetBranchAddress( (variable_layer + "0").c_str(),  IsoTrack_layerOrSide_0);
   inputTree->SetBranchAddress( (variable_layer + "1").c_str(),  IsoTrack_layerOrSide_1);
   inputTree->SetBranchAddress( (variable_layer + "2").c_str(),  IsoTrack_layerOrSide_2);
   inputTree->SetBranchAddress( (variable_layer + "3").c_str(),  IsoTrack_layerOrSide_3);
@@ -237,6 +239,7 @@ int main(int argc, char** argv) {
   inputTree->SetBranchAddress( (variable_layer + "5").c_str(),  IsoTrack_layerOrSide_5);
   inputTree->SetBranchAddress( (variable_layer + "6").c_str(),  IsoTrack_layerOrSide_6);
                                                 
+  inputTree->SetBranchAddress( (variable_pix + "0").c_str(),  IsoTrack_pix_0);
   inputTree->SetBranchAddress( (variable_pix + "1").c_str(),  IsoTrack_pix_1);
   inputTree->SetBranchAddress( (variable_pix + "2").c_str(),  IsoTrack_pix_2);
   inputTree->SetBranchAddress( (variable_pix + "3").c_str(),  IsoTrack_pix_3);
@@ -244,6 +247,7 @@ int main(int argc, char** argv) {
   inputTree->SetBranchAddress( (variable_pix + "5").c_str(),  IsoTrack_pix_5);
   inputTree->SetBranchAddress( (variable_pix + "6").c_str(),  IsoTrack_pix_6);
   
+  inputTree->SetBranchAddress( (variable_dedxUnsmeared + "0").c_str(),  IsoTrack_dedxUnsmeared_0);
   inputTree->SetBranchAddress( (variable_dedxUnsmeared + "1").c_str(),  IsoTrack_dedxUnsmeared_1);
   inputTree->SetBranchAddress( (variable_dedxUnsmeared + "2").c_str(),  IsoTrack_dedxUnsmeared_2);
   inputTree->SetBranchAddress( (variable_dedxUnsmeared + "3").c_str(),  IsoTrack_dedxUnsmeared_3);
@@ -256,6 +260,7 @@ int main(int argc, char** argv) {
   TTree *outputTree = inputTree->CloneTree(0);
  
   //---- to be changed
+  outputTree->SetBranchAddress ( (variable_dedxUnsmeared + "0").c_str(),  IsoTrack_dedxUnsmeared_0);
   outputTree->SetBranchAddress ( (variable_dedxUnsmeared + "1").c_str(),  IsoTrack_dedxUnsmeared_1);
   outputTree->SetBranchAddress ( (variable_dedxUnsmeared + "2").c_str(),  IsoTrack_dedxUnsmeared_2);
   outputTree->SetBranchAddress ( (variable_dedxUnsmeared + "3").c_str(),  IsoTrack_dedxUnsmeared_3);
@@ -285,6 +290,35 @@ int main(int argc, char** argv) {
 //     IsoTrack_pix
 //     == 1 BPIX
 //     == 2 FPIX
+  
+    
+    //  Hit_0
+    
+    ilayer = IsoTrack_layerOrSide_0[best_track] - 1;
+    
+    if (IsoTrack_pix_0[best_track] == 1) {
+      if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+        f_smearing->SetParameter(2, map_smearing_BPIX[ilayer][iEdge] );
+        additional_smearing = f_smearing->GetRandom();
+        if (additional_smearing <=0) additional_smearing = 1.0;
+      }
+    }
+    
+    if (IsoTrack_pix_0[best_track] == 2) {
+      if ( map_smearing_BPIX[ilayer][iEdge] != 0) {
+        f_smearing->SetParameter(2, map_smearing_FPIX[ilayer][iEdge] );
+        additional_smearing = f_smearing->GetRandom();
+        if (additional_smearing <=0) additional_smearing = 1.0;
+      }  
+    }
+    
+    //     std::cout << " additional_smearing = " << additional_smearing << std::endl;
+    dedx_temp = IsoTrack_dedxUnsmeared_0[best_track];
+    IsoTrack_dedxUnsmeared_0[best_track] = dedx_temp * additional_smearing;
+    
+    
+    
+    //  Hit_1
     
     ilayer = IsoTrack_layerOrSide_1[best_track] - 1;
     

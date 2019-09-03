@@ -360,12 +360,30 @@ Run:
     
 Test:
 
+    r99t ../Plotting/data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_smeared_DYJetsM50_HT100to200.root ../Plotting/data_calibration/29Apr2019/MC2018/tree_filtered_skimmed_DYJetsM50_HT100to200.root
+
+
     TTree* tree1 = (TTree*) _file1->Get("tree")
     TTree* tree0 = (TTree*) _file0->Get("tree")
     tree1->Draw("IsoTrack_dedxUnSmearedByHit1[best_track]", "IsoTrack_layerOrSideByHit1[best_track] == 1 && (IsoTrack_pixByHit1[best_track] == 1 ) ")
     tree0->Draw("IsoTrack_dedxUnSmearedByHit1[best_track]", "IsoTrack_layerOrSideByHit1[best_track] == 1 && (IsoTrack_pixByHit1[best_track] == 1 ) ", "same")
 
+    TTree* tree1 = (TTree*) _file1->Get("tree")
+    TTree* tree0 = (TTree*) _file0->Get("tree")
+    tree1->Draw("IsoTrack_dedxUnSmearedByHit0[best_track]", "IsoTrack_layerOrSideByHit0[best_track] == 1 && (IsoTrack_pixByHit0[best_track] == 1 ) ")
+    tree0->Draw("IsoTrack_dedxUnSmearedByHit0[best_track]", "IsoTrack_layerOrSideByHit0[best_track] == 1 && (IsoTrack_pixByHit0[best_track] == 1 ) ", "same")
 
+    TTree* tree1 = (TTree*) _file1->Get("tree")
+    TTree* tree0 = (TTree*) _file0->Get("tree")
+    tree1->Draw("IsoTrack_dedxUnSmearedByHit5[best_track]", "IsoTrack_layerOrSideByHit5[best_track] == 1 && (IsoTrack_pixByHit5[best_track] == 1 ) ")
+    tree0->Draw("IsoTrack_dedxUnSmearedByHit5[best_track]", "IsoTrack_layerOrSideByHit5[best_track] == 1 && (IsoTrack_pixByHit5[best_track] == 1 ) ", "same")
+
+    TTree* tree1 = (TTree*) _file1->Get("tree")
+    TTree* tree0 = (TTree*) _file0->Get("tree")
+    tree1->Draw("IsoTrack_dedxUnSmearedByHit6[best_track]", "IsoTrack_layerOrSideByHit6[best_track] == 1 && (IsoTrack_pixByHit6[best_track] == 1 ) ")
+    tree0->Draw("IsoTrack_dedxUnSmearedByHit6[best_track]", "IsoTrack_layerOrSideByHit6[best_track] == 1 && (IsoTrack_pixByHit6[best_track] == 1 ) ", "same")
+
+    
     
 And plot:
 
