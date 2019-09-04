@@ -74,14 +74,6 @@ Get smearing (new and faster):
     
      0.052 / 0.045  -> 16% additional
 
-    
-For web:
-
-    ls -alrth plots_summary_calibrated_smeared_2018data_Run?/plots_summary_calibrated/*.png | tr "/" " " | awk '{print "cp "$9"/"$10"/"$11" plots_summary_calibrated_smeared_2018data_forWeb/"$9"_"$11}'
-    
-    
-    
-    
 
  
     
