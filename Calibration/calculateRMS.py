@@ -90,6 +90,7 @@ for name_file in list_files:
       #
       # to get a more reasonable RMS, in particular for BPIX layer 1
       histo.GetXaxis().SetRangeUser (0.5, 4.0);
+      #histo.GetXaxis().SetRangeUser (1.0, 4.0);
       #
       # this is the MC histogram 
       if histo.GetEntries() > 10:
@@ -98,6 +99,7 @@ for name_file in list_files:
       #
       # to get a more reasonable RMS, in particular for BPIX layer 1
       histo.GetXaxis().SetRangeUser (0.5, 4.0);
+      #histo.GetXaxis().SetRangeUser (1.0, 4.0);
       #
       if histo.GetEntries() > 10:
         rms_data = histo.GetRMS()
