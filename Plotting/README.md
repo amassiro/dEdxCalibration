@@ -403,6 +403,7 @@ Automatic plotting:
 
     sh script_post_smearing.sh
     sh script_post_smearing_no_scale.sh
+    sh script_pre_smearing_no_scale.sh
     
     
     
@@ -411,6 +412,7 @@ For web:
 
     ls -alrth plots_summary_calibrated_smeared_2018data_Run?/plots_summary_calibrated/*.png | tr "/" " " | awk '{print "cp "$9"/"$10"/"$11" plots_summary_calibrated_smeared_2018data_forWeb/"$9"_"$11}'
     
+    ls -alrth plots_summary_no_calibrated_smeared_2018data_Run?/*.png | tr "/" " " | awk '{print "cp "$9"/"$10" plots_summary_no_calibrated_smeared_2018data_forWeb/"$9"_"$10}'
     
     
     
