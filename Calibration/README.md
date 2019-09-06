@@ -26,7 +26,12 @@ Hadd:
     hadd outplots_2018data_RunD_all.root  outplots_2018data_RunD_layer*.root
     
     
-
+    
+    hadd outplots_2018data_RunA_all_smeared_but_not_calibrated.root outplots_2018data_RunA_layer?_scaled_and_smeared.root
+    hadd outplots_2018data_RunB_all_smeared_but_not_calibrated.root outplots_2018data_RunB_layer?_scaled_and_smeared.root
+    hadd outplots_2018data_RunC_all_smeared_but_not_calibrated.root outplots_2018data_RunC_layer?_scaled_and_smeared.root
+    hadd outplots_2018data_RunD_all_smeared_but_not_calibrated.root outplots_2018data_RunD_layer?_scaled_and_smeared.root
+    
     
 Calibrate. The code will automatically read the histograms, and save the calibration constant for each region/time slice, exploiting the name of the histogram
 
@@ -47,6 +52,11 @@ Run:
     ./calibrate.exe  ../Plotting/outplots_2018data_RunB_all.root
     ./calibrate.exe  ../Plotting/outplots_2018data_RunC_all.root
     ./calibrate.exe  ../Plotting/outplots_2018data_RunD_all.root
+
+    ./calibrate.exe  ../Plotting/outplots_2018data_RunA_all_smeared_but_not_calibrated.root
+    ./calibrate.exe  ../Plotting/outplots_2018data_RunB_all_smeared_but_not_calibrated.root
+    ./calibrate.exe  ../Plotting/outplots_2018data_RunC_all_smeared_but_not_calibrated.root
+    ./calibrate.exe  ../Plotting/outplots_2018data_RunD_all_smeared_but_not_calibrated.root
 
     cp *.txt Run2018A/
     cp *.txt Run2018B/

@@ -402,6 +402,7 @@ And plot:
 Automatic plotting:
 
     sh script_post_smearing.sh
+    sh script_post_smearing_no_scale.sh
     
     
     
