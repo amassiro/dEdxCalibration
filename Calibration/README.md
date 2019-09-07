@@ -69,6 +69,13 @@ Prepare for lxplus/cmssw (old version)
 
     g++ -o prepareTextPixelTime.exe prepareTextPixelTime.cpp `root-config --cflags --glibs`
     ./prepareTextPixelTime.exe    scale_for_cmssw.txt    30       5    scale_BPIX_pixels_run_ranges.txt     scale_FPIX_pixels_run_ranges.txt
+
+    ./prepareTextPixelTime.exe    scale_for_cmssw_runA.txt    1   5    Run2018A/scale_BPIX_pixels_run_ranges.txt  Run2018A/scale_FPIX_pixels_run_ranges.txt
+    ./prepareTextPixelTime.exe    scale_for_cmssw_runB.txt    1   5    Run2018B/scale_BPIX_pixels_run_ranges.txt  Run2018B/scale_FPIX_pixels_run_ranges.txt
+    ./prepareTextPixelTime.exe    scale_for_cmssw_runC.txt    1   5    Run2018C/scale_BPIX_pixels_run_ranges.txt  Run2018C/scale_FPIX_pixels_run_ranges.txt
+    ./prepareTextPixelTime.exe    scale_for_cmssw_runD.txt    1   5    Run2018D/scale_BPIX_pixels_run_ranges.txt  Run2018D/scale_FPIX_pixels_run_ranges.txt
+
+    
     
 
     g++ -o prepareTextPixel.exe prepareTextPixel.cpp `root-config --cflags --glibs`

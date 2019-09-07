@@ -73,8 +73,9 @@ int main(int argc, char** argv) {
   //---- ladderblade 
   //----
   std::vector<int> ladderbladeId;
-  for (int iladderblade = 0; iladderblade<40; iladderblade++) {
-    //     for (int iladderblade = 0; iladderblade<12; iladderblade++) {
+  for (int iladderblade = 0; iladderblade<65; iladderblade++) {
+//     for (int iladderblade = 0; iladderblade<40; iladderblade++) {
+      //     for (int iladderblade = 0; iladderblade<12; iladderblade++) {
     //     for (int iladderblade = 0; iladderblade<40; iladderblade++) {
     ladderbladeId.push_back(iladderblade);
   }
@@ -139,11 +140,17 @@ int main(int argc, char** argv) {
       line >> ilayer;
       line >> iladderblade;
       
+      std::cout << " [iRun][ilayer][iEdge][iladderblade] = [ " << 0 << " ][ " << ilayer << " ][ " << iEdge << " ][ " << iladderblade << " ]"  << std::endl;
+
+      // FIXME just a temporary fix, to make it work
+      float dummy = 0.;
+      line >> dummy;
+      
       float calibration_factor = 1.0;
       for (int iRun = 0; iRun < num_run_intervals; iRun++) {
         line >> calibration_factor;
         //---- fix
-        if (calibration_factor < 0) calibration_factor = 1;
+        if (calibration_factor <= 0) calibration_factor = 1;
         map_calibration_BPIX[iRun][ilayer][iEdge][iladderblade] = calibration_factor;
       }
     } 
@@ -174,11 +181,16 @@ int main(int argc, char** argv) {
       line >> ilayer;
       line >> iladderblade;
       
+ 
+      // FIXME just a temporary fix, to make it work
+      float dummy = 0.;
+      line >> dummy;
+      
       float calibration_factor = 1.0;
       for (int iRun = 0; iRun < num_run_intervals; iRun++) {
         line >> calibration_factor;
         //---- fix
-        if (calibration_factor < 0) calibration_factor = 1;
+        if (calibration_factor <= 0) calibration_factor = 1;
         map_calibration_FPIX[iRun][ilayer][iEdge][iladderblade] = calibration_factor;
       }
     } 
@@ -192,7 +204,7 @@ int main(int argc, char** argv) {
 //   std::string name_input_file_data = "Data/tree_filtered_data_calibrated_cmssw_firstRound.root";
 //   std::string name_input_file_data = "Data/7Feb2019/tree_filtered_data_SingleMuon_31Mar2018.root";
 
-  std::string name_input_file_data = "data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree_filtered.root";
+  std::string name_input_file_data = "../Plotting/data_calibration/1May2019/DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree_filtered.root";
   
   
   
