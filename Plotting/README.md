@@ -87,6 +87,23 @@ Filter and skim
       
     
     
+    
+    ../PixelGeometry/filterTreeSkim.exe  data_calibration/7Sep2019/Calibrated-MC-CR-2018-Hadded/DYJetsToLL_M50_HT100to200/treeProducerXtracks/tree.root  data_calibration/7Sep2019/Calibrated-MC-CR-2018-Hadded/DYJetsToLL_M50_HT100to200/treeProducerXtracks/tree.filtered.skimmed.root
+
+    ../PixelGeometry/filterTreeSkim.exe  data_calibration/7Sep2019/Calibrated-DATA-CR-2018-Hadded/SingleMuon_Run2018A_17Sep2018/treeProducerXtracks/tree.root  data_calibration/7Sep2019/Calibrated-DATA-CR-2018-Hadded/SingleMuon_Run2018A_17Sep2018/treeProducerXtracks/tree.filtered.skimmed.root
+    ../PixelGeometry/filterTreeSkim.exe  data_calibration/7Sep2019/Calibrated-DATA-CR-2018-Hadded/SingleMuon_Run2018B_17Sep2018/treeProducerXtracks/tree.root  data_calibration/7Sep2019/Calibrated-DATA-CR-2018-Hadded/SingleMuon_Run2018B_17Sep2018/treeProducerXtracks/tree.filtered.skimmed.root
+    ../PixelGeometry/filterTreeSkim.exe  data_calibration/7Sep2019/Calibrated-DATA-CR-2018-Hadded/SingleMuon_Run2018C_17Sep2018/treeProducerXtracks/tree.root  data_calibration/7Sep2019/Calibrated-DATA-CR-2018-Hadded/SingleMuon_Run2018C_17Sep2018/treeProducerXtracks/tree.filtered.skimmed.root
+    ../PixelGeometry/filterTreeSkim.exe  data_calibration/7Sep2019/Calibrated-DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree.root  data_calibration/7Sep2019/Calibrated-DATA-CR-2018-Hadded/SingleMuon_Run2018D_PromptReco_v2/treeProducerXtracks/tree.filtered.skimmed.root
+    
+
+
+
+
+
+
+
+
+    
 
 Plot
 
