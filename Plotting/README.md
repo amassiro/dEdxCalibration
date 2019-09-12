@@ -98,11 +98,6 @@ Filter and skim
 
 
 
-
-
-
-
-
     
 
 Plot
@@ -421,7 +416,10 @@ Automatic plotting:
     sh script_post_smearing.sh
     sh script_post_smearing_no_scale.sh
     sh script_pre_smearing_no_scale.sh
-    
+
+    > plot directly from cmssw, scale and smear already applied
+    sh script_from_cmsssw.sh
+
     
     
     
