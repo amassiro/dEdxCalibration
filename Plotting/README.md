@@ -432,6 +432,11 @@ For web:
     ls -alrth plots_summary_no_calibrated_no_smear_2018data_Run?/*.png | tr "/" " " | awk '{print "cp "$9"/"$10" plots_summary_no_calibrated_no_smear_2018data_Run_forWeb/"$9"_"$10}'
     
     
+    ls -alrth plots_summary_from_cmssw_2018data_Run?/*.png | tr "/" " " | awk '{print "cp "$9"/"$10" plots_summary_from_cmssw_2018data_Run_forWeb/"$9"_"$10}'
+    
+    
+    
+    
     
     
     
