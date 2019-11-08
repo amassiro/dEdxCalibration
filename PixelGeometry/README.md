@@ -598,5 +598,15 @@ Draw effect of smearing and scaling
     
     
     
+Transform the root file with histograms into canvases for AN
+====
+
+    g++ -o drawPixelFromRootToPNG.exe drawPixelFromRootToPNG.cpp `root-config --cflags --glibs`
+
+    ./drawPixelFromRootToPNG.exe    tocalibrate_complete_eta_edges_iladderblade_timeRanges.root    plot_run_test_uncalibrated/
+    
+    ./drawPixelFromRootToPNG.exe    tocalibrate_complete_eta_edges_iladderblade_timeRanges.root               plot_run_8Nov2019_uncalibrated/
+    ./drawPixelFromRootToPNG.exe    tocalibrate_complete_eta_edges_iladderblade_timeRanges_CALIBRATED.root    plot_run_8Nov2019_calibrated/
+
     
     
